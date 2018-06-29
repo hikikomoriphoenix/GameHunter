@@ -20,8 +20,9 @@ public class JSONParser {
      * @param url url string representing a JSON document
      * @return an object containg all the data from the JSON document
      */
-    public JSONObject parse(String url) {
+    public JSON parse(String url) {
         try {
+            // download the JSON content
             InputStream inputStream = new URL(url).openStream();
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
@@ -30,7 +31,9 @@ public class JSONParser {
             while ((line = bufferedReader.readLine()) != null) {
                 sb.append(line).append("\n");
             }
-            return new JSONObject(sb.toString());
+
+            JSONObject json = new JSONObject(sb.toString()); // does all the parsing
+            return new JSON(json);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
