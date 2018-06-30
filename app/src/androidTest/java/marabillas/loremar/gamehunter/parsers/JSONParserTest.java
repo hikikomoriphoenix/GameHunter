@@ -3,7 +3,6 @@ package marabillas.loremar.gamehunter.parsers;
 import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
 
-import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -15,7 +14,7 @@ import static org.junit.Assert.assertThat;
 public class JSONParserTest {
     @Test
     public void parse() {
-        JSONObject json = new JSONParser().parse("https://raw.githubusercontent" +
+        JSON json = new JSONParser().parse("https://raw.githubusercontent" +
                 ".com/hikikomoriphoenix/android-libraries-lab/master/test.json");
         String test = "{\n" +
                 "  \"fruits\":[\n" +
