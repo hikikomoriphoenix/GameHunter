@@ -1,4 +1,4 @@
-package marabillas.loremar.gamehunter.parsers;
+package marabillas.loremar.gamehunter.parsers.json;
 
 import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
