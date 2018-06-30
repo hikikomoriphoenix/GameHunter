@@ -1,4 +1,4 @@
-package marabillas.loremar.gamehunter.parsers;
+package marabillas.loremar.gamehunter.parsers.json;
 
 import org.json.JSONException;
 import org.json.JSONObject;

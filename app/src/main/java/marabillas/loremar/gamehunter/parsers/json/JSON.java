@@ -1,8 +1,10 @@
-package marabillas.loremar.gamehunter.parsers;
+package marabillas.loremar.gamehunter.parsers.json;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import marabillas.loremar.gamehunter.parsers.FailedToGetFieldException;
 
 /**
  * This class wraps the JSON data. Use the getter methods to get each field. An instance of this

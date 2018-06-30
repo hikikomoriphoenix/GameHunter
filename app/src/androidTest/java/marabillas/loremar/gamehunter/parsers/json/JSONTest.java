@@ -1,4 +1,4 @@
-package marabillas.loremar.gamehunter.parsers;
+package marabillas.loremar.gamehunter.parsers.json;
 
 import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
@@ -6,6 +6,8 @@ import android.support.test.runner.AndroidJUnit4;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import marabillas.loremar.gamehunter.parsers.FailedToGetFieldException;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
