@@ -54,6 +54,8 @@ public class JSON_ArrayTest {
                     ".com/hikikomoriphoenix/some-random-static-files/master/json/arrays-contain-different-types.json";
             json = new JSONParser().parse(url);
             assertThat(json.getArray("array").getInt(1), is(25));
+
+            assertThat(json.getArray("array").getCount(), is(4));
         } catch (FailedToGetFieldException e) {
             Assert.fail(e.toString());
         }
