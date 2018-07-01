@@ -9,6 +9,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 
+import marabillas.loremar.gamehunter.parsers.FailedToParseException;
+
 /**
  * This class is used for parsing JSON documents to extract their data.
  */
@@ -20,7 +22,7 @@ public class JSONParser {
      * @param url url string representing a JSON document
      * @return an object containg all the data from the JSON document
      */
-    public JSON parse(String url) {
+    public JSON parse(String url) throws FailedToParseException {
         try {
             // download the JSON content
             InputStream inputStream = new URL(url).openStream();
@@ -35,11 +37,9 @@ public class JSONParser {
             JSONObject json = new JSONObject(sb.toString()); // does all the parsing
             return new JSON(json);
         } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            throw new FailedToParseException(e);
         } catch (JSONException e) {
-            e.printStackTrace();
-            return null;
+            throw new FailedToParseException(e);
         }
     }
 }
