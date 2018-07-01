@@ -34,6 +34,10 @@ public class JSON_Array {
         }
     }
 
+    public int getCount() {
+        return array.length();
+    }
+
     public double getDouble(int index) throws FailedToGetFieldException {
         try {
             return array.getDouble(index);
