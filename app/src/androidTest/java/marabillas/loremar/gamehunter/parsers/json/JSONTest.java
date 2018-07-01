@@ -23,43 +23,19 @@ public class JSONTest {
 
         try {
             assertThat(data.getArray("array").toString(), is("[1,2,3,4,5]"));
-        } catch (FailedToGetFieldException e) {
-            Assert.fail(e.toString());
-        }
 
-        try {
             assertThat(data.getBoolean("boolean"), is(true));
-        } catch (FailedToGetFieldException e) {
-            Assert.fail(e.toString());
-        }
 
-        try {
             assertThat(data.getDouble("decimal"), is(-52.434));
-        } catch (FailedToGetFieldException e) {
-            Assert.fail(e.toString());
-        }
 
-        try {
             assertThat(data.getInt("integer"), is(-20));
-        } catch (FailedToGetFieldException e) {
-            Assert.fail(e.toString());
-        }
 
-        try {
             assertThat(data.getLong("long"), is(-394857989234242545L));
-        } catch (FailedToGetFieldException e) {
-            Assert.fail(e.toString());
-        }
 
-        String objectTest = "{\"shape\":\"circle\", \"size\":50}";
-        objectTest = objectTest.replaceAll("\\s", "");
-        try {
+            String objectTest = "{\"shape\":\"circle\", \"size\":50}";
+            objectTest = objectTest.replaceAll("\\s", "");
             assertThat(data.getObject("object").toString(), is(objectTest));
-        } catch (FailedToGetFieldException e) {
-            Assert.fail(e.toString());
-        }
 
-        try {
             assertThat(data.getString("string"), is("Planet Earth"));
         } catch (FailedToGetFieldException e) {
             Assert.fail(e.toString());
