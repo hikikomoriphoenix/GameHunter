@@ -6,19 +6,30 @@ package marabillas.loremar.gamehunter.apis;
  */
 public abstract class BaseAPI {
     // List of features that may be provided by API
-    protected final int SEARCH = 0x10000000;            // allows keyword input for searching
-    protected final int THUMBNAIL = 0x20000000;         // provides thumbnails in the list
+    protected static final int SEARCH = 0x10000000;            // allows keyword input for searching
+    protected static final int THUMBNAIL = 0x20000000;         // provides thumbnails in the list
 
-    private int configuration = 0x00000000;
+    private int configuration;
+
+    protected BaseAPI() {
+        configuration = configure();
+    }
 
     /**
-     * sets what features are available for this particular API
+     * The extending class must explicitly specify which features are available in the api.
+     * Example:
+     * <pre>
+     * <code>
+     * {@literal @}Override
+     *              protected int configure() {
+     *                  return SEARCH | THUMBNAIL;
+     *              }
+     * </code>
+     * </pre>
      *
-     * @param configuration features separated by the pipe(|) operator
+     * @return a set of features separated by a pipe{|} operator
      */
-    protected void configure(int configuration) {
-        this.configuration = configuration;
-    }
+    protected abstract int configure();
 
     /**
      * Checks if this API allows user to input a keyword to search the database

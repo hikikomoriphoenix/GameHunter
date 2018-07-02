@@ -7,8 +7,9 @@ import static org.junit.Assert.assertThat;
 
 public class BaseAPITest {
     class TestAPI extends BaseAPI {
-        TestAPI() {
-            configure(SEARCH | THUMBNAIL);
+        @Override
+        protected int configure() {
+            return SEARCH | THUMBNAIL;
         }
     }
 
