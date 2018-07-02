@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import marabillas.loremar.gamehunter.parsers.FailedToGetFieldException;
+import marabillas.loremar.gamehunter.parsers.FailedToParseException;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -19,7 +20,12 @@ public class JSONTest {
     public void testGetters() {
         String url = "https://raw.githubusercontent" +
                 ".com/hikikomoriphoenix/some-random-static-files/master/json/simple-all-datatypes.json";
-        JSON data = new JSONParser().parse(url);
+        JSON data = null;
+        try {
+            data = new JSONParser().parse(url);
+        } catch (FailedToParseException e) {
+            Assert.fail(e.toString());
+        }
 
         try {
             assertThat(data.getArray("array").toString(), is("[1,2,3,4,5]"));
@@ -49,7 +55,12 @@ public class JSONTest {
     public void testGettersForFailedToGetFieldExceptions() {
         String url = "https://raw.githubusercontent" +
                 ".com/hikikomoriphoenix/some-random-static-files/master/json/simple-all-datatypes.json";
-        JSON data = new JSONParser().parse(url);
+        JSON data = null;
+        try {
+            data = new JSONParser().parse(url);
+        } catch (FailedToParseException e) {
+            Assert.fail(e.toString());
+        }
 
         String shouldThrow = "Should have thrown FailedToGetFieldException";
 
