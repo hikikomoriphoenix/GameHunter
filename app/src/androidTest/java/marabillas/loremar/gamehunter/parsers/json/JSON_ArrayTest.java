@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import marabillas.loremar.gamehunter.parsers.FailedToGetFieldException;
+import marabillas.loremar.gamehunter.parsers.FailedToParseException;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -19,7 +20,12 @@ public class JSON_ArrayTest {
     public void testGetters() {
         String url = "https://raw.githubusercontent" +
                 ".com/hikikomoriphoenix/some-random-static-files/master/json/arrays-all-data-types.json";
-        JSON json = new JSONParser().parse(url);
+        JSON json = null;
+        try {
+            json = new JSONParser().parse(url);
+        } catch (FailedToParseException e) {
+            Assert.fail(e.toString());
+        }
         try {
             JSON_Array arrays = json.getArray("arrays");
             assertThat(arrays.getArray(0).toString(), is("[1,2,3,4,5]"));
@@ -52,7 +58,11 @@ public class JSON_ArrayTest {
             // try an array containing different types of value
             url = "https://raw.githubusercontent" +
                     ".com/hikikomoriphoenix/some-random-static-files/master/json/arrays-contain-different-types.json";
-            json = new JSONParser().parse(url);
+            try {
+                json = new JSONParser().parse(url);
+            } catch (FailedToParseException e) {
+                Assert.fail(e.toString());
+            }
             assertThat(json.getArray("array").getInt(1), is(25));
 
             assertThat(json.getArray("array").getCount(), is(4));
@@ -65,7 +75,12 @@ public class JSON_ArrayTest {
     public void testJSON_ArrayForFailedToGetFieldException() {
         String url = "https://raw.githubusercontent" +
                 ".com/hikikomoriphoenix/some-random-static-files/master/json/arrays-all-data-types.json";
-        JSON json = new JSONParser().parse(url);
+        JSON json = null;
+        try {
+            json = new JSONParser().parse(url);
+        } catch (FailedToParseException e) {
+            Assert.fail(e.toString());
+        }
 
         String shouldThrow = "Should have thrown FailedToGetFieldException";
 
@@ -79,7 +94,11 @@ public class JSON_ArrayTest {
 
         url = "https://raw.githubusercontent" +
                 ".com/hikikomoriphoenix/some-random-static-files/master/json/arrays-contain-different-types.json";
-        json = new JSONParser().parse(url);
+        try {
+            json = new JSONParser().parse(url);
+        } catch (FailedToParseException e) {
+            Assert.fail(e.toString());
+        }
         try {
             json.getArray("array").getObject(3);
             Assert.fail(shouldThrow);
