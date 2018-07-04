@@ -30,7 +30,7 @@ public class BaseAPITest {
         protected int configure() {
             return SEARCH | THUMBNAIL | DESCRIPTION | RELEASE_DATE | FILTER_BY_PLATFORM |
                     FILTER_BY_GENRE | FILTER_BY_THEME | FILTER_BY_YEAR | FILTER_BY_YEARS |
-                    SORT_BY_ONE_WAY | SORT_BY_TWO_WAYS;
+                    SORT_BY_NO_REVERSE | SORT_BY_REVERSIBLE;
         }
     }
 

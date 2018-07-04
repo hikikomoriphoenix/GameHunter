@@ -20,8 +20,8 @@
 package marabillas.loremar.gamehunter.apis;
 
 /**
- * This class attempts to wrap any available api from any game database website. It is meant to
- * be subclassed for each specific api.
+ * This class attempts to wrap any available API from any website with a video games database. It
+ * is meant to be subclassed for each specific API.
  */
 public abstract class BaseAPI {
     // List of features that may be provided by the API
@@ -34,8 +34,8 @@ public abstract class BaseAPI {
     protected static final int FILTER_BY_THEME = 0x70000000;
     protected static final int FILTER_BY_YEAR = 0x80000000;
     protected static final int FILTER_BY_YEARS = 0x90000000;
-    protected static final int SORT_BY_ONE_WAY = 0x01000000;
-    protected static final int SORT_BY_TWO_WAYS = 0x02000000;
+    protected static final int SORT_BY_NO_REVERSE = 0x01000000;
+    protected static final int SORT_BY_REVERSIBLE = 0x02000000;
 
     private int configuration;
 
@@ -44,7 +44,7 @@ public abstract class BaseAPI {
     }
 
     /**
-     * The extending class must explicitly specify which features are available in the api.
+     * The extending class must explicitly specify which features are available in the API.
      * Example:
      * <pre>
      * <code>
@@ -60,7 +60,7 @@ public abstract class BaseAPI {
     protected abstract int configure();
 
     /**
-     * Checks if the api can provide a brief description of each game in the resulting list
+     * Checks if the API can provide a brief description of each game from the results
      *
      * @return true if brief descriptions is supported
      */
@@ -70,7 +70,7 @@ public abstract class BaseAPI {
 
 
     /**
-     * Checks if the api can show results based on genre
+     * Checks if the API can show results based on a genre
      *
      * @return true if filter by genre is supported
      */
@@ -79,7 +79,7 @@ public abstract class BaseAPI {
     }
 
     /**
-     * Checks if the api can show results based on platform the game is developed for
+     * Checks if the API can show results based on a platform the game is developed for
      *
      * @return true if filter by platform is supported
      */
@@ -88,7 +88,7 @@ public abstract class BaseAPI {
     }
 
     /**
-     * Checks if the api can show results based on theme
+     * Checks if the API can show results based on its theme
      *
      * @return true if filter by theme is supported
      */
@@ -97,7 +97,7 @@ public abstract class BaseAPI {
     }
 
     /**
-     * Checks if the api can show results based on the year the game was released
+     * Checks if the API can show results based on the year the game was released
      *
      * @return true if filter by year is supported
      */
@@ -106,7 +106,8 @@ public abstract class BaseAPI {
     }
 
     /**
-     * Checks if the api can show reults based on a range of release dates
+     * Checks if the API can show results of video games that are released on between a set range
+     * of years
      *
      * @return true if filter by years is supported
      */
@@ -115,7 +116,7 @@ public abstract class BaseAPI {
     }
 
     /**
-     * Checks if the api can provide the release date of each game in the resulting list
+     * Checks if the API can provide the release date of each game from the results
      *
      * @return true if release date is supported
      */
@@ -124,7 +125,7 @@ public abstract class BaseAPI {
     }
 
     /**
-     * Checks if this API allows user to input a keyword to search the database
+     * Checks if this API allows the user to input a keyword to search the database
      *
      * @return true if this feature is available
      */
@@ -133,23 +134,23 @@ public abstract class BaseAPI {
     }
 
     /**
-     * Checks if this API can return sorted results. This feature does not have ascending and
+     * Checks if this API can return ordered results. This feature does not have ascending and
      * descending  options.
      *
      * @return true if this feature is supported
      */
     public boolean hasSortByOneWay() {
-        return (configuration & SORT_BY_ONE_WAY) == SORT_BY_ONE_WAY;
+        return (configuration & SORT_BY_NO_REVERSE) == SORT_BY_NO_REVERSE;
     }
 
     /**
-     * Checks if this API can return sorted results. This feature has ascending and descending
+     * Checks if this API can return ordered results. This feature has ascending and descending
      * options
      *
      * @return true if this feature is supported
      */
     public boolean hasSortByTwoWays() {
-        return (configuration & SORT_BY_TWO_WAYS) == SORT_BY_TWO_WAYS;
+        return (configuration & SORT_BY_REVERSIBLE) == SORT_BY_REVERSIBLE;
     }
 
     /**
