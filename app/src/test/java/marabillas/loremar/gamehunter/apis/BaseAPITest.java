@@ -28,7 +28,9 @@ public class BaseAPITest {
     class TestAPI extends BaseAPI {
         @Override
         protected int configure() {
-            return SEARCH | THUMBNAIL;
+            return SEARCH | THUMBNAIL | DESCRIPTION | RELEASE_DATE | FILTER_BY_PLATFORM |
+                    FILTER_BY_GENRE | FILTER_BY_THEME | FILTER_BY_YEAR | FILTER_BY_YEARS |
+                    SORT_BY_ONE_WAY | SORT_BY_TWO_WAYS;
         }
     }
 
@@ -37,5 +39,14 @@ public class BaseAPITest {
         TestAPI api = new TestAPI();
         assertThat(api.hasSearch(), is(true));
         assertThat(api.hasThumbnails(), is(true));
+        assertThat(api.hasDescription(), is(true));
+        assertThat(api.hasReleaseDate(), is(true));
+        assertThat(api.hasFilterByPlatform(), is(true));
+        assertThat(api.hasFilterByGenre(), is(true));
+        assertThat(api.hasFilterByTheme(), is(true));
+        assertThat(api.hasFilterByYear(), is(true));
+        assertThat(api.hasFilterByYears(), is(true));
+        assertThat(api.hasSortByOneWay(), is(true));
+        assertThat(api.hasSortByTwoWays(), is(true));
     }
 }
