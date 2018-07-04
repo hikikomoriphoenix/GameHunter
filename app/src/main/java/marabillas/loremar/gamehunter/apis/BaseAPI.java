@@ -139,7 +139,7 @@ public abstract class BaseAPI {
      *
      * @return true if this feature is supported
      */
-    public boolean hasSortByOneWay() {
+    public boolean hasSortByNoReverse() {
         return (configuration & SORT_BY_NO_REVERSE) == SORT_BY_NO_REVERSE;
     }
 
@@ -149,12 +149,12 @@ public abstract class BaseAPI {
      *
      * @return true if this feature is supported
      */
-    public boolean hasSortByTwoWays() {
+    public boolean hasSortByReversible() {
         return (configuration & SORT_BY_REVERSIBLE) == SORT_BY_REVERSIBLE;
     }
 
     /**
-     * Checks if this API can provide thumbnails for the returned list of games
+     * Checks if this API can provide a thumbnail for each game in the results
      *
      * @return true if thumbnails can be provided.
      */

@@ -46,7 +46,7 @@ public class BaseAPITest {
         assertThat(api.hasFilterByTheme(), is(true));
         assertThat(api.hasFilterByYear(), is(true));
         assertThat(api.hasFilterByYears(), is(true));
-        assertThat(api.hasSortByOneWay(), is(true));
-        assertThat(api.hasSortByTwoWays(), is(true));
+        assertThat(api.hasSortByNoReverse(), is(true));
+        assertThat(api.hasSortByReversible(), is(true));
     }
 }
