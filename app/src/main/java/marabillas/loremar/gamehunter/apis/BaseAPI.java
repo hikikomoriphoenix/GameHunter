@@ -19,6 +19,13 @@
 
 package marabillas.loremar.gamehunter.apis;
 
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+import java.util.Set;
+
+import marabillas.loremar.gamehunter.framework.ResultsItem;
+
 /**
  * This class attempts to wrap any available API from any website with a video games database. It
  * is meant to be subclassed for each specific API.
@@ -39,6 +46,8 @@ public abstract class BaseAPI {
 
     private int configuration;
 
+    public enum Order {ASCENDING, DESCENDING}
+
     protected BaseAPI() {
         configuration = configure();
     }
@@ -58,6 +67,23 @@ public abstract class BaseAPI {
      * @return a set of features separated by a pipe{|} operator
      */
     protected abstract int configure();
+
+    /**
+     * queries the game database using the given set of options. Extending API class must override
+     * this method.
+     *
+     * @param keyword Results should contain this string
+     * @param fields  what data to return with. Set to null to return only titles
+     * @param filters Results are limited to games associated with these filters
+     * @param sortBy  Results are ordered according to this value
+     * @param order   set to Order.ASCENDING or Order.DESCENDING. Set to null if results are
+     *                non-reversible
+     * @return the results as a list of ResultsItem instances containing the required fields as
+     * set in the fields parameter.
+     */
+    public abstract List<ResultsItem> query(@Nullable String keyword, @Nullable Set<String> fields,
+                                            @Nullable Set<String> filters, @Nullable String sortBy,
+                                            @Nullable Order order);
 
     /**
      * Checks if the API can provide a brief description of each game from the results
