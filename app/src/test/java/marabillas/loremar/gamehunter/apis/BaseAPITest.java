@@ -19,7 +19,14 @@
 
 package marabillas.loremar.gamehunter.apis;
 
+import org.jetbrains.annotations.Nullable;
 import org.junit.Test;
+
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
+
+import marabillas.loremar.gamehunter.framework.ResultsItem;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -27,10 +34,16 @@ import static org.junit.Assert.assertThat;
 public class BaseAPITest {
     class TestAPI extends BaseAPI {
         @Override
-        protected int configure() {
-            return SEARCH | THUMBNAIL | DESCRIPTION | RELEASE_DATE | FILTER_BY_PLATFORM |
-                    FILTER_BY_GENRE | FILTER_BY_THEME | FILTER_BY_YEAR | FILTER_BY_YEARS |
-                    SORT_BY_NO_REVERSE | SORT_BY_REVERSIBLE;
+        protected Set<Feature> configure() {
+            return EnumSet.of(Feature.SEARCH, Feature.THUMBNAIL, Feature.DESCRIPTION, Feature
+                    .RELEASE_DATE, Feature.FILTER_BY_PLATFORM, Feature.FILTER_BY_GENRE, Feature
+                    .FILTER_BY_THEME, Feature.FILTER_BY_YEAR, Feature.FILTER_BY_YEARS, Feature
+                    .SORT_BY_NO_REVERSE, Feature.SORT_BY_REVERSIBLE);
+        }
+
+        @Override
+        public List<ResultsItem> query(@Nullable String keyword, @Nullable Set<String> fields, @Nullable Set<String> filters, @Nullable String sortBy, @Nullable Order order) {
+            return null;
         }
     }
 

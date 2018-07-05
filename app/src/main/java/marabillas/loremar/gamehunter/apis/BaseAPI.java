@@ -31,20 +31,14 @@ import marabillas.loremar.gamehunter.framework.ResultsItem;
  * is meant to be subclassed for each specific API.
  */
 public abstract class BaseAPI {
-    // List of features that may be provided by the API
-    protected static final int SEARCH = 0x10000000;
-    protected static final int THUMBNAIL = 0x20000000;
-    protected static final int DESCRIPTION = 0x30000000;
-    protected static final int RELEASE_DATE = 0x40000000;
-    protected static final int FILTER_BY_PLATFORM = 0x50000000;
-    protected static final int FILTER_BY_GENRE = 0x60000000;
-    protected static final int FILTER_BY_THEME = 0x70000000;
-    protected static final int FILTER_BY_YEAR = 0x80000000;
-    protected static final int FILTER_BY_YEARS = 0x90000000;
-    protected static final int SORT_BY_NO_REVERSE = 0x01000000;
-    protected static final int SORT_BY_REVERSIBLE = 0x02000000;
+    protected enum Feature {
+        SEARCH, THUMBNAIL, DESCRIPTION, RELEASE_DATE, FILTER_BY_PLATFORM,
+        FILTER_BY_GENRE, FILTER_BY_THEME, FILTER_BY_YEAR, FILTER_BY_YEARS, SORT_BY_NO_REVERSE,
+        SORT_BY_REVERSIBLE
+    }
 
-    private int configuration;
+    //private int configuration;
+    private Set<Feature> configuration;
 
     public enum Order {ASCENDING, DESCENDING}
 
@@ -59,14 +53,15 @@ public abstract class BaseAPI {
      * <code>
      * {@literal @}Override
      *              protected int configure() {
-     *                  return SEARCH | THUMBNAIL;
+     *                  return EnumSet.of(Feature.SEARCH, Feature.THUMBNAIL);
      *              }
      * </code>
      * </pre>
      *
-     * @return a set of features separated by a pipe{|} operator
+     * @return a set of features that the extending API can provide. Use EnumSet.of() for this. A
+     * null value means results will only return title.
      */
-    protected abstract int configure();
+    protected abstract Set<Feature> configure();
 
     /**
      * queries the game database using the given set of options. Extending API class must override
@@ -91,7 +86,7 @@ public abstract class BaseAPI {
      * @return true if brief descriptions is supported
      */
     public boolean hasDescription() {
-        return (configuration & DESCRIPTION) == DESCRIPTION;
+        return configuration.contains(Feature.DESCRIPTION);
     }
 
 
@@ -101,7 +96,7 @@ public abstract class BaseAPI {
      * @return true if filter by genre is supported
      */
     public boolean hasFilterByGenre() {
-        return (configuration & FILTER_BY_GENRE) == FILTER_BY_GENRE;
+        return configuration.contains(Feature.FILTER_BY_GENRE);
     }
 
     /**
@@ -110,7 +105,7 @@ public abstract class BaseAPI {
      * @return true if filter by platform is supported
      */
     public boolean hasFilterByPlatform() {
-        return (configuration & FILTER_BY_PLATFORM) == FILTER_BY_PLATFORM;
+        return configuration.contains(Feature.FILTER_BY_PLATFORM);
     }
 
     /**
@@ -119,7 +114,7 @@ public abstract class BaseAPI {
      * @return true if filter by theme is supported
      */
     public boolean hasFilterByTheme() {
-        return (configuration & FILTER_BY_THEME) == FILTER_BY_THEME;
+        return configuration.contains(Feature.FILTER_BY_THEME);
     }
 
     /**
@@ -128,7 +123,7 @@ public abstract class BaseAPI {
      * @return true if filter by year is supported
      */
     public boolean hasFilterByYear() {
-        return (configuration & FILTER_BY_YEAR) == FILTER_BY_YEAR;
+        return configuration.contains(Feature.FILTER_BY_YEAR);
     }
 
     /**
@@ -138,7 +133,7 @@ public abstract class BaseAPI {
      * @return true if filter by years is supported
      */
     public boolean hasFilterByYears() {
-        return (configuration & FILTER_BY_YEARS) == FILTER_BY_YEARS;
+        return configuration.contains(Feature.FILTER_BY_YEARS);
     }
 
     /**
@@ -147,7 +142,7 @@ public abstract class BaseAPI {
      * @return true if release date is supported
      */
     public boolean hasReleaseDate() {
-        return (configuration & RELEASE_DATE) == RELEASE_DATE;
+        return configuration.contains(Feature.RELEASE_DATE);
     }
 
     /**
@@ -156,7 +151,7 @@ public abstract class BaseAPI {
      * @return true if this feature is available
      */
     public boolean hasSearch() {
-        return (configuration & SEARCH) == SEARCH;
+        return configuration.contains(Feature.SEARCH);
     }
 
     /**
@@ -166,7 +161,7 @@ public abstract class BaseAPI {
      * @return true if this feature is supported
      */
     public boolean hasSortByNoReverse() {
-        return (configuration & SORT_BY_NO_REVERSE) == SORT_BY_NO_REVERSE;
+        return configuration.contains(Feature.SORT_BY_NO_REVERSE);
     }
 
     /**
@@ -176,7 +171,7 @@ public abstract class BaseAPI {
      * @return true if this feature is supported
      */
     public boolean hasSortByReversible() {
-        return (configuration & SORT_BY_REVERSIBLE) == SORT_BY_REVERSIBLE;
+        return configuration.contains(Feature.SORT_BY_REVERSIBLE);
     }
 
     /**
@@ -185,6 +180,6 @@ public abstract class BaseAPI {
      * @return true if thumbnails can be provided.
      */
     public boolean hasThumbnails() {
-        return (configuration & THUMBNAIL) == THUMBNAIL;
+        return configuration.contains(Feature.THUMBNAIL);
     }
 }
