@@ -52,7 +52,7 @@ public abstract class BaseAPI {
      * <pre>
      * <code>
      * {@literal @}Override
-     *              protected int configure() {
+     *              protected Set<Feature> configure() {
      *                  return EnumSet.of(Feature.SEARCH, Feature.THUMBNAIL);
      *              }
      * </code>
