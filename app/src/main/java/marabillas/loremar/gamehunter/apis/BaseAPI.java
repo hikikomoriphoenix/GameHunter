@@ -64,6 +64,21 @@ public abstract class BaseAPI {
     protected abstract Set<Feature> configure();
 
     /**
+     * gets all available filters for the specific API
+     *
+     * @return a set of all available filters
+     */
+    public abstract Set<String> getFilters();
+
+    /**
+     * gets all available sorters. Sorters are basically the names of fields used for sorting
+     * results by order.
+     *
+     * @return a set of all available sorters
+     */
+    public abstract Set<String> getSorters();
+
+    /**
      * queries the game database using the given set of options. Extending API class must override
      * this method.
      *
