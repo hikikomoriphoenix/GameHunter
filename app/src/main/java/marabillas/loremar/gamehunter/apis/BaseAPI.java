@@ -32,9 +32,9 @@ import marabillas.loremar.gamehunter.framework.ResultsItem;
  */
 public abstract class BaseAPI {
     protected enum Feature {
-        SEARCH, THUMBNAIL, DESCRIPTION, RELEASE_DATE, FILTER_BY_PLATFORM,
-        FILTER_BY_GENRE, FILTER_BY_THEME, FILTER_BY_YEAR, FILTER_BY_YEARS, SORT_BY_NO_REVERSE,
-        SORT_BY_REVERSIBLE
+        SEARCH, SEARCH_FILTER, SEARCH_SORT, SEARCH_FILTER_SORT, THUMBNAIL, DESCRIPTION,
+        RELEASE_DATE, FILTER_BY_PLATFORM, FILTER_BY_GENRE, FILTER_BY_THEME, FILTER_BY_YEAR,
+        FILTER_BY_YEARS, SORT_BY_NO_REVERSE, SORT_BY_REVERSIBLE
     }
 
     //private int configuration;
@@ -146,12 +146,43 @@ public abstract class BaseAPI {
     }
 
     /**
-     * Checks if this API allows the user to input a keyword to search the database
+     * Checks if this API allows the user to input a keyword to search the database. This feature
+     * has no options for filtering and ordering when querying via keyword.
      *
      * @return true if this feature is available
      */
     public boolean hasSearch() {
         return configuration.contains(Feature.SEARCH);
+    }
+
+    /**
+     * Checks if this API allows the user to input a keyword to search the database. This feature
+     * allows filtering when querying via keyword.
+     *
+     * @return true if this feature is available
+     */
+    public boolean hasSearchFilter() {
+        return configuration.contains(Feature.SEARCH_FILTER);
+    }
+
+    /**
+     * Checks if this API allows the user to input a keyword to search the database. This feature
+     * allows sorting when querying via keyword.
+     *
+     * @return true if this feature is available
+     */
+    public boolean hasSearchSort() {
+        return configuration.contains(Feature.SEARCH_SORT);
+    }
+
+    /**
+     * Checks if this API allows the user to input a keyword to search the database. This feature
+     * allows both filtering and sorting when querying via keyword.
+     *
+     * @return true if this feature is available
+     */
+    public boolean hasSearchFilterSort() {
+        return configuration.contains(Feature.SEARCH_FILTER_SORT);
     }
 
     /**
