@@ -21,6 +21,7 @@ package marabillas.loremar.gamehunter.apis;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
@@ -32,7 +33,9 @@ import marabillas.loremar.gamehunter.framework.ResultsItem;
 public class GiantBomb extends BaseAPI {
     @Override
     protected Set<Feature> configure() {
-        return null;
+        return EnumSet.of(Feature.SEARCH, Feature.THUMBNAIL, Feature.DESCRIPTION, Feature
+                .RELEASE_DATE, Feature.FILTER_BY_PLATFORM, Feature.FILTER_BY_YEAR, Feature
+                .FILTER_BY_YEARS, Feature.SORT_BY_REVERSIBLE);
     }
 
     @Override
