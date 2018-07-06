@@ -43,6 +43,16 @@ public class BaseAPITest {
         }
 
         @Override
+        public Set<String> getFilters() {
+            return null;
+        }
+
+        @Override
+        public Set<String> getSorters() {
+            return null;
+        }
+
+        @Override
         public List<ResultsItem> query(@Nullable String keyword, @Nullable Set<String> fields, @Nullable Set<String> filters, @Nullable String sortBy, @Nullable Order order) {
             return null;
         }
