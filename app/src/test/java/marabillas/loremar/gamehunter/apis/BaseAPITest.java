@@ -35,11 +35,10 @@ public class BaseAPITest {
     class TestAPI extends BaseAPI {
         @Override
         protected Set<Feature> configure() {
-            return EnumSet.of(Feature.SEARCH, Feature.SEARCH_FILTER, Feature.SEARCH_SORT,
-                    Feature.SEARCH_FILTER_SORT, Feature.THUMBNAIL, Feature.DESCRIPTION,
-                    Feature.RELEASE_DATE, Feature.FILTER_BY_PLATFORM, Feature.FILTER_BY_GENRE,
-                    Feature.FILTER_BY_THEME, Feature.FILTER_BY_YEAR, Feature.FILTER_BY_YEARS,
-                    Feature.SORT_BY_NO_REVERSE, Feature.SORT_BY_REVERSIBLE);
+            return EnumSet.of(Feature.SEARCH_FILTER, Feature.SEARCH_SORT, Feature.THUMBNAIL,
+                    Feature.DESCRIPTION, Feature.RELEASE_DATE, Feature.FILTER_BY_PLATFORM,
+                    Feature.FILTER_BY_GENRE, Feature.FILTER_BY_THEME, Feature.FILTER_BY_YEAR,
+                    Feature.FILTER_BY_YEARS, Feature.SORT_BY_REVERSIBLE);
         }
 
         @Override
@@ -64,7 +63,6 @@ public class BaseAPITest {
         assertThat(api.hasSearch(), is(true));
         assertThat(api.hasSearchFilter(), is(true));
         assertThat(api.hasSearchSort(), is(true));
-        assertThat(api.hasSearchFilterSort(), is(true));
         assertThat(api.hasThumbnails(), is(true));
         assertThat(api.hasDescription(), is(true));
         assertThat(api.hasReleaseDate(), is(true));
@@ -73,7 +71,7 @@ public class BaseAPITest {
         assertThat(api.hasFilterByTheme(), is(true));
         assertThat(api.hasFilterByYear(), is(true));
         assertThat(api.hasFilterByYears(), is(true));
-        assertThat(api.hasSortByNoReverse(), is(true));
+        assertThat(api.hasSort(), is(true));
         assertThat(api.hasSortByReversible(), is(true));
     }
 }

@@ -32,9 +32,9 @@ import marabillas.loremar.gamehunter.framework.ResultsItem;
  */
 public abstract class BaseAPI {
     protected enum Feature {
-        SEARCH, SEARCH_FILTER, SEARCH_SORT, SEARCH_FILTER_SORT, THUMBNAIL, DESCRIPTION,
+        SEARCH, SEARCH_FILTER, SEARCH_SORT, THUMBNAIL, DESCRIPTION,
         RELEASE_DATE, FILTER_BY_PLATFORM, FILTER_BY_GENRE, FILTER_BY_THEME, FILTER_BY_YEAR,
-        FILTER_BY_YEARS, SORT_BY_NO_REVERSE, SORT_BY_REVERSIBLE
+        FILTER_BY_YEARS, SORT_BY, SORT_BY_REVERSIBLE
     }
 
     //private int configuration;
@@ -161,18 +161,19 @@ public abstract class BaseAPI {
     }
 
     /**
-     * Checks if this API allows the user to input a keyword to search the database. This feature
-     * has no options for filtering and ordering when querying via keyword.
+     * Checks if this API allows the user to input a keyword to search the database.
      *
      * @return true if this feature is available
      */
     public boolean hasSearch() {
-        return configuration.contains(Feature.SEARCH);
+        return configuration.contains(Feature.SEARCH) || configuration.contains(Feature
+                .SEARCH_FILTER) || configuration.contains(Feature.SEARCH_SORT);
     }
 
     /**
-     * Checks if this API allows the user to input a keyword to search the database. This feature
-     * allows filtering when querying via keyword.
+     * Checks if this API allows filtering when querying via keyword. SEARCH feature is implied
+     * to be available, hence, there is no need to include Feature.SEARCH in configuration when
+     * Feature.SEARCH_FILTER is included.
      *
      * @return true if this feature is available
      */
@@ -181,8 +182,9 @@ public abstract class BaseAPI {
     }
 
     /**
-     * Checks if this API allows the user to input a keyword to search the database. This feature
-     * allows sorting when querying via keyword.
+     * Checks if this API allows sorting when querying via keyword. SEARCH feature is implied to
+     * be available, hence, there is no need to include Feature.SEARCH in configuration when
+     * Feature.SEARCH_SORT is included.
      *
      * @return true if this feature is available
      */
@@ -191,28 +193,18 @@ public abstract class BaseAPI {
     }
 
     /**
-     * Checks if this API allows the user to input a keyword to search the database. This feature
-     * allows both filtering and sorting when querying via keyword.
-     *
-     * @return true if this feature is available
-     */
-    public boolean hasSearchFilterSort() {
-        return configuration.contains(Feature.SEARCH_FILTER_SORT);
-    }
-
-    /**
-     * Checks if this API can return ordered results. This feature does not have ascending and
-     * descending  options.
+     * Checks if this API can return ordered results.
      *
      * @return true if this feature is supported
      */
-    public boolean hasSortByNoReverse() {
-        return configuration.contains(Feature.SORT_BY_NO_REVERSE);
+    public boolean hasSort() {
+        return configuration.contains(Feature.SORT_BY) || configuration.contains(Feature.SORT_BY_REVERSIBLE);
     }
 
     /**
-     * Checks if this API can return ordered results. This feature has ascending and descending
-     * options
+     * Checks if this API supports ascending and descending options when ordering results.
+     * SORT_BY feature is implied to be supported, hence, there is no need to include Feature
+     * .SORT_BY in configuration when Feature.SORT_BY_REVERSIBLE is included.
      *
      * @return true if this feature is supported
      */
