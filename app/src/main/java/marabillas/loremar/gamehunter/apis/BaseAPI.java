@@ -64,19 +64,34 @@ public abstract class BaseAPI {
     protected abstract Set<Feature> configure();
 
     /**
-     * gets all available filters for the specific API
+     * Gets all the game genres that is made available by the API for the user to choose from as
+     * filters.
      *
-     * @return a set of all available filters
+     * @return a set containing the names of available game genres as filters
      */
-    public abstract Set<String> getFilters();
+    public abstract Set<String> getGenreFilters();
 
     /**
-     * gets all available sorters. Sorters are basically the names of fields used for sorting
-     * results by order.
+     * Gets all the gaming platforms that is made available by the API for the user to choose
+     * from as filters.
      *
-     * @return a set of all available sorters
+     * @return a set containing the names of available gaming platforms as filters
      */
-    public abstract Set<String> getSorters();
+    public abstract Set<String> getPlatformFilters();
+
+    /**
+     * Gets all the choices for ordering results.
+     *
+     * @return a set containing all sort by choices.
+     */
+    public abstract Set<String> getSortChoices();
+
+    /**
+     * Gets all the themes that is made available by the API for the user to choose from as filters.
+     *
+     * @return a set containing the names of available themes as filters
+     */
+    public abstract Set<String> getThemeFilters();
 
     /**
      * queries the game database using the given set of options. Extending API class must override
