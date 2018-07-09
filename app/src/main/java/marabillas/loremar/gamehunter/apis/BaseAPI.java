@@ -19,11 +19,10 @@
 
 package marabillas.loremar.gamehunter.apis;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.util.List;
 import java.util.Set;
 
+import marabillas.loremar.gamehunter.framework.Query;
 import marabillas.loremar.gamehunter.framework.ResultsItem;
 
 /**
@@ -79,21 +78,14 @@ public abstract class BaseAPI {
     public abstract Set<String> getSorters();
 
     /**
-     * queries the game database using the given set of options. Extending API class must override
-     * this method.
+     * Queries the game database for games that match the given fields set inside the Query object.
      *
-     * @param keyword Results should contain this string
-     * @param fields  what data to return with. Set to null to return only titles
-     * @param filters Results are limited to games associated with these filters
-     * @param sortBy  Results are ordered according to this value
-     * @param order   set to Order.ASCENDING or Order.DESCENDING. Set to null if results are
-     *                non-reversible
+     * @param query an object that contains fields used as parameters for querying the game
+     *              database.
      * @return the results as a list of ResultsItem instances containing the required fields as
-     * set in the fields parameter.
+     * set in the Query instance passed to the query method.
      */
-    public abstract List<ResultsItem> query(@Nullable String keyword, @Nullable Set<String> fields,
-                                            @Nullable Set<String> filters, @Nullable String sortBy,
-                                            @Nullable Order order);
+    public abstract List<ResultsItem> query(Query query);
 
     /**
      * Checks if the API can provide a brief description of each game from the results
