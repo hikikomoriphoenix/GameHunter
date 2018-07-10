@@ -19,13 +19,13 @@
 
 package marabillas.loremar.gamehunter.apis;
 
-import org.jetbrains.annotations.Nullable;
 import org.junit.Test;
 
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
+import marabillas.loremar.gamehunter.framework.Query;
 import marabillas.loremar.gamehunter.framework.ResultsItem;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -42,17 +42,27 @@ public class BaseAPITest {
         }
 
         @Override
-        public Set<String> getFilters() {
+        public Set<String> getGenreFilters() {
             return null;
         }
 
         @Override
-        public Set<String> getSorters() {
+        public Set<String> getPlatformFilters() {
             return null;
         }
 
         @Override
-        public List<ResultsItem> query(@Nullable String keyword, @Nullable Set<String> fields, @Nullable Set<String> filters, @Nullable String sortBy, @Nullable Order order) {
+        public Set<String> getSortChoices() {
+            return null;
+        }
+
+        @Override
+        public Set<String> getThemeFilters() {
+            return null;
+        }
+
+        @Override
+        public List<ResultsItem> query(Query query) {
             return null;
         }
     }
