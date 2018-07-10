@@ -33,11 +33,13 @@ public class GiantBombTest {
     public void getPlatformFilters() {
         BaseAPI api = new GiantBomb();
         Set<String> filters = null;
+
         try {
             filters = api.getPlatformFilters();
         } catch (BaseAPIGetterFailedToGetException e) {
             Assert.fail(e.getMessage());
         }
+
         assertThat(filters.size(), is(155));
         String[] filtersArray = new String[filters.size()];
         filters.toArray(filtersArray);

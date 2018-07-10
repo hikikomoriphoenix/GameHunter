@@ -60,6 +60,7 @@ public class GiantBomb extends BaseAPI {
     public Set<String> getPlatformFilters() throws BaseAPIGetterFailedToGetException {
         platforms = new TreeMap<>();
         Set<String> platformFilters = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+
         int page = 0;
         while (true) {
             String url = "https://www.giantbomb.com/api/platforms/?api_key=" + KEY +
@@ -70,12 +71,15 @@ public class GiantBomb extends BaseAPI {
             } catch (FailedToParseException e) {
                 throw new BaseAPIGetterFailedToGetException(e);
             }
+
             JSON_Array results;
             try {
                 results = json.getArray("results");
+
                 if (results.getCount() <= 0) {
                     break;
                 }
+
                 for (int i = 0; i < results.getCount(); ++i) {
                     String name;
                     int id;
@@ -86,9 +90,11 @@ public class GiantBomb extends BaseAPI {
                     } catch (FailedToGetFieldException e) {
                         continue;
                     }
+
                     platforms.put(name, id);
                     platformFilters.add(name);
                 }
+
                 if (results.getCount() < 100) {
                     break;
                 }
@@ -97,6 +103,7 @@ public class GiantBomb extends BaseAPI {
             }
             ++page;
         }
+
         return platformFilters;
     }
 
