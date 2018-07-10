@@ -62,7 +62,7 @@ public class GiantBomb extends BaseAPI {
         Set<String> platformFilters = new TreeSet<>();
         int page = 0;
         while (true) {
-            String url = "URL: https://www.giantbomb.com/api/platforms/?api_key=" + KEY +
+            String url = "https://www.giantbomb.com/api/platforms/?api_key=" + KEY +
                     "&format=json&field_list=name,id&offset=" + (page * 100);
             JSON json;
             try {
