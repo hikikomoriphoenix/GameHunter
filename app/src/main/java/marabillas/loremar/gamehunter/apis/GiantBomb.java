@@ -23,6 +23,8 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
+import marabillas.loremar.gamehunter.GameHunterApp;
+import marabillas.loremar.gamehunter.R;
 import marabillas.loremar.gamehunter.framework.Query;
 import marabillas.loremar.gamehunter.framework.ResultsItem;
 
@@ -30,6 +32,9 @@ import marabillas.loremar.gamehunter.framework.ResultsItem;
  *  This class is used for getting access to GiantBomb.com's database using their api.
  */
 public class GiantBomb extends BaseAPI {
+    private final String KEY = GameHunterApp.getInstance().getResources().getString(R.string
+            .giantbomb_api_key);
+
     @Override
     protected Set<Feature> configure() {
         return EnumSet.of(Feature.SEARCH, Feature.THUMBNAIL, Feature.DESCRIPTION, Feature
