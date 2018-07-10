@@ -19,8 +19,37 @@
 
 package marabillas.loremar.gamehunter.apis;
 
+import org.jetbrains.annotations.Nullable;
+
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
+
+import marabillas.loremar.gamehunter.framework.ResultsItem;
+
 /**
  *  This class is used for getting access to GiantBomb.com's database using their api.
  */
-public class GiantBomb {
+public class GiantBomb extends BaseAPI {
+    @Override
+    protected Set<Feature> configure() {
+        return EnumSet.of(Feature.SEARCH, Feature.THUMBNAIL, Feature.DESCRIPTION, Feature
+                .RELEASE_DATE, Feature.FILTER_BY_PLATFORM, Feature.FILTER_BY_YEAR, Feature
+                .FILTER_BY_YEARS, Feature.SORT_BY_REVERSIBLE);
+    }
+
+    @Override
+    public Set<String> getFilters() {
+        return null;
+    }
+
+    @Override
+    public Set<String> getSorters() {
+        return null;
+    }
+
+    @Override
+    public List<ResultsItem> query(@Nullable String keyword, @Nullable Set<String> fields, @Nullable Set<String> filters, @Nullable String sortBy, @Nullable Order order) {
+        return null;
+    }
 }
