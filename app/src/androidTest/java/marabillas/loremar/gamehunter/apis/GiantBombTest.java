@@ -39,7 +39,8 @@ public class GiantBombTest {
             Assert.fail(e.getMessage());
         }
         assertThat(filters.size(), is(155));
-        String[] filtersArray = (String[]) filters.toArray();
+        String[] filtersArray = new String[filters.size()];
+        filters.toArray(filtersArray);
         assertThat(filtersArray[0], is("3DO"));
         assertThat(filtersArray[154], is("ZX Spectrum"));
     }

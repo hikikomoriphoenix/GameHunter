@@ -59,7 +59,7 @@ public class GiantBomb extends BaseAPI {
     @Override
     public Set<String> getPlatformFilters() throws BaseAPIGetterFailedToGetException {
         platforms = new TreeMap<>();
-        Set<String> platformFilters = new TreeSet<>();
+        Set<String> platformFilters = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
         int page = 0;
         while (true) {
             String url = "https://www.giantbomb.com/api/platforms/?api_key=" + KEY +
@@ -80,8 +80,9 @@ public class GiantBomb extends BaseAPI {
                     String name;
                     int id;
                     try {
-                        name = results.getString(i);
-                        id = results.getInt(i);
+                        JSON platform = results.getObject(i);
+                        name = platform.getString("name");
+                        id = platform.getInt("id");
                     } catch (FailedToGetFieldException e) {
                         continue;
                     }
