@@ -19,28 +19,19 @@
 
 package marabillas.loremar.gamehunter.apis;
 
-import org.junit.Assert;
-import org.junit.Test;
+public class BaseAPIGetterFailedToGetException extends Exception {
+    public BaseAPIGetterFailedToGetException() {
+    }
 
-import java.util.Set;
+    public BaseAPIGetterFailedToGetException(String message) {
+        super(message);
+    }
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+    public BaseAPIGetterFailedToGetException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-public class GiantBombTest {
-
-    @Test
-    public void getPlatformFilters() {
-        BaseAPI api = new GiantBomb();
-        Set<String> filters = null;
-        try {
-            filters = api.getPlatformFilters();
-        } catch (BaseAPIGetterFailedToGetException e) {
-            Assert.fail(e.getMessage());
-        }
-        assertThat(filters.size(), is(155));
-        String[] filtersArray = (String[]) filters.toArray();
-        assertThat(filtersArray[0], is("3DO"));
-        assertThat(filtersArray[154], is("ZX Spectrum"));
+    public BaseAPIGetterFailedToGetException(Throwable cause) {
+        super(cause);
     }
 }

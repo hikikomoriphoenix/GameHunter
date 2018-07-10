@@ -57,7 +57,7 @@ public class GiantBomb extends BaseAPI {
     }
 
     @Override
-    public Set<String> getPlatformFilters() {
+    public Set<String> getPlatformFilters() throws BaseAPIGetterFailedToGetException {
         platforms = new TreeMap<>();
         Set<String> platformFilters = new TreeSet<>();
         int page = 0;
@@ -68,7 +68,7 @@ public class GiantBomb extends BaseAPI {
             try {
                 json = new JSONParser().parse(url);
             } catch (FailedToParseException e) {
-                break;
+                throw new BaseAPIGetterFailedToGetException(e);
             }
             JSON_Array results;
             try {

@@ -68,7 +68,7 @@ public abstract class BaseAPI {
      *
      * @return a set containing the names of available game genres as filters
      */
-    public abstract Set<String> getGenreFilters();
+    public abstract Set<String> getGenreFilters() throws BaseAPIGetterFailedToGetException;
 
     /**
      * Gets all the gaming platforms that is made available by the API for the user to choose
@@ -76,21 +76,21 @@ public abstract class BaseAPI {
      *
      * @return a set containing the names of available gaming platforms as filters
      */
-    public abstract Set<String> getPlatformFilters();
+    public abstract Set<String> getPlatformFilters() throws BaseAPIGetterFailedToGetException;
 
     /**
      * Gets all the choices for ordering results.
      *
      * @return a set containing all sort by choices.
      */
-    public abstract Set<String> getSortChoices();
+    public abstract Set<String> getSortChoices() throws BaseAPIGetterFailedToGetException;
 
     /**
      * Gets all the themes that is made available by the API for the user to choose from as filters.
      *
      * @return a set containing the names of available themes as filters
      */
-    public abstract Set<String> getThemeFilters();
+    public abstract Set<String> getThemeFilters() throws BaseAPIGetterFailedToGetException;
 
     /**
      * Queries the game database for games that match the given fields set inside the Query object.
