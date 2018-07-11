@@ -78,48 +78,59 @@ public class Query {
         return order;
     }
 
-    public void setKeyword(String keyword) {
+    public Query setKeyword(String keyword) {
         this.keyword = keyword;
+        return this;
     }
 
-    public void setFields(Set<String> fields) {
+    public Query setFields(Set<String> fields) {
         this.fields = fields;
+        return this;
     }
 
-    public void setPlatformFilters(Set<String> platformFilters) {
+    public Query setPlatformFilters(Set<String> platformFilters) {
         this.platformFilters = platformFilters;
+        return this;
     }
 
-    public void setGenreFilters(Set<String> genreFilters) {
+    public Query setGenreFilters(Set<String> genreFilters) {
         this.genreFilters = genreFilters;
+        return this;
     }
 
-    public void setThemeFilters(Set<String> themeFilters) {
+    public Query setThemeFilters(Set<String> themeFilters) {
         this.themeFilters = themeFilters;
+        return this;
     }
 
-    public void setReleaseYear(int releaseYear) {
+    public Query setReleaseYear(int releaseYear) {
         this.releaseYear = releaseYear;
+        return this;
     }
 
-    public void setReleaseYearsRange(int fromYear, int toYear) {
+    public Query setReleaseYearsRange(int fromYear, int toYear) {
         this.fromYear = fromYear;
         this.toYear = toYear;
+        return this;
     }
 
-    public void setFromYear(int fromYear) {
+    public Query setFromYear(int fromYear) {
         this.fromYear = fromYear;
+        return this;
     }
 
-    public void setToYear(int toYear) {
+    public Query setToYear(int toYear) {
         this.toYear = toYear;
+        return this;
     }
 
-    public void setSort(String sort) {
+    public Query setSort(String sort) {
         this.sort = sort;
+        return this;
     }
 
-    public void setOrder(Order order) {
+    public Query setOrder(Order order) {
         this.order = order;
+        return this;
     }
 }
