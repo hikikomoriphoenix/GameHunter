@@ -20,6 +20,7 @@
 package marabillas.loremar.gamehunter.apis;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Set;
@@ -28,10 +29,15 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class GiantBombTest {
+    private BaseAPI api;
+
+    @Before
+    public void init() {
+        api = new GiantBomb();
+    }
 
     @Test
     public void getPlatformFilters() {
-        BaseAPI api = new GiantBomb();
         Set<String> filters = null;
 
         try {
@@ -45,5 +51,22 @@ public class GiantBombTest {
         filters.toArray(filtersArray);
         assertThat(filtersArray[0], is("3DO"));
         assertThat(filtersArray[154], is("ZX Spectrum"));
+    }
+
+    @Test
+    public void getSortChoices() {
+        Set<String> choices = null;
+
+        try {
+            choices = api.getSortChoices();
+        } catch (BaseAPIGetterFailedToGetException e) {
+            Assert.fail(e.getMessage());
+        }
+
+        assertThat(choices.size(), is(7));
+        String[] choicesArray = new String[choices.size()];
+        choices.toArray(choicesArray);
+        assertThat(choicesArray[0], is("Date added"));
+        assertThat(choicesArray[6], is("Original game release date"));
     }
 }

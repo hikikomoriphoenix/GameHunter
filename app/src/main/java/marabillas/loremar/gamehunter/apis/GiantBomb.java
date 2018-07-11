@@ -19,6 +19,7 @@
 
 package marabillas.loremar.gamehunter.apis;
 
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
@@ -109,7 +110,10 @@ public class GiantBomb extends BaseAPI {
 
     @Override
     public Set<String> getSortChoices() {
-        return null;
+        Set<String> choices = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        Collections.addAll(choices, GameHunterApp.getInstance().getResources().getStringArray(R
+                .array.apis_giantbomb_sort_choices));
+        return choices;
     }
 
     @Override
