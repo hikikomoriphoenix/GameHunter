@@ -32,44 +32,43 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class BaseAPITest {
-    class TestAPI extends BaseAPI {
-        @Override
-        protected Set<Feature> configure() {
-            return EnumSet.of(Feature.SEARCH_FILTER, Feature.SEARCH_SORT, Feature.THUMBNAIL,
-                    Feature.DESCRIPTION, Feature.RELEASE_DATE, Feature.FILTER_BY_PLATFORM,
-                    Feature.FILTER_BY_GENRE, Feature.FILTER_BY_THEME, Feature.FILTER_BY_YEAR,
-                    Feature.FILTER_BY_YEARS, Feature.SORT_BY_REVERSIBLE);
-        }
-
-        @Override
-        public Set<String> getGenreFilters() {
-            return null;
-        }
-
-        @Override
-        public Set<String> getPlatformFilters() {
-            return null;
-        }
-
-        @Override
-        public Set<String> getSortChoices() {
-            return null;
-        }
-
-        @Override
-        public Set<String> getThemeFilters() {
-            return null;
-        }
-
-        @Override
-        public List<ResultsItem> query(Query query) {
-            return null;
-        }
-    }
 
     @Test
     public void testConfigurations() {
-        TestAPI api = new TestAPI();
+        BaseAPI api = new BaseAPI() {
+            @Override
+            protected Set<Feature> configure() {
+                return EnumSet.of(Feature.SEARCH_FILTER, Feature.SEARCH_SORT, Feature.THUMBNAIL,
+                        Feature.DESCRIPTION, Feature.RELEASE_DATE, Feature.FILTER_BY_PLATFORM,
+                        Feature.FILTER_BY_GENRE, Feature.FILTER_BY_THEME, Feature.FILTER_BY_YEAR,
+                        Feature.FILTER_BY_YEARS, Feature.SORT_BY_REVERSIBLE);
+            }
+
+            @Override
+            public Set<String> getGenreFilters() {
+                return null;
+            }
+
+            @Override
+            public Set<String> getPlatformFilters() {
+                return null;
+            }
+
+            @Override
+            public Set<String> getSortChoices() {
+                return null;
+            }
+
+            @Override
+            public Set<String> getThemeFilters() {
+                return null;
+            }
+
+            @Override
+            public List<ResultsItem> query(Query query) {
+                return null;
+            }
+        };
         assertThat(api.hasSearch(), is(true));
         assertThat(api.hasSearchFilter(), is(true));
         assertThat(api.hasSearchSort(), is(true));
@@ -83,5 +82,43 @@ public class BaseAPITest {
         assertThat(api.hasFilterByYears(), is(true));
         assertThat(api.hasSort(), is(true));
         assertThat(api.hasSortByReversible(), is(true));
+    }
+
+    @Test
+    public void testConfigurationsSanity() {
+        BaseAPI api = new BaseAPI() {
+            @Override
+            protected Set<Feature> configure() {
+                return EnumSet.of(Feature.SEARCH_FILTER, Feature.SEARCH_SORT);
+            }
+
+            @Override
+            public Set<String> getGenreFilters() {
+                return null;
+            }
+
+            @Override
+            public Set<String> getPlatformFilters() {
+                return null;
+            }
+
+            @Override
+            public Set<String> getSortChoices() {
+                return null;
+            }
+
+            @Override
+            public Set<String> getThemeFilters() {
+                return null;
+            }
+
+            @Override
+            public List<ResultsItem> query(Query query) {
+                return null;
+            }
+        };
+
+        assertThat(api.hasSearchFilter(), is(false));
+        assertThat(api.hasSearchSort(), is(false));
     }
 }

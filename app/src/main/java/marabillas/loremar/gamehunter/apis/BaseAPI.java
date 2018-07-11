@@ -43,6 +43,15 @@ public abstract class BaseAPI {
 
     protected BaseAPI() {
         configuration = configure();
+
+        if (hasSearchFilter() && !hasFilterByGenre() && !hasFilterByPlatform() &&
+                !hasFilterByTheme() && !hasFilterByYear() && !hasFilterByYears()) {
+            configuration.remove(Feature.SEARCH_FILTER);
+        }
+
+        if (hasSearchSort() && !hasSort() && !hasSortByReversible()) {
+            configuration.remove(Feature.SEARCH_SORT);
+        }
     }
 
     /**
