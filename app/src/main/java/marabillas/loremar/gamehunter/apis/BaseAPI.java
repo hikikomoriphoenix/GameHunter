@@ -100,7 +100,7 @@ public abstract class BaseAPI {
      * @return the results as a list of ResultsItem instances containing the required fields as
      * set in the Query instance passed to the query method.
      */
-    public abstract List<ResultsItem> query(Query query);
+    public abstract List<ResultsItem> query(Query query) throws BaseAPIFailedQueryException;
 
     /**
      * Checks if the API can provide a brief description of each game from the results

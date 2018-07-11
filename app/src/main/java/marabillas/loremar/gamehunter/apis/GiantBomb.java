@@ -19,6 +19,7 @@
 
 package marabillas.loremar.gamehunter.apis;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
@@ -122,7 +123,92 @@ public class GiantBomb extends BaseAPI {
     }
 
     @Override
-    public List<ResultsItem> query(Query query) {
+    public List<ResultsItem> query(Query query) throws BaseAPIFailedQueryException {
+        if (query.getKeyword() != null) { // if the query is to search using keyword
+            String keyword = query.getKeyword();
+            String url = "https://www.giantbomb.com/api/search/?api_key=" + KEY +
+                    "&format=json&resources=game&query=" + keyword + "&field_list=name,image," +
+                    "deck,expected_release_year,original_release_date,guid";
+
+            JSON json;
+            try {
+                json = new JSONParser().parse(url);
+            } catch (FailedToParseException e) {
+                throw new BaseAPIFailedQueryException(e);
+            }
+
+            List<ResultsItem> results = new ArrayList<>();
+            JSON_Array resultsArray;
+            try {
+                resultsArray = json.getArray("results");
+            } catch (FailedToGetFieldException e) {
+                throw new BaseAPIFailedQueryException(e);
+            }
+            for (int i = 0; i < resultsArray.getCount(); ++i) {
+                JSON result;
+                try {
+                    result = resultsArray.getObject(i);
+                } catch (FailedToGetFieldException e) {
+                    continue;
+                }
+
+                ResultsItem resultsItem = new ResultsItem();
+
+                try {
+                    resultsItem.title = result.getString("name");
+                } catch (FailedToGetFieldException e) {
+                    resultsItem.title = null;
+                }
+
+                try {
+                    resultsItem.thumbnailURL = result.getObject("image").getString("thumb_url");
+                } catch (FailedToGetFieldException e) {
+                    resultsItem.thumbnailURL = null;
+                }
+
+                try {
+                    resultsItem.description = result.getString("deck");
+                } catch (FailedToGetFieldException e) {
+                    resultsItem.description = null;
+                }
+
+                String originalReleaseDate;
+                String expectedReleaseYear;
+                try {
+                    expectedReleaseYear = result.getString("expected_release_year");
+                } catch (FailedToGetFieldException e) {
+                    expectedReleaseYear = null;
+                }
+                if (expectedReleaseYear == null) {
+                    try {
+                        originalReleaseDate = result.getString("original_release_date");
+                    } catch (FailedToGetFieldException e) {
+                        originalReleaseDate = null;
+                    }
+                } else {
+                    originalReleaseDate = null;
+                }
+                if (originalReleaseDate != null) {
+                    resultsItem.releaseDate = originalReleaseDate;
+                } else if (expectedReleaseYear != null) {
+                    resultsItem.releaseDate = expectedReleaseYear;
+                } else {
+                    resultsItem.releaseDate = null;
+                }
+
+                try {
+                    resultsItem.id = result.getString("guid");
+                } catch (FailedToGetFieldException e) {
+                    resultsItem.id = null;
+                }
+
+                results.add(resultsItem);
+            }
+
+            return results;
+        } else { // if the query is to get a list of games that match with filters.
+
+        }
         return null;
     }
 }
