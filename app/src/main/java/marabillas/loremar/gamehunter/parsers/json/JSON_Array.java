@@ -92,7 +92,12 @@ public class JSON_Array {
 
     public String getString(int index) throws FailedToGetFieldException {
         try {
-            return array.getString(index);
+            String string = array.getString(index);
+            if (string.equals("null")) {
+                return null;
+            } else {
+                return string;
+            }
         } catch (JSONException e) {
             throw new FailedToGetFieldException(e);
         }

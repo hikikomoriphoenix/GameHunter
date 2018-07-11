@@ -91,7 +91,12 @@ public class JSON {
 
     public String getString(String name) throws FailedToGetFieldException {
         try {
-            return json.getString(name);
+            String string = json.getString(name);
+            if (string.equals("null")) {
+                return null;
+            } else {
+                return string;
+            }
         } catch (JSONException e) {
             throw new FailedToGetFieldException(e);
         }
