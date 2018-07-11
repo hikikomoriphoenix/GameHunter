@@ -23,9 +23,15 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
+import marabillas.loremar.gamehunter.framework.Query;
+import marabillas.loremar.gamehunter.framework.ResultsItem;
+
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 public class GiantBombTest {
@@ -68,5 +74,23 @@ public class GiantBombTest {
         choices.toArray(choicesArray);
         assertThat(choicesArray[0], is("Date added"));
         assertThat(choicesArray[6], is("Original game release date"));
+    }
+
+    @Test
+    public void query() {
+        Query query = new Query();
+        query.setKeyword("robot");
+        BaseAPI api = new GiantBomb();
+        List<ResultsItem> results = new ArrayList<>();
+        try {
+            results = api.query(query);
+        } catch (BaseAPIFailedQueryException e) {
+            Assert.fail(e.getMessage());
+        }
+        assertThat(results.get(0).title, is("Robot"));
+        assertThat(results.get(0).thumbnailURL, is("https://www.giantbomb.com/api/image/scale_avatar/2853576-gblogo.png"));
+        assertThat(results.get(0).description, is(nullValue()));
+        assertThat(results.get(0).releaseDate, is(nullValue()));
+        assertThat(results.get(0).id, is("3030-3840"));
     }
 }
