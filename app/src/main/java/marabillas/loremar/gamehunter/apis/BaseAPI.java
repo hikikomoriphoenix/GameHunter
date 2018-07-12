@@ -30,19 +30,93 @@ import marabillas.loremar.gamehunter.framework.ResultsItem;
  * is meant to be subclassed for each specific API.
  */
 public abstract class BaseAPI {
-    protected enum Feature {
-        SEARCH, SEARCH_FILTER, SEARCH_SORT, THUMBNAIL, DESCRIPTION,
-        RELEASE_DATE, FILTER_BY_PLATFORM, FILTER_BY_GENRE, FILTER_BY_THEME, FILTER_BY_YEAR,
-        FILTER_BY_YEARS, SORT_BY, SORT_BY_REVERSIBLE
-    }
-
-    //private int configuration;
     private Set<Feature> configuration;
 
-    public enum Order {ASCENDING, DESCENDING}
+    protected enum Feature {
+        /**
+         * This feature allows the you to search the game database using a keyword
+         */
+        SEARCH,
+        /**
+         * This feature allows filtering when querying via keyword. SEARCH feature is implied
+         * to be supported, hence, there is no need to include Feature.SEARCH in configuration when
+         * Feature.SEARCH_FILTER is included.
+         */
+        SEARCH_FILTER,
+        /**
+         * This feature allows sorting when querying via keyword. SEARCH feature is implied to
+         * be supported, hence, there is no need to include Feature.SEARCH in configuration when
+         * Feature.SEARCH_SORT is included.
+         */
+        SEARCH_SORT,
+        /**
+         * This feature means the API can provide thumbnails for each game in the results
+         */
+        THUMBNAIL,
+        /**
+         * This feature means the API can provide a brief description of each game in the results
+         */
+        DESCRIPTION,
+        /**
+         * This feature means the API can provide the release date of each game in the results
+         */
+        RELEASE_DATE,
+        /**
+         * This feature means the API can show results based on the platform the game is
+         * developed for.
+         */
+        FILTER_BY_PLATFORM,
+        /**
+         * This feature means the API can show results based on genre
+         */
+        FILTER_BY_GENRE,
+        /**
+         * This feature means the API can show results based on theme
+         */
+        FILTER_BY_THEME,
+        /**
+         * This feature means the API can show results based on the year the game was released
+         */
+        FILTER_BY_YEAR,
+        /**
+         * This feature means the API can show results of video games that are released on
+         * between a set of range of years.
+         */
+        FILTER_BY_YEARS,
+        /**
+         * This feature means the API can show ordered results
+         */
+        SORT_BY,
+        /**
+         * This feature supports ascending and descending options when ordering results. SORT_BY
+         * feature is implied to be supported, hence, there is no need to include Feature.SORT_BY
+         * in configuration when Feature.SORT_BY_REVERSIBLE is included.
+         */
+        SORT_BY_REVERSIBLE,
+        /**
+         * This feature means this API returns a partial amount of the total results as a page.
+         * You have to indicate which page you want to retrieve for partial results.
+         */
+        PAGES,
+        /**
+         * This feature allows you to indicate how many results per page to show. PAGES feature
+         * is implied to be supported, hence, there is no need to include Feature
+         * .RESULTS_PER_PAGE in configuration when Feature.RESULTS_PER_PAGE is included.
+         */
+        RESULTS_PER_PAGE
+    }
 
     protected BaseAPI() {
         configuration = configure();
+
+        if (hasSearchFilter() && !hasFilterByGenre() && !hasFilterByPlatform() &&
+                !hasFilterByTheme() && !hasFilterByYear() && !hasFilterByYears()) {
+            configuration.remove(Feature.SEARCH_FILTER);
+        }
+
+        if (hasSearchSort() && !hasSort() && !hasSortByReversible()) {
+            configuration.remove(Feature.SEARCH_SORT);
+        }
     }
 
     /**
@@ -103,9 +177,9 @@ public abstract class BaseAPI {
     public abstract List<ResultsItem> query(Query query) throws BaseAPIFailedQueryException;
 
     /**
-     * Checks if the API can provide a brief description of each game from the results
+     * Checks if {@link Feature#DESCRIPTION} is supported.
      *
-     * @return true if brief descriptions is supported
+     * @return true if supported, false if not
      */
     public boolean hasDescription() {
         return configuration.contains(Feature.DESCRIPTION);
@@ -113,64 +187,81 @@ public abstract class BaseAPI {
 
 
     /**
-     * Checks if the API can show results based on a genre
+     * Checks if {@link Feature#FILTER_BY_GENRE} is supported
      *
-     * @return true if filter by genre is supported
+     * @return true if supported, false if not
      */
     public boolean hasFilterByGenre() {
         return configuration.contains(Feature.FILTER_BY_GENRE);
     }
 
     /**
-     * Checks if the API can show results based on a platform the game is developed for
+     * Checks if {@link Feature#FILTER_BY_PLATFORM} is supported
      *
-     * @return true if filter by platform is supported
+     * @return true if supported, false if not
      */
     public boolean hasFilterByPlatform() {
         return configuration.contains(Feature.FILTER_BY_PLATFORM);
     }
 
     /**
-     * Checks if the API can show results based on its theme
+     * Checks if {@link Feature#FILTER_BY_THEME} is supported
      *
-     * @return true if filter by theme is supported
+     * @return true if supported, false if not
      */
     public boolean hasFilterByTheme() {
         return configuration.contains(Feature.FILTER_BY_THEME);
     }
 
     /**
-     * Checks if the API can show results based on the year the game was released
+     * Checks if {@link Feature#FILTER_BY_YEAR} is supported
      *
-     * @return true if filter by year is supported
+     * @return true if supported, false if not
      */
     public boolean hasFilterByYear() {
         return configuration.contains(Feature.FILTER_BY_YEAR);
     }
 
     /**
-     * Checks if the API can show results of video games that are released on between a set range
-     * of years
+     * Checks if {@link Feature#FILTER_BY_YEARS} is supported
      *
-     * @return true if filter by years is supported
+     * @return true if supported, false if not
      */
     public boolean hasFilterByYears() {
         return configuration.contains(Feature.FILTER_BY_YEARS);
     }
 
     /**
-     * Checks if the API can provide the release date of each game from the results
+     * Checks if {@link Feature#PAGES} is supported
      *
-     * @return true if release date is supported
+     * @return true if supported, false if not
+     */
+    public boolean hasPages() {
+        return configuration.contains(Feature.PAGES) || configuration.contains(Feature.RESULTS_PER_PAGE);
+    }
+
+    /**
+     * Checks if {@link Feature#RELEASE_DATE} is supported
+     *
+     * @return true if supported, false if not
      */
     public boolean hasReleaseDate() {
         return configuration.contains(Feature.RELEASE_DATE);
     }
 
     /**
-     * Checks if this API allows the user to input a keyword to search the database.
+     * Checks if {@link Feature#RESULTS_PER_PAGE} is supported
      *
-     * @return true if this feature is available
+     * @return true if supported, false if not
+     */
+    public boolean hasResultsPerPage() {
+        return configuration.contains(Feature.RESULTS_PER_PAGE);
+    }
+
+    /**
+     * Checks if {@link Feature#SEARCH} is supported
+     *
+     * @return true if supported, false if not
      */
     public boolean hasSearch() {
         return configuration.contains(Feature.SEARCH) || configuration.contains(Feature
@@ -178,51 +269,45 @@ public abstract class BaseAPI {
     }
 
     /**
-     * Checks if this API allows filtering when querying via keyword. SEARCH feature is implied
-     * to be available, hence, there is no need to include Feature.SEARCH in configuration when
-     * Feature.SEARCH_FILTER is included.
+     * Checks if {@link Feature#SEARCH_FILTER} is supported
      *
-     * @return true if this feature is available
+     * @return true if supported, false if not
      */
     public boolean hasSearchFilter() {
         return configuration.contains(Feature.SEARCH_FILTER);
     }
 
     /**
-     * Checks if this API allows sorting when querying via keyword. SEARCH feature is implied to
-     * be available, hence, there is no need to include Feature.SEARCH in configuration when
-     * Feature.SEARCH_SORT is included.
+     * Checks if {@link Feature#SEARCH_SORT} is supported
      *
-     * @return true if this feature is available
+     * @return true if supported, false if not
      */
     public boolean hasSearchSort() {
         return configuration.contains(Feature.SEARCH_SORT);
     }
 
     /**
-     * Checks if this API can return ordered results.
+     * Checks if {@link Feature#SORT_BY} is supported
      *
-     * @return true if this feature is supported
+     * @return true if supported, false if not
      */
     public boolean hasSort() {
         return configuration.contains(Feature.SORT_BY) || configuration.contains(Feature.SORT_BY_REVERSIBLE);
     }
 
     /**
-     * Checks if this API supports ascending and descending options when ordering results.
-     * SORT_BY feature is implied to be supported, hence, there is no need to include Feature
-     * .SORT_BY in configuration when Feature.SORT_BY_REVERSIBLE is included.
+     * Checks if {@link Feature#SORT_BY_REVERSIBLE} is supported
      *
-     * @return true if this feature is supported
+     * @return true if supported, false if not
      */
     public boolean hasSortByReversible() {
         return configuration.contains(Feature.SORT_BY_REVERSIBLE);
     }
 
     /**
-     * Checks if this API can provide a thumbnail for each game in the results
+     * Checks if {@link Feature#THUMBNAIL} is supported
      *
-     * @return true if thumbnails can be provided.
+     * @return true if supported, false if not
      */
     public boolean hasThumbnails() {
         return configuration.contains(Feature.THUMBNAIL);
