@@ -124,7 +124,14 @@ public class GiantBomb extends BaseAPI {
 
     @Override
     public List<ResultsItem> query(Query query) throws BaseAPIFailedQueryException {
-        if (query.getKeyword() != null) { // if the query is to search using keyword
+        /*
+         * There are two ways to get a list of games from GiantBomb's database using their API.
+         * One is to use the 'search' resource and pass a keyword in the 'query' parameter. This
+         * will return a response containing games relevant to this keyword. The other one is to
+         * use the 'game' resource. This provides the ability to use filters or to sort results
+         * in ascending or descending order based on a selected field.
+         */
+        if (query.getKeyword() != null) {
             String keyword = query.getKeyword();
             String url = "https://www.giantbomb.com/api/search/?api_key=" + KEY +
                     "&format=json&resources=game&query=" + keyword + "&field_list=name,image," +
@@ -206,7 +213,7 @@ public class GiantBomb extends BaseAPI {
             }
 
             return results;
-        } else { // if the query is to get a list of games that match with filters.
+        } else {
 
         }
         return null;
