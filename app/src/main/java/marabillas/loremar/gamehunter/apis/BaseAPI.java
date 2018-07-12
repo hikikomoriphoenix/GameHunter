@@ -240,7 +240,7 @@ public abstract class BaseAPI {
      * @return true if supported, false if not
      */
     public boolean hasPages() {
-        return configuration.contains(Feature.PAGES);
+        return configuration.contains(Feature.PAGES) || configuration.contains(Feature.RESULTS_PER_PAGE);
     }
 
     /**
