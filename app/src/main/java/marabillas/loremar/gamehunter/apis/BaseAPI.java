@@ -34,89 +34,162 @@ public abstract class BaseAPI {
 
     protected enum Feature {
         /**
-         * This feature allows the you to search the game database using a keyword
-         */
-        SEARCH,
-        /**
-         * This feature allows filtering when querying via keyword. SEARCH feature is implied
-         * to be supported, hence, there is no need to include Feature.SEARCH in configuration when
-         * Feature.SEARCH_FILTER is included.
-         */
-        SEARCH_FILTER,
-        /**
-         * This feature allows sorting when querying via keyword. SEARCH feature is implied to
-         * be supported, hence, there is no need to include Feature.SEARCH in configuration when
-         * Feature.SEARCH_SORT is included.
-         */
-        SEARCH_SORT,
-        /**
          * This feature means the API can provide thumbnails for each game in the results
          */
         THUMBNAIL,
+
         /**
          * This feature means the API can provide a brief description of each game in the results
          */
         DESCRIPTION,
+
         /**
          * This feature means the API can provide the release date of each game in the results
          */
         RELEASE_DATE,
+
         /**
          * This feature means the API can show results based on the platform the game is
          * developed for.
          */
         FILTER_BY_PLATFORM,
+
         /**
          * This feature means the API can show results based on genre
          */
         FILTER_BY_GENRE,
+
         /**
          * This feature means the API can show results based on theme
          */
         FILTER_BY_THEME,
+
         /**
          * This feature means the API can show results based on the year the game was released
          */
         FILTER_BY_YEAR,
+
         /**
          * This feature means the API can show results of video games that are released on
          * between a set of range of years.
          */
         FILTER_BY_YEARS,
+
         /**
          * This feature means the API can show ordered results
          */
         SORT_BY,
+
         /**
          * This feature supports ascending and descending options when ordering results. SORT_BY
          * feature is implied to be supported, hence, there is no need to include Feature.SORT_BY
          * in configuration when Feature.SORT_BY_REVERSIBLE is included.
          */
         SORT_BY_REVERSIBLE,
+
         /**
          * This feature means this API returns a partial amount of the total results as a page.
          * You have to indicate which page you want to retrieve for partial results.
          */
         PAGES,
+
         /**
          * This feature allows you to indicate how many results per page to show. PAGES feature
          * is implied to be supported, hence, there is no need to include Feature
          * .RESULTS_PER_PAGE in configuration when Feature.RESULTS_PER_PAGE is included.
          */
-        RESULTS_PER_PAGE
+        RESULTS_PER_PAGE,
+
+        /**
+         * This feature allows you to search the game database using a keyword.
+         */
+        SEARCH,
+
+        /**
+         * This feature means the API can provide thumbnails for search results. SEARCH feature
+         * is implied to be supported, hence, there is no need to include Feature.SEARCH in
+         * configuration when Feature.SEARCH_THUMBNAIL is included.
+         */
+        SEARCH_THUMBNAIL,
+
+        /**
+         * This feature means the API can provide a brief description for each search result.
+         * SEARCH feature is implied to be supported, hence, there is no need to include Feature
+         * .SEARCH in configuration when Feature.SEARCH_DESCRIPTION is included.
+         */
+        SEARCH_DESCRIPTION,
+
+        /**
+         * This feature mean the API can provide the release date of each game in the search
+         * results. SEARCH feature is implied to be supported, hence, there is no need to include
+         * Feature.SEARCH in configuration when Feature.SEARCH_RELEASE_DATE is included.
+         */
+        SEARCH_RELEASE_DATE,
+
+        /**
+         * This feature means the API can show results based on the platform the game is
+         * developed for. SEARCH feature is implied to be supported, hence, there is no need to include
+         * Feature.SEARCH in configuration
+         */
+        SEARCH_FILTER_BY_PLATFORM,
+
+        /**
+         * This feature means the API can show results based on genre. SEARCH feature is implied
+         * to be supported, hence, there is no need to include Feature.SEARCH in configuration.
+         */
+        SEARCH_FILTER_BY_GENRE,
+
+        /**
+         * This feature means the API can show results based on theme. SEARCH feature is implied
+         * to be supported, hence, there is no need to include Feature.SEARCH in configuration.
+         */
+        SEARCH_FILTER_BY_THEME,
+
+        /**
+         * This feature means the API can show results based on the year the game was released.
+         * SEARCH feature is implied to be supported, hence, there is no need to include Feature
+         * .SEARCH in configuration.
+         */
+        SEARCH_FILTER_BY_YEAR,
+
+        /**
+         * This feature means the API can show results of video games that are released on
+         * between a set of range of years. SEARCH feature is implied to be supported, hence,
+         * there is no need to include Feature.SEARCH in configuration.
+         */
+        SEARCH_FILTER_BY_YEARS,
+
+        /**
+         * This feature means the API can show ordered results. SEARCH feature is implied to be
+         * supported, hence, there is no need to include Feature.SEARCH in configuration.
+         */
+        SEARCH_SORT_BY,
+
+        /**
+         * This feature supports ascending and descending options when ordering results. SORT_BY
+         * and SEARCH features are implied to be supported, hence, there is no need to include
+         * Feature.SORT_BY or Feature.SEARCH in configuration when Feature.SEARCH_SORT_BY_REVERSIBLE
+         * is included.
+         */
+        SEARCH_SORT_BY_REVERSIBLE,
+
+        /**
+         * This feature means this API returns a partial amount of the total search results as a
+         * page. You have to indicate which page you want to retrieve for partial results.
+         */
+        SEARCH_PAGES,
+
+        /**
+         * This feature allows you to indicate how many results per page to show. PAGES feature
+         * and SEARCH feature are implied to be supported, hence, there is no need to include
+         * Feature.PAGES or Feature.SEARCH in configuration when Feature.SEARCH_RESULTS_PER_PAGE is
+         * included.
+         */
+        SEARCH_RESULTS_PER_PAGE
     }
 
     protected BaseAPI() {
         configuration = configure();
-
-        if (hasSearchFilter() && !hasFilterByGenre() && !hasFilterByPlatform() &&
-                !hasFilterByTheme() && !hasFilterByYear() && !hasFilterByYears()) {
-            configuration.remove(Feature.SEARCH_FILTER);
-        }
-
-        if (hasSearchSort() && !hasSort() && !hasSortByReversible()) {
-            configuration.remove(Feature.SEARCH_SORT);
-        }
     }
 
     /**
@@ -265,25 +338,125 @@ public abstract class BaseAPI {
      */
     public boolean hasSearch() {
         return configuration.contains(Feature.SEARCH) || configuration.contains(Feature
-                .SEARCH_FILTER) || configuration.contains(Feature.SEARCH_SORT);
+                .SEARCH_THUMBNAIL) || configuration.contains(Feature.SEARCH_DESCRIPTION) ||
+                configuration.contains(Feature.SEARCH_RELEASE_DATE) || configuration.contains
+                (Feature.SEARCH_FILTER_BY_PLATFORM) || configuration.contains(Feature
+                .SEARCH_FILTER_BY_GENRE) || configuration.contains(Feature
+                .SEARCH_FILTER_BY_THEME) || configuration.contains(Feature.SEARCH_FILTER_BY_YEAR) ||
+                configuration.contains(Feature.SEARCH_FILTER_BY_YEARS) || configuration.contains
+                (Feature.SEARCH_SORT_BY) || configuration.contains(Feature
+                .SEARCH_SORT_BY_REVERSIBLE) || configuration.contains(Feature.SEARCH_PAGES) ||
+                configuration.contains(Feature.SEARCH_RESULTS_PER_PAGE);
     }
 
     /**
-     * Checks if {@link Feature#SEARCH_FILTER} is supported
+     * Checks if {@link Feature#SEARCH_DESCRIPTION} is supported
      *
      * @return true if supported, false if not
      */
-    public boolean hasSearchFilter() {
-        return configuration.contains(Feature.SEARCH_FILTER);
+    public boolean hasSearchDescription() {
+        return configuration.contains(Feature.SEARCH_DESCRIPTION);
     }
 
     /**
-     * Checks if {@link Feature#SEARCH_SORT} is supported
+     * Checks if {@link Feature#SEARCH_FILTER_BY_GENRE} is supported
      *
      * @return true if supported, false if not
      */
-    public boolean hasSearchSort() {
-        return configuration.contains(Feature.SEARCH_SORT);
+    public boolean hasSearchFilterByGenre() {
+        return configuration.contains(Feature.SEARCH_FILTER_BY_GENRE);
+    }
+
+    /**
+     * Checks if {@link Feature#SEARCH_FILTER_BY_PLATFORM} is supported
+     *
+     * @return true if supported, false if not
+     */
+    public boolean hasSearchFilterByPlatform() {
+        return configuration.contains(Feature.SEARCH_FILTER_BY_PLATFORM);
+    }
+
+    /**
+     * Checks if {@link Feature#SEARCH_FILTER_BY_THEME)} is supported
+     *
+     * @return true if supported, false if not
+     */
+    public boolean hasSearhFilterByTheme() {
+        return configuration.contains(Feature.SEARCH_FILTER_BY_THEME);
+    }
+
+    /**
+     * Checks if {@link Feature#SEARCH_FILTER_BY_YEAR} is supported
+     *
+     * @return true if supported, false if not
+     */
+    public boolean hasSearchFilterByYear() {
+        return configuration.contains(Feature.SEARCH_FILTER_BY_YEAR);
+    }
+
+    /**
+     * Checks if {@link Feature#SEARCH_FILTER_BY_YEARS} is supported
+     *
+     * @return true if supported, false if not
+     */
+    public boolean hasSearchFilterByYears() {
+        return configuration.contains(Feature.SEARCH_FILTER_BY_YEARS);
+    }
+
+    /**
+     * Checks if {@link Feature#SEARCH_PAGES)} is supported
+     *
+     * @return true if supported, false if not
+     */
+    public boolean hasSearchPages() {
+        return configuration.contains(Feature.SEARCH_PAGES) || configuration.contains(Feature
+                .SEARCH_RESULTS_PER_PAGE);
+    }
+
+    /**
+     * Checks if {@link Feature#SEARCH_RELEASE_DATE} is supported
+     *
+     * @return true if supported, false if not
+     */
+    public boolean hasSearchReleaseDate() {
+        return configuration.contains(Feature.SEARCH_RELEASE_DATE);
+    }
+
+    /**
+     * Checks if {@link Feature#SEARCH_RESULTS_PER_PAGE} is supported
+     *
+     * @return true if supported, false if not
+     */
+    public boolean hasSearchResultsPerPage() {
+        return configuration.contains(Feature.SEARCH_RESULTS_PER_PAGE);
+    }
+
+    /**
+     * Checks if {@link Feature#SEARCH_SORT_BY} is supported
+     *
+     * @return true if supported, false if not
+     */
+    public boolean hasSearchSortBy() {
+        return configuration.contains(Feature.SEARCH_SORT_BY) || configuration.contains(Feature
+                .SEARCH_SORT_BY_REVERSIBLE);
+    }
+
+    /**
+     * Checks if {@link Feature#SEARCH_SORT_BY_REVERSIBLE} is supported
+     *
+     * @return true if supported, false if not
+     */
+    public boolean hasSearchSortByReversible() {
+        return configuration.contains(Feature.SEARCH_SORT_BY_REVERSIBLE);
+    }
+
+    /**
+     * Checks if {@link Feature#SEARCH_THUMBNAIL} is supported
+     *
+     * @return true if supported, false if not
+     */
+    public boolean hasSearchThumbnail() {
+        return configuration.contains(Feature.SEARCH_THUMBNAIL);
     }
 
     /**
