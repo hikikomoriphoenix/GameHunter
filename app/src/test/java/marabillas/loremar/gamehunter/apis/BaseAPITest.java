@@ -41,7 +41,7 @@ public class BaseAPITest {
                 return EnumSet.of(Feature.SEARCH_FILTER, Feature.SEARCH_SORT, Feature.THUMBNAIL,
                         Feature.DESCRIPTION, Feature.RELEASE_DATE, Feature.FILTER_BY_PLATFORM,
                         Feature.FILTER_BY_GENRE, Feature.FILTER_BY_THEME, Feature.FILTER_BY_YEAR,
-                        Feature.FILTER_BY_YEARS, Feature.SORT_BY_REVERSIBLE);
+                        Feature.FILTER_BY_YEARS, Feature.SORT_BY_REVERSIBLE, Feature.RESULTS_PER_PAGE);
             }
 
             @Override
@@ -82,6 +82,7 @@ public class BaseAPITest {
         assertThat(api.hasFilterByYears(), is(true));
         assertThat(api.hasSort(), is(true));
         assertThat(api.hasSortByReversible(), is(true));
+        assertThat(api.hasResultsPerPage(), is(true));
     }
 
     @Test

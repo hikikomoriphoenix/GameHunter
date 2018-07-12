@@ -33,7 +33,7 @@ public abstract class BaseAPI {
     protected enum Feature {
         SEARCH, SEARCH_FILTER, SEARCH_SORT, THUMBNAIL, DESCRIPTION,
         RELEASE_DATE, FILTER_BY_PLATFORM, FILTER_BY_GENRE, FILTER_BY_THEME, FILTER_BY_YEAR,
-        FILTER_BY_YEARS, SORT_BY, SORT_BY_REVERSIBLE
+        FILTER_BY_YEARS, SORT_BY, SORT_BY_REVERSIBLE, PAGES, RESULTS_PER_PAGE
     }
 
     //private int configuration;
@@ -167,6 +167,10 @@ public abstract class BaseAPI {
         return configuration.contains(Feature.FILTER_BY_YEARS);
     }
 
+    public boolean hasPages() {
+        return configuration.contains(Feature.PAGES);
+    }
+
     /**
      * Checks if the API can provide the release date of each game from the results
      *
@@ -174,6 +178,10 @@ public abstract class BaseAPI {
      */
     public boolean hasReleaseDate() {
         return configuration.contains(Feature.RELEASE_DATE);
+    }
+
+    public boolean hasResultsPerPage() {
+        return configuration.contains(Feature.RESULTS_PER_PAGE);
     }
 
     /**
