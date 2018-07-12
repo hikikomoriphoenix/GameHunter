@@ -38,10 +38,16 @@ public class BaseAPITest {
         BaseAPI api = new BaseAPI() {
             @Override
             protected Set<Feature> configure() {
-                return EnumSet.of(Feature.SEARCH_FILTER, Feature.SEARCH_SORT, Feature.THUMBNAIL,
-                        Feature.DESCRIPTION, Feature.RELEASE_DATE, Feature.FILTER_BY_PLATFORM,
-                        Feature.FILTER_BY_GENRE, Feature.FILTER_BY_THEME, Feature.FILTER_BY_YEAR,
-                        Feature.FILTER_BY_YEARS, Feature.SORT_BY_REVERSIBLE, Feature.RESULTS_PER_PAGE);
+                return EnumSet.of(Feature.THUMBNAIL, Feature.DESCRIPTION, Feature.RELEASE_DATE,
+                        Feature.FILTER_BY_PLATFORM, Feature.FILTER_BY_GENRE, Feature
+                                .FILTER_BY_THEME, Feature.FILTER_BY_YEAR, Feature
+                                .FILTER_BY_YEARS, Feature.SORT_BY_REVERSIBLE, Feature
+                                .RESULTS_PER_PAGE, Feature.SEARCH_THUMBNAIL, Feature
+                                .SEARCH_DESCRIPTION, Feature.SEARCH_RELEASE_DATE, Feature
+                                .SEARCH_FILTER_BY_PLATFORM, Feature.SEARCH_FILTER_BY_GENRE,
+                        Feature.SEARCH_FILTER_BY_THEME, Feature.SEARCH_FILTER_BY_YEAR, Feature
+                                .SEARCH_FILTER_BY_YEARS, Feature.SEARCH_SORT_BY_REVERSIBLE,
+                        Feature.SEARCH_RESULTS_PER_PAGE);
             }
 
             @Override
@@ -69,9 +75,6 @@ public class BaseAPITest {
                 return null;
             }
         };
-        assertThat(api.hasSearch(), is(true));
-        assertThat(api.hasSearchFilter(), is(true));
-        assertThat(api.hasSearchSort(), is(true));
         assertThat(api.hasThumbnails(), is(true));
         assertThat(api.hasDescription(), is(true));
         assertThat(api.hasReleaseDate(), is(true));
@@ -84,43 +87,18 @@ public class BaseAPITest {
         assertThat(api.hasSortByReversible(), is(true));
         assertThat(api.hasPages(), is(true));
         assertThat(api.hasResultsPerPage(), is(true));
-    }
-
-    @Test
-    public void testConfigurationsSanity() {
-        BaseAPI api = new BaseAPI() {
-            @Override
-            protected Set<Feature> configure() {
-                return EnumSet.of(Feature.SEARCH_FILTER, Feature.SEARCH_SORT);
-            }
-
-            @Override
-            public Set<String> getGenreFilters() {
-                return null;
-            }
-
-            @Override
-            public Set<String> getPlatformFilters() {
-                return null;
-            }
-
-            @Override
-            public Set<String> getSortChoices() {
-                return null;
-            }
-
-            @Override
-            public Set<String> getThemeFilters() {
-                return null;
-            }
-
-            @Override
-            public List<ResultsItem> query(Query query) {
-                return null;
-            }
-        };
-
-        assertThat(api.hasSearchFilter(), is(false));
-        assertThat(api.hasSearchSort(), is(false));
+        assertThat(api.hasSearch(), is(true));
+        assertThat(api.hasSearchThumbnail(), is(true));
+        assertThat(api.hasSearchDescription(), is(true));
+        assertThat(api.hasSearchReleaseDate(), is(true));
+        assertThat(api.hasSearchFilterByPlatform(), is(true));
+        assertThat(api.hasSearchFilterByGenre(), is(true));
+        assertThat(api.hasSearhFilterByTheme(), is(true));
+        assertThat(api.hasSearchFilterByYear(), is(true));
+        assertThat(api.hasSearchFilterByYears(), is(true));
+        assertThat(api.hasSearchSortBy(), is(true));
+        assertThat(api.hasSearchSortByReversible(), is(true));
+        assertThat(api.hasSearchPages(), is(true));
+        assertThat(api.hasSearchResultsPerPage(), is(true));
     }
 }
