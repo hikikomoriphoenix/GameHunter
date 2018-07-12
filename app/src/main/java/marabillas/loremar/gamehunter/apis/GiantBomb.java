@@ -50,7 +50,7 @@ public class GiantBomb extends BaseAPI {
     protected Set<Feature> configure() {
         return EnumSet.of(Feature.SEARCH, Feature.THUMBNAIL, Feature.DESCRIPTION, Feature
                 .RELEASE_DATE, Feature.FILTER_BY_PLATFORM, Feature.FILTER_BY_YEAR, Feature
-                .FILTER_BY_YEARS, Feature.SORT_BY_REVERSIBLE);
+                .FILTER_BY_YEARS, Feature.SORT_BY_REVERSIBLE, Feature.RESULTS_PER_PAGE);
     }
 
     @Override
