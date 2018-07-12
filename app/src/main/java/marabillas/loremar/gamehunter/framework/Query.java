@@ -35,6 +35,8 @@ public class Query {
     private int toYear = -1;
     private String sort = null;
     private Order order = Order.DESCENDING;
+    private int resultsPerPage = 20;
+    private int pageNumber = 1;
 
     public enum Order {ASCENDING, DESCENDING}
 
@@ -76,6 +78,14 @@ public class Query {
 
     public Order getOrder() {
         return order;
+    }
+
+    public int getResultsPerPage() {
+        return resultsPerPage;
+    }
+
+    public int getPageNumber() {
+        return pageNumber;
     }
 
     public Query setKeyword(String keyword) {
@@ -132,5 +142,13 @@ public class Query {
     public Query setOrder(Order order) {
         this.order = order;
         return this;
+    }
+
+    public void setResultsPerPage(int resultsPerPage) {
+        this.resultsPerPage = resultsPerPage;
+    }
+
+    public void setPageNumber(int pageNumber) {
+        this.pageNumber = pageNumber;
     }
 }
