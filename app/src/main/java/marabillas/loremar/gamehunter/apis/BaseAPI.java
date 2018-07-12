@@ -180,9 +180,9 @@ public abstract class BaseAPI {
     public abstract List<ResultsItem> query(Query query);
 
     /**
-     * Checks if the API can provide a brief description of each game from the results
+     * Checks if {@link Feature#DESCRIPTION} is supported.
      *
-     * @return true if brief descriptions is supported
+     * @return true if supported, false if not
      */
     public boolean hasDescription() {
         return configuration.contains(Feature.DESCRIPTION);
@@ -190,72 +190,81 @@ public abstract class BaseAPI {
 
 
     /**
-     * Checks if the API can show results based on a genre
+     * Checks if {@link Feature#FILTER_BY_GENRE} is supported
      *
-     * @return true if filter by genre is supported
+     * @return true if supported, false if not
      */
     public boolean hasFilterByGenre() {
         return configuration.contains(Feature.FILTER_BY_GENRE);
     }
 
     /**
-     * Checks if the API can show results based on a platform the game is developed for
+     * Checks if {@link Feature#FILTER_BY_PLATFORM} is supported
      *
-     * @return true if filter by platform is supported
+     * @return true if supported, false if not
      */
     public boolean hasFilterByPlatform() {
         return configuration.contains(Feature.FILTER_BY_PLATFORM);
     }
 
     /**
-     * Checks if the API can show results based on its theme
+     * Checks if {@link Feature#FILTER_BY_THEME} is supported
      *
-     * @return true if filter by theme is supported
+     * @return true if supported, false if not
      */
     public boolean hasFilterByTheme() {
         return configuration.contains(Feature.FILTER_BY_THEME);
     }
 
     /**
-     * Checks if the API can show results based on the year the game was released
+     * Checks if {@link Feature#FILTER_BY_YEAR} is supported
      *
-     * @return true if filter by year is supported
+     * @return true if supported, false if not
      */
     public boolean hasFilterByYear() {
         return configuration.contains(Feature.FILTER_BY_YEAR);
     }
 
     /**
-     * Checks if the API can show results of video games that are released on between a set range
-     * of years
+     * Checks if {@link Feature#FILTER_BY_YEARS} is supported
      *
-     * @return true if filter by years is supported
+     * @return true if supported, false if not
      */
     public boolean hasFilterByYears() {
         return configuration.contains(Feature.FILTER_BY_YEARS);
     }
 
+    /**
+     * Checks if {@link Feature#PAGES} is supported
+     *
+     * @return true if supported, false if not
+     */
     public boolean hasPages() {
         return configuration.contains(Feature.PAGES);
     }
 
     /**
-     * Checks if the API can provide the release date of each game from the results
+     * Checks if {@link Feature#RELEASE_DATE} is supported
      *
-     * @return true if release date is supported
+     * @return true if supported, false if not
      */
     public boolean hasReleaseDate() {
         return configuration.contains(Feature.RELEASE_DATE);
     }
 
+    /**
+     * Checks if {@link Feature#RESULTS_PER_PAGE} is supported
+     *
+     * @return true if supported, false if not
+     */
     public boolean hasResultsPerPage() {
         return configuration.contains(Feature.RESULTS_PER_PAGE);
     }
 
     /**
-     * Checks if this API allows the user to input a keyword to search the database.
+     * Checks if {@link Feature#SEARCH} is supported
      *
-     * @return true if this feature is available
+     * @return true if supported, false if not
      */
     public boolean hasSearch() {
         return configuration.contains(Feature.SEARCH) || configuration.contains(Feature
@@ -263,51 +272,45 @@ public abstract class BaseAPI {
     }
 
     /**
-     * Checks if this API allows filtering when querying via keyword. SEARCH feature is implied
-     * to be available, hence, there is no need to include Feature.SEARCH in configuration when
-     * Feature.SEARCH_FILTER is included.
+     * Checks if {@link Feature#SEARCH_FILTER} is supported
      *
-     * @return true if this feature is available
+     * @return true if supported, false if not
      */
     public boolean hasSearchFilter() {
         return configuration.contains(Feature.SEARCH_FILTER);
     }
 
     /**
-     * Checks if this API allows sorting when querying via keyword. SEARCH feature is implied to
-     * be available, hence, there is no need to include Feature.SEARCH in configuration when
-     * Feature.SEARCH_SORT is included.
+     * Checks if {@link Feature#SEARCH_SORT} is supported
      *
-     * @return true if this feature is available
+     * @return true if supported, false if not
      */
     public boolean hasSearchSort() {
         return configuration.contains(Feature.SEARCH_SORT);
     }
 
     /**
-     * Checks if this API can return ordered results.
+     * Checks if {@link Feature#SORT_BY} is supported
      *
-     * @return true if this feature is supported
+     * @return true if supported, false if not
      */
     public boolean hasSort() {
         return configuration.contains(Feature.SORT_BY) || configuration.contains(Feature.SORT_BY_REVERSIBLE);
     }
 
     /**
-     * Checks if this API supports ascending and descending options when ordering results.
-     * SORT_BY feature is implied to be supported, hence, there is no need to include Feature
-     * .SORT_BY in configuration when Feature.SORT_BY_REVERSIBLE is included.
+     * Checks if {@link Feature#SORT_BY_REVERSIBLE} is supported
      *
-     * @return true if this feature is supported
+     * @return true if supported, false if not
      */
     public boolean hasSortByReversible() {
         return configuration.contains(Feature.SORT_BY_REVERSIBLE);
     }
 
     /**
-     * Checks if this API can provide a thumbnail for each game in the results
+     * Checks if {@link Feature#THUMBNAIL} is supported
      *
-     * @return true if thumbnails can be provided.
+     * @return true if supported, false if not
      */
     public boolean hasThumbnails() {
         return configuration.contains(Feature.THUMBNAIL);
