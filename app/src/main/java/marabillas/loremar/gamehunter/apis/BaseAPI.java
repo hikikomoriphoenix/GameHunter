@@ -30,6 +30,8 @@ import marabillas.loremar.gamehunter.framework.ResultsItem;
  * is meant to be subclassed for each specific API.
  */
 public abstract class BaseAPI {
+    private Set<Feature> configuration;
+
     protected enum Feature {
         /**
          * This feature allows the you to search the game database using a keyword
@@ -103,11 +105,6 @@ public abstract class BaseAPI {
          */
         RESULTS_PER_PAGE
     }
-
-    //private int configuration;
-    private Set<Feature> configuration;
-
-    public enum Order {ASCENDING, DESCENDING}
 
     protected BaseAPI() {
         configuration = configure();
