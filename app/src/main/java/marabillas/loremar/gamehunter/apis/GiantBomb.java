@@ -152,88 +152,123 @@ public class GiantBomb extends BaseAPI {
             }
 
             String url = sb.toString();
-
-            // Get the json data
-            JSON json;
-            try {
-                json = new JSONParser().parse(url);
-            } catch (FailedToParseException e) {
-                throw new BaseAPIFailedQueryException(e);
-            }
-
-            // Get the field values for each result
-            List<ResultsItem> results = new ArrayList<>();
-            JSON_Array resultsArray;
-            try {
-                resultsArray = json.getArray("results");
-            } catch (FailedToGetFieldException e) {
-                throw new BaseAPIFailedQueryException(e);
-            }
-            for (int i = 0; i < resultsArray.getCount(); ++i) {
-                JSON result;
-                try {
-                    result = resultsArray.getObject(i);
-                } catch (FailedToGetFieldException e) {
-                    continue;
-                }
-
-                ResultsItem resultsItem = new ResultsItem();
-
-                try {
-                    resultsItem.title = result.getString("name");
-                } catch (FailedToGetFieldException e) {
-                    resultsItem.title = null;
-                }
-
-                try {
-                    resultsItem.thumbnailURL = result.getObject("image").getString("thumb_url");
-                } catch (FailedToGetFieldException e) {
-                    resultsItem.thumbnailURL = null;
-                }
-
-                try {
-                    resultsItem.description = result.getString("deck");
-                } catch (FailedToGetFieldException e) {
-                    resultsItem.description = null;
-                }
-
-                String originalReleaseDate;
-                String expectedReleaseYear;
-                try {
-                    expectedReleaseYear = result.getString("expected_release_year");
-                } catch (FailedToGetFieldException e) {
-                    expectedReleaseYear = null;
-                }
-                if (expectedReleaseYear == null) {
-                    try {
-                        originalReleaseDate = result.getString("original_release_date");
-                    } catch (FailedToGetFieldException e) {
-                        originalReleaseDate = null;
-                    }
-                } else {
-                    originalReleaseDate = null;
-                }
-                if (originalReleaseDate != null) {
-                    resultsItem.releaseDate = originalReleaseDate;
-                } else if (expectedReleaseYear != null) {
-                    resultsItem.releaseDate = expectedReleaseYear;
-                } else {
-                    resultsItem.releaseDate = null;
-                }
-
-                try {
-                    resultsItem.id = result.getString("guid");
-                } catch (FailedToGetFieldException e) {
-                    resultsItem.id = null;
-                }
-
-                results.add(resultsItem);
-            }
-
-            return results;
+            JSON data = getData(url);
+            return getResults(data, fields);
         } else {
 
         }
         return null;
+    }
+
+    private JSON getData(String url) throws BaseAPIFailedQueryException {
+        JSON json;
+        try {
+            json = new JSONParser().parse(url);
+        } catch (FailedToParseException e) {
+            throw new BaseAPIFailedQueryException(e);
+        }
+        return json;
+    }
+
+    private List<ResultsItem> getResults(JSON data, Set<String> fields) throws
+            BaseAPIFailedQueryException {
+        List<ResultsItem> results = new ArrayList<>();
+        JSON_Array resultsArray;
+        try {
+            resultsArray = data.getArray("results");
+        } catch (FailedToGetFieldException e) {
+            throw new BaseAPIFailedQueryException(e);
+        }
+        for (int i = 0; i < resultsArray.getCount(); ++i) {
+            JSON result;
+            try {
+                result = resultsArray.getObject(i);
+            } catch (FailedToGetFieldException e) {
+                continue;
+            }
+
+            ResultsItem resultsItem = new ResultsItem();
+
+            resultsItem.title = getTitle(result);
+
+            if (fields.contains("image")) {
+                resultsItem.thumbnailURL = getThumbnailUrl(result);
+            }
+
+            if (fields.contains("deck")) {
+                resultsItem.description = getDescription(result);
+            }
+
+            if (fields.contains("original_release_date") && fields.contains
+                    ("expected_release_year")) {
+                resultsItem.releaseDate = getReleaseDate(result);
+            }
+
+            if (fields.contains("guid")) {
+                resultsItem.id = getId(result);
+            }
+
+            results.add(resultsItem);
+        }
+
+        return results;
+    }
+
+    private String getTitle(JSON result) {
+        try {
+            return result.getString("name");
+        } catch (FailedToGetFieldException e) {
+            return null;
+        }
+    }
+
+    private String getThumbnailUrl(JSON result) {
+        try {
+            return result.getObject("image").getString("thumb_url");
+        } catch (FailedToGetFieldException e) {
+            return null;
+        }
+    }
+
+    private String getDescription(JSON result) {
+        try {
+            return result.getString("deck");
+        } catch (FailedToGetFieldException e) {
+            return null;
+        }
+    }
+
+    private String getReleaseDate(JSON result) {
+        String originalReleaseDate;
+        String expectedReleaseYear;
+        try {
+            expectedReleaseYear = result.getString("expected_release_year");
+        } catch (FailedToGetFieldException e) {
+            expectedReleaseYear = null;
+        }
+        if (expectedReleaseYear == null) {
+            try {
+                originalReleaseDate = result.getString("original_release_date");
+            } catch (FailedToGetFieldException e) {
+                originalReleaseDate = null;
+            }
+        } else {
+            originalReleaseDate = null;
+        }
+        if (originalReleaseDate != null) {
+            return originalReleaseDate;
+        } else if (expectedReleaseYear != null) {
+            return expectedReleaseYear;
+        } else {
+            return null;
+        }
+    }
+
+    private String getId(JSON result) {
+        try {
+            return result.getString("guid");
+        } catch (FailedToGetFieldException e) {
+            return null;
+        }
     }
 }
