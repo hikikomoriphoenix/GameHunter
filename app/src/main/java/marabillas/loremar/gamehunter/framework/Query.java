@@ -26,7 +26,7 @@ import java.util.Set;
  */
 public class Query {
     private String keyword = null;
-    private Set<String> fields = null;
+    private Set<Field> fields = null;
     private Set<String> platformFilters = null;
     private Set<String> genreFilters = null;
     private Set<String> themeFilters = null;
@@ -38,13 +38,15 @@ public class Query {
     private int resultsPerPage = 20;
     private int pageNumber = 1;
 
+    public enum Field {THUMBNAIL, DESCRIPTION, RELEASE_DATE, ID}
+
     public enum Order {ASCENDING, DESCENDING}
 
     public String getKeyword() {
         return keyword;
     }
 
-    public Set<String> getFields() {
+    public Set<Field> getFields() {
         return fields;
     }
 
@@ -93,7 +95,7 @@ public class Query {
         return this;
     }
 
-    public Query setFields(Set<String> fields) {
+    public Query setFields(Set<Field> fields) {
         this.fields = fields;
         return this;
     }
