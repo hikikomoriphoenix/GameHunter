@@ -24,7 +24,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
@@ -81,12 +81,8 @@ public class GiantBombTest {
     public void query() {
         Query query = new Query();
         query.setKeyword("robot");
-        HashSet<String> fields = new HashSet<>();
-        fields.add("image");
-        fields.add("deck");
-        fields.add("guid");
-        fields.add("original_release_date");
-        fields.add("expected_release_year");
+        Set<Query.Field> fields = EnumSet.of(Query.Field.THUMBNAIL, Query.Field.DESCRIPTION,
+                Query.Field.RELEASE_DATE, Query.Field.ID);
         query.setFields(fields);
         BaseAPI api = new GiantBomb();
         List<ResultsItem> results = new ArrayList<>();

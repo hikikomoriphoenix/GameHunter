@@ -126,6 +126,30 @@ public class GiantBomb extends BaseAPI {
 
     @Override
     public List<ResultsItem> query(Query query) throws BaseAPIFailedQueryException {
+        Set<Query.Field> fields = query.getFields();
+        StringBuilder fieldSB = new StringBuilder("&field_list=name");
+        if (fields != null) {
+            for (Query.Field field :
+                    fields) {
+                fieldSB.append(",");
+                switch (field) {
+                    case THUMBNAIL:
+                        fieldSB.append("image");
+                        break;
+                    case DESCRIPTION:
+                        fieldSB.append("deck");
+                        break;
+                    case RELEASE_DATE:
+                        fieldSB.append("original_release_date")
+                                .append(",expected_release_year");
+                        break;
+                    case ID:
+                        fieldSB.append("guid");
+                        break;
+                }
+            }
+        }
+
         /*
          * There are two ways to get a list of games from GiantBomb's database using their API.
          * One is to use the 'search' resource and pass a keyword in the 'query' parameter. This
@@ -134,24 +158,13 @@ public class GiantBomb extends BaseAPI {
          * in ascending or descending order based on a selected field.
          */
         if (query.getKeyword() != null) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("https://www.giantbomb.com/api/search/?api_key=").append(KEY)
-                    .append("&format=json")
-                    .append("&resources=game")
-                    .append("&query=").append(query.getKeyword())
-                    .append("&limit=").append(query.getResultsPerPage())
-                    .append("&page=").append(query.getPageNumber())
-                    .append("&field_list=name");
-
-            Set<String> fields = query.getFields();
-            if (fields != null) {
-                for (String field :
-                        fields) {
-                    sb.append(",").append(field);
-                }
-            }
-
-            String url = sb.toString();
+            String url = "https://www.giantbomb.com/api/search/?api_key=" + KEY +
+                    "&format=json" +
+                    "&resources=game" +
+                    "&query=" + query.getKeyword() +
+                    "&limit=" + query.getResultsPerPage() +
+                    "&page=" + query.getPageNumber() +
+                    fieldSB;
             JSON data = getData(url);
             return getResults(data, fields);
         } else {
@@ -170,7 +183,7 @@ public class GiantBomb extends BaseAPI {
         return json;
     }
 
-    private List<ResultsItem> getResults(JSON data, Set<String> fields) throws
+    private List<ResultsItem> getResults(JSON data, Set<Query.Field> fields) throws
             BaseAPIFailedQueryException {
         List<ResultsItem> results = new ArrayList<>();
         JSON_Array resultsArray;
@@ -191,20 +204,19 @@ public class GiantBomb extends BaseAPI {
 
             resultsItem.title = getTitle(result);
 
-            if (fields.contains("image")) {
+            if (fields.contains(Query.Field.THUMBNAIL)) {
                 resultsItem.thumbnailURL = getThumbnailUrl(result);
             }
 
-            if (fields.contains("deck")) {
+            if (fields.contains(Query.Field.DESCRIPTION)) {
                 resultsItem.description = getDescription(result);
             }
 
-            if (fields.contains("original_release_date") && fields.contains
-                    ("expected_release_year")) {
+            if (fields.contains(Query.Field.RELEASE_DATE)) {
                 resultsItem.releaseDate = getReleaseDate(result);
             }
 
-            if (fields.contains("guid")) {
+            if (fields.contains(Query.Field.ID)) {
                 resultsItem.id = getId(result);
             }
 
