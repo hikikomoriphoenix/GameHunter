@@ -24,6 +24,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -80,6 +81,13 @@ public class GiantBombTest {
     public void query() {
         Query query = new Query();
         query.setKeyword("robot");
+        HashSet<String> fields = new HashSet<>();
+        fields.add("image");
+        fields.add("deck");
+        fields.add("guid");
+        fields.add("original_release_date");
+        fields.add("expected_release_year");
+        query.setFields(fields);
         BaseAPI api = new GiantBomb();
         List<ResultsItem> results = new ArrayList<>();
         try {
@@ -87,10 +95,19 @@ public class GiantBombTest {
         } catch (BaseAPIFailedQueryException e) {
             Assert.fail(e.getMessage());
         }
+
+        assertThat(results.size(), is(20));
+
         assertThat(results.get(0).title, is("Robot"));
         assertThat(results.get(0).thumbnailURL, is("https://www.giantbomb.com/api/image/scale_avatar/2853576-gblogo.png"));
         assertThat(results.get(0).description, is(nullValue()));
         assertThat(results.get(0).releaseDate, is(nullValue()));
         assertThat(results.get(0).id, is("3030-3840"));
+
+        assertThat(results.get(19).title, is("Carpenter Genzo -Robot Empire-"));
+        assertThat(results.get(19).thumbnailURL, is("https://www.giantbomb.com/api/image/scale_avatar/2947034-7759328272-45772.jpg"));
+        assertThat(results.get(19).description, is("The second Hammerin' Harry platformer for Game Boy sees Harry blast off into space and fight robots."));
+        assertThat(results.get(19).releaseDate, is("1994-03-25 00:00:00"));
+        assertThat(results.get(19).id, is("3030-59998"));
     }
 }

@@ -134,11 +134,26 @@ public class GiantBomb extends BaseAPI {
          * in ascending or descending order based on a selected field.
          */
         if (query.getKeyword() != null) {
-            String keyword = query.getKeyword();
-            String url = "https://www.giantbomb.com/api/search/?api_key=" + KEY +
-                    "&format=json&resources=game&query=" + keyword + "&field_list=name,image," +
-                    "deck,expected_release_year,original_release_date,guid";
+            StringBuilder sb = new StringBuilder();
+            sb.append("https://www.giantbomb.com/api/search/?api_key=").append(KEY)
+                    .append("&format=json")
+                    .append("&resources=game")
+                    .append("&query=").append(query.getKeyword())
+                    .append("&limit=").append(query.getResultsPerPage())
+                    .append("&page=").append(query.getPageNumber())
+                    .append("&field_list=name");
 
+            Set<String> fields = query.getFields();
+            if (fields != null) {
+                for (String field :
+                        fields) {
+                    sb.append(",").append(field);
+                }
+            }
+
+            String url = sb.toString();
+
+            // Get the json data
             JSON json;
             try {
                 json = new JSONParser().parse(url);
@@ -146,6 +161,7 @@ public class GiantBomb extends BaseAPI {
                 throw new BaseAPIFailedQueryException(e);
             }
 
+            // Get the field values for each result
             List<ResultsItem> results = new ArrayList<>();
             JSON_Array resultsArray;
             try {
