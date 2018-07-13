@@ -28,6 +28,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import marabillas.loremar.gamehunter.BuildConfig;
 import marabillas.loremar.gamehunter.GameHunterApp;
 import marabillas.loremar.gamehunter.R;
 import marabillas.loremar.gamehunter.framework.Query;
@@ -42,8 +43,7 @@ import marabillas.loremar.gamehunter.parsers.json.JSON_Array;
  *  This class is used for getting access to GiantBomb.com's database using their api.
  */
 public class GiantBomb extends BaseAPI {
-    private final String KEY = GameHunterApp.getInstance().getResources().getString(R.string
-            .giantbomb_api_key);
+    private final String KEY = BuildConfig.giantbomb_api_key;
     private Map<String, Integer> platforms;
 
     @Override
