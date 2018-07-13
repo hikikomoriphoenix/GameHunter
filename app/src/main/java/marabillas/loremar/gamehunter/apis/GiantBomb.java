@@ -157,20 +157,24 @@ public class GiantBomb extends BaseAPI {
          * use the 'game' resource. This provides the ability to use filters or to sort results
          * in ascending or descending order based on a selected field.
          */
+        String url;
         if (query.getKeyword() != null) {
-            String url = "https://www.giantbomb.com/api/search/?api_key=" + KEY +
+            url = "https://www.giantbomb.com/api/search/?api_key=" + KEY +
                     "&format=json" +
                     "&resources=game" +
                     "&query=" + query.getKeyword() +
                     "&limit=" + query.getResultsPerPage() +
                     "&page=" + query.getPageNumber() +
                     fieldSB;
-            JSON data = getData(url);
-            return getResults(data, fields);
         } else {
-
+            url = "https://www.giantbomb.com/api/games/?api_key=" + KEY +
+                    "&format=json" +
+                    "&limit=" + query.getResultsPerPage() +
+                    "&page=" + query.getPageNumber() +
+                    fieldSB;
         }
-        return null;
+        JSON data = getData(url);
+        return getResults(data, fields);
     }
 
     private JSON getData(String url) throws BaseAPIFailedQueryException {
