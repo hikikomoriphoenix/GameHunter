@@ -19,6 +19,7 @@
 
 package marabillas.loremar.gamehunter.apis;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -38,6 +39,8 @@ import marabillas.loremar.gamehunter.parsers.FailedToParseException;
 import marabillas.loremar.gamehunter.parsers.json.JSON;
 import marabillas.loremar.gamehunter.parsers.json.JSONParser;
 import marabillas.loremar.gamehunter.parsers.json.JSON_Array;
+
+import static marabillas.loremar.gamehunter.utils.StringUtils.encodeURL;
 
 /**
  *  This class is used for getting access to GiantBomb.com's database using their api.
@@ -159,10 +162,16 @@ public class GiantBomb extends BaseAPI {
          */
         String url;
         if (query.getKeyword() != null) {
+            String keyword = query.getKeyword();
+            try {
+                keyword = encodeURL(keyword);
+            } catch (UnsupportedEncodingException e) {
+                throw new BaseAPIFailedQueryException(e);
+            }
             url = "https://www.giantbomb.com/api/search/?api_key=" + KEY +
                     "&format=json" +
                     "&resources=game" +
-                    "&query=" + query.getKeyword() +
+                    "&query=" + keyword +
                     "&limit=" + query.getResultsPerPage() +
                     "&page=" + query.getPageNumber() +
                     fieldSB;
@@ -191,16 +200,26 @@ public class GiantBomb extends BaseAPI {
             }
 
             // Append release years
+            String dateTimeBegin;
+            String dateTimeEnd;
+            try {
+                dateTimeBegin = encodeURL("-01-01 00:00:00");
+                dateTimeEnd = encodeURL("-12-31 23:59:59");
+            } catch (UnsupportedEncodingException e) {
+                throw new BaseAPIFailedQueryException(e);
+            }
+
             if (releaseYear >= 0) {
                 if (platformFilter != null) {
                     sb.append(",");
                 }
+
                 sb.append("original_release_date:")
                         .append(releaseYear)
-                        .append("-01-01 00:00:00")
+                        .append(dateTimeBegin)
                         .append("|")
-                        .append(releaseYear + 1)
-                        .append("-01-01 00:00:00");
+                        .append(releaseYear)
+                        .append(dateTimeEnd);
             } else if (fromYear >= 0 || toYear >= 0) {
                 if (fromYear < 0) {
                     fromYear = 0;
@@ -216,10 +235,10 @@ public class GiantBomb extends BaseAPI {
                 }
                 sb.append("original_release_date:")
                         .append(fromYear)
-                        .append("-01-01 00:00:00")
+                        .append(dateTimeBegin)
                         .append("|")
-                        .append(toYear + 1)
-                        .append("-01-01 00:00:00");
+                        .append(toYear)
+                        .append(dateTimeEnd);
             }
 
             // Append sort
