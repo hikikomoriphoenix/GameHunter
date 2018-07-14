@@ -172,6 +172,73 @@ public class GiantBomb extends BaseAPI {
                     "&limit=" + query.getResultsPerPage() +
                     "&page=" + query.getPageNumber() +
                     fieldSB;
+
+            StringBuilder sb = new StringBuilder(url);
+
+            // Check if query needs the filter parameter
+            String platformFilter = query.getPlatformFilter();
+            int releaseYear = query.getReleaseYear();
+            int fromYear = query.getFromYear();
+            int toYear = query.getToYear();
+            if (platformFilter != null || releaseYear >= 0 || fromYear >= 0 || toYear >= 0) {
+                sb.append("&filter=");
+            }
+
+            // Append platform
+            if (platformFilter != null) {
+                int platformId = platforms.get(platformFilter);
+                sb.append("platforms:").append(platformId);
+            }
+
+            // Append release years
+            if (releaseYear >= 0) {
+                if (platformFilter != null) {
+                    sb.append(",");
+                }
+                sb.append("original_release_date:")
+                        .append(releaseYear)
+                        .append("-01-01 00:00:00")
+                        .append("|")
+                        .append(releaseYear + 1)
+                        .append("-01-01 00:00:00");
+            } else if (fromYear >= 0 || toYear >= 0) {
+                if (fromYear < 0) {
+                    fromYear = 0;
+                }
+                if (toYear < 0) {
+                    toYear = 3000;
+                }
+                if (toYear <= fromYear) {
+                    toYear = fromYear;
+                }
+                if (platformFilter != null) {
+                    sb.append(",");
+                }
+                sb.append("original_release_date:")
+                        .append(fromYear)
+                        .append("-01-01 00:00:00")
+                        .append("|")
+                        .append(toYear + 1)
+                        .append("-01-01 00:00:00");
+            }
+
+            // Append sort
+            String sortSelection = query.getSort();
+            if (sortSelection != null) {
+                String sort;
+                Query.Order order = query.getOrder();
+                if (order == Query.Order.ASCENDING) {
+                    sort = "&sort=" + sortSelection + ":asc";
+                } else if (order == Query.Order.DESCENDING) {
+                    sort = "&sort=" + sortSelection + ":desc";
+                } else {
+                    sort = "&sort=" + sortSelection + ":asc";
+                }
+                sb.append(sort);
+            }
+
+            // Complete query url
+            url = sb.toString();
         }
         JSON data = getData(url);
         return getResults(data, fields);
