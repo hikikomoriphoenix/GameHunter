@@ -37,10 +37,18 @@ import static org.junit.Assert.assertThat;
 
 public class GiantBombTest {
     private BaseAPI api;
+    private Query query;
+    private List<ResultsItem> results;
+    private Set<Query.Field> fields;
 
     @Before
     public void init() {
         api = new GiantBomb();
+        query = new Query();
+        results = new ArrayList<>();
+        fields = EnumSet.of(Query.Field.THUMBNAIL, Query.Field.DESCRIPTION, Query.Field
+                .RELEASE_DATE, Query.Field.ID);
+        query.setFields(fields);
     }
 
     @Test
@@ -79,18 +87,9 @@ public class GiantBombTest {
 
     @Test
     public void query() {
-        Query query = new Query();
+        // Query via search
         query.setKeyword("robot");
-        Set<Query.Field> fields = EnumSet.of(Query.Field.THUMBNAIL, Query.Field.DESCRIPTION,
-                Query.Field.RELEASE_DATE, Query.Field.ID);
-        query.setFields(fields);
-        BaseAPI api = new GiantBomb();
-        List<ResultsItem> results = new ArrayList<>();
-        try {
-            results = api.query(query);
-        } catch (BaseAPIFailedQueryException e) {
-            Assert.fail(e.getMessage());
-        }
+        results = queryCall(query);
 
         assertThat(results.size(), is(20));
 
@@ -105,5 +104,51 @@ public class GiantBombTest {
         assertThat(results.get(19).description, is("The second Hammerin' Harry platformer for Game Boy sees Harry blast off into space and fight robots."));
         assertThat(results.get(19).releaseDate, is("1994-03-25 00:00:00"));
         assertThat(results.get(19).id, is("3030-59998"));
+
+        // Query via 'game' resource
+        query = new Query();
+        query.setFields(fields);
+        results = queryCall(query);
+        assertThat(results.size(), is(20));
+        assertThat(results.get(0).title, is("Desert Strike: Return to the Gulf"));
+        assertThat(results.get(19).title, is("Burntime"));
+    }
+
+    @Test
+    public void queryFilter() {
+        try {
+            api.getPlatformFilters();
+        } catch (BaseAPIGetterFailedToGetException e) {
+            Assert.fail(e.getMessage());
+        }
+        query.setPlatformFilter("Android");
+        results = queryCall(query);
+        assertThat(results.get(0).title, is("Metal Slug X: Super Vehicle - 001"));
+        assertThat(results.get(19).title, is("Comix Zone"));
+    }
+
+    @Test
+    public void querySort() {
+        query.setSort("number_of_user_reviews");
+        query.setOrder(Query.Order.ASCENDING);
+        results = queryCall(query);
+        assertThat(results.get(0).title, is("Terminators: The Video Game"));
+    }
+
+    @Test
+    public void queryReleaseYear() {
+        query.setReleaseYear(2013);
+        results = queryCall(query);
+        assertThat(results.get(0).title, is("Star Traders"));
+        assertThat(results.get(19).title, is("Rust Buccaneers"));
+    }
+
+    private List<ResultsItem> queryCall(Query query) {
+        try {
+            return api.query(query);
+        } catch (BaseAPIFailedQueryException e) {
+            Assert.fail(e.getMessage());
+            return new ArrayList<>();
+        }
     }
 }
