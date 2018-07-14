@@ -35,9 +35,9 @@ public class StringUtils {
      *
      * @param url url string to encode
      * @return encoded url
-     * @throws UnsupportedEncodingException
+     * @throws UnsupportedEncodingException if the default charset is not a supported encoding
      */
-    public String encodeURL(String url) throws UnsupportedEncodingException {
+    public static String encodeURL(String url) throws UnsupportedEncodingException {
         return URLEncoder.encode(url, Charset.defaultCharset().name());
     }
 }
