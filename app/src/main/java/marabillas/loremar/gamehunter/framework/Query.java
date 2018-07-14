@@ -27,9 +27,9 @@ import java.util.Set;
 public class Query {
     private String keyword = null;
     private Set<Field> fields = null;
-    private Set<String> platformFilters = null;
-    private Set<String> genreFilters = null;
-    private Set<String> themeFilters = null;
+    private String platformFilter = null;
+    private String genreFilter = null;
+    private String themeFilter = null;
     private int releaseYear = -1;
     private int fromYear = -1;
     private int toYear = -1;
@@ -50,16 +50,16 @@ public class Query {
         return fields;
     }
 
-    public Set<String> getPlatformFilters() {
-        return platformFilters;
+    public String getPlatformFilter() {
+        return platformFilter;
     }
 
-    public Set<String> getGenreFilters() {
-        return genreFilters;
+    public String getGenreFilter() {
+        return genreFilter;
     }
 
-    public Set<String> getThemeFilters() {
-        return themeFilters;
+    public String getThemeFilter() {
+        return themeFilter;
     }
 
     public int getReleaseYear() {
@@ -100,18 +100,18 @@ public class Query {
         return this;
     }
 
-    public Query setPlatformFilters(Set<String> platformFilters) {
-        this.platformFilters = platformFilters;
+    public Query setPlatformFilter(String platformFilter) {
+        this.platformFilter = platformFilter;
         return this;
     }
 
-    public Query setGenreFilters(Set<String> genreFilters) {
-        this.genreFilters = genreFilters;
+    public Query setGenreFilter(String genreFilter) {
+        this.genreFilter = genreFilter;
         return this;
     }
 
-    public Query setThemeFilters(Set<String> themeFilters) {
-        this.themeFilters = themeFilters;
+    public Query setThemeFilter(String themeFilter) {
+        this.themeFilter = themeFilter;
         return this;
     }
 
