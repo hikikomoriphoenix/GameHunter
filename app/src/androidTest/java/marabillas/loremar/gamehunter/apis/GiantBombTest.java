@@ -157,8 +157,24 @@ public class GiantBombTest {
 
     @Test
     public void querySort() {
-        query.setSort("Number of user reviews");
         query.setOrder(Query.Order.ASCENDING);
+
+        query.setSort("Date added");
+        results = queryCall(query);
+        assertThat(results.get(0).title, is("Desert Strike: Return to the Gulf"));
+        assertThat(results.get(19).title, is("Burntime"));
+
+        query.setSort("Date last updated");
+        results = queryCall(query);
+        assertThat(results.get(0).title, is("Blanda"));
+        assertThat(results.get(19).title, is("Space Combat"));
+
+        query.setSort("id");
+        results = queryCall(query);
+        assertThat(results.get(0).title, is("Desert Strike: Return to the Gulf"));
+        assertThat(results.get(19).title, is("Burntime"));
+
+        query.setSort("Number of user reviews");
         results = queryCall(query);
         assertThat(results.get(0).title, is("Terminators: The Video Game"));
     }
