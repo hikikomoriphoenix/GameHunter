@@ -125,6 +125,34 @@ public class GiantBombTest {
         results = queryCall(query);
         assertThat(results.get(0).title, is("Metal Slug X: Super Vehicle - 001"));
         assertThat(results.get(19).title, is("Comix Zone"));
+
+        // Test platform filter with sort
+        query.setSort("Name");
+        query.setOrder(Query.Order.DESCENDING);
+        results = queryCall(query);
+        assertThat(results.get(0).title, is("Zyon"));
+        assertThat(results.get(19).title, is("Zombie Driver"));
+
+        // Test platform filter with sort and release year filter
+        query.setReleaseYear(2018);
+        query.setSort("Original release date");
+        query.setOrder(Query.Order.ASCENDING);
+        results = queryCall(query);
+        assertThat(results.get(0).title, is("Pathfinder Duels"));
+        assertThat(results.get(0).releaseDate, is("2018-01-04 00:00:00"));
+        assertThat(results.get(19).title, is("Dx2 Shin Megami Tensei: Liberation"));
+        assertThat(results.get(19).releaseDate, is("2018-01-21 00:00:00"));
+
+        // Test platform filter with release year
+        query = new Query()
+                .setFields(fields)
+                .setPlatformFilter("PC")
+                .setReleaseYear(2017);
+        results = queryCall(query);
+        assertThat(results.get(0).title, is("Flying Tigers: Shadows Over China"));
+        assertThat(results.get(0).releaseDate, is("2017-05-29 00:00:00"));
+        assertThat(results.get(19).title, is("River City Ransom: Underground"));
+        assertThat(results.get(19).releaseDate, is("2017-02-27 00:00:00"));
     }
 
     @Test
