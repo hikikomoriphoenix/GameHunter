@@ -185,6 +185,64 @@ public class GiantBombTest {
         results = queryCall(query);
         assertThat(results.get(0).title, is("Star Traders"));
         assertThat(results.get(19).title, is("Rust Buccaneers"));
+
+        // Test if fromYear and toYear are ignored if releaseYear is set
+        query.setFromYear(2018);
+        query.setToYear(2020);
+        results = queryCall(query);
+        assertThat(results.get(0).title, is("Star Traders"));
+        assertThat(results.get(19).title, is("Rust Buccaneers"));
+
+        query.setSort("Original release date");
+        query.setOrder(Query.Order.ASCENDING);
+        results = queryCall(query);
+        assertThat(results.get(0).title, is("Riajuu Plus ver. Komatsuzaki Kaname"));
+        assertThat(results.get(0).releaseDate, is("2013-01-01 00:00:00"));
+
+        query.setOrder(Query.Order.DESCENDING);
+        results = queryCall(query);
+        assertThat(results.get(0).releaseDate, is("2013-12-31 00:00:00"));
+
+        // Test with fromYear set and toYear not set
+        query = new Query()
+                .setFields(fields)
+                .setFromYear(2017)
+                .setSort("Original release date")
+                .setOrder(Query.Order.ASCENDING);
+        results = queryCall(query);
+        assertThat(results.get(0).title, is("Big Buck Hunter Arcade"));
+        assertThat(results.get(0).releaseDate, is("2017-01-01 00:00:00"));
+        assertThat(results.get(19).title, is("Saddies: Attack!!"));
+        assertThat(results.get(19).releaseDate, is("2017-01-10 00:00:00"));
+
+        // Test with toYear set and fromYear not set
+        query = new Query()
+                .setFields(fields)
+                .setToYear(2017)
+                .setSort("Original release date")
+                .setOrder(Query.Order.ASCENDING);
+        results = queryCall(query);
+        assertThat(results.get(0).title, is("Billiard Japonais"));
+        assertThat(results.get(0).releaseDate, is("1750-01-01 00:00:00"));
+
+        query.setOrder(Query.Order.DESCENDING);
+        results = queryCall(query);
+        assertThat(results.get(0).releaseDate, is("2017-12-31 00:00:00"));
+
+        // Test with both toYear and fromYear set
+        query = new Query()
+                .setFields(fields)
+                .setFromYear(2015)
+                .setToYear(2017)
+                .setSort("Original release date")
+                .setOrder(Query.Order.ASCENDING);
+        results = queryCall(query);
+        assertThat(results.get(0).title, is("Overture"));
+        assertThat(results.get(0).releaseDate, is("2015-01-01 00:00:00"));
+
+        query.setOrder(Query.Order.DESCENDING);
+        results = queryCall(query);
+        assertThat(results.get(0).releaseDate, is("2017-12-31 00:00:00"));
     }
 
     private List<ResultsItem> queryCall(Query query) {
