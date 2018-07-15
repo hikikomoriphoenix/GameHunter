@@ -240,6 +240,29 @@ public abstract class BaseAPI {
     public abstract Set<String> getThemeFilters();
 
     /**
+     * Computes total number of pages given total results and number of results per page.
+     *
+     * @param resultsPerPage Number of results per page. Should be the same number from that last
+     *                       time the query method was called.
+     * @return the total pages in long
+     */
+    public long getTotalPages(int resultsPerPage) {
+        long totalResults = getTotatResultsFromLastQuery();
+        if ((totalResults % resultsPerPage) > 0) {
+            return (totalResults / resultsPerPage) + 1;
+        } else {
+            return totalResults / resultsPerPage;
+        }
+    }
+
+    /**
+     * Gets the total number of results from last time the query method was called.
+     *
+     * @return total results in long
+     */
+    public abstract long getTotatResultsFromLastQuery();
+
+    /**
      * Queries the game database for games that match the given fields set inside the Query object.
      *
      * @param query an object that contains fields used as parameters for querying the game
