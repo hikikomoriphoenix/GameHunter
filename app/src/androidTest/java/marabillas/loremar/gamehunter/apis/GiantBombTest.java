@@ -82,7 +82,7 @@ public class GiantBombTest {
         String[] choicesArray = new String[choices.size()];
         choices.toArray(choicesArray);
         assertThat(choicesArray[0], is("Date added"));
-        assertThat(choicesArray[6], is("Original game release date"));
+        assertThat(choicesArray[6], is("Original release date"));
     }
 
     @Test
@@ -129,7 +129,7 @@ public class GiantBombTest {
 
     @Test
     public void querySort() {
-        query.setSort("number_of_user_reviews");
+        query.setSort("Number of user reviews");
         query.setOrder(Query.Order.ASCENDING);
         results = queryCall(query);
         assertThat(results.get(0).title, is("Terminators: The Video Game"));

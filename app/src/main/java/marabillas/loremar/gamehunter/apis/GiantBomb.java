@@ -21,7 +21,6 @@ package marabillas.loremar.gamehunter.apis;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
@@ -30,8 +29,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import marabillas.loremar.gamehunter.BuildConfig;
-import marabillas.loremar.gamehunter.GameHunterApp;
-import marabillas.loremar.gamehunter.R;
+import marabillas.loremar.gamehunter.apis.collections.GiantBombCollections;
 import marabillas.loremar.gamehunter.framework.Query;
 import marabillas.loremar.gamehunter.framework.ResultsItem;
 import marabillas.loremar.gamehunter.parsers.FailedToGetFieldException;
@@ -116,10 +114,7 @@ public class GiantBomb extends BaseAPI {
 
     @Override
     public Set<String> getSortChoices() {
-        Set<String> choices = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-        Collections.addAll(choices, GameHunterApp.getInstance().getResources().getStringArray(R
-                .array.apis_giantbomb_sort_choices));
-        return choices;
+        return new GiantBombCollections().getSortChoices().keySet();
     }
 
     @Override
@@ -244,6 +239,7 @@ public class GiantBomb extends BaseAPI {
             // Append sort
             String sortSelection = query.getSort();
             if (sortSelection != null) {
+                sortSelection = new GiantBombCollections().getSortChoices().get(sortSelection);
                 String sort;
                 Query.Order order = query.getOrder();
                 if (order == Query.Order.ASCENDING) {
