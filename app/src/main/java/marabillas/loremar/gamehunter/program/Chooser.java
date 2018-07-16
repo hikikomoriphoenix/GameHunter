@@ -19,15 +19,23 @@
 
 package marabillas.loremar.gamehunter.program;
 
+import marabillas.loremar.gamehunter.ui.activity.MainActivity;
+
 /**
  * This class will manage the selection of sites which hosts the database to be used in searching
  * for video games.
  */
-public class Chooser {
+public class Chooser implements MainActivity.ChooseEventsListener {
+    private MainActivity activity;
+
     /**
      * The site that hosts the video game database
      */
     public enum Site {
         GIANTBOMB
+    }
+
+    public Chooser(MainActivity activity) {
+        this.activity = activity;
     }
 }

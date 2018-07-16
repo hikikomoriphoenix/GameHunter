@@ -31,4 +31,10 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ui_activity_main_choose);
     }
+
+    public interface ChooseEventsListener {
+    }
+
+    public interface SearchEventsListener {
+    }
 }

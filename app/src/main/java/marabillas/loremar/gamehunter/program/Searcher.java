@@ -20,19 +20,23 @@
 package marabillas.loremar.gamehunter.program;
 
 import marabillas.loremar.gamehunter.apis.BaseAPI;
+import marabillas.loremar.gamehunter.ui.activity.MainActivity;
 
 /**
  * This class will manage the page for searching video games.
  */
-public class Searcher {
+public class Searcher implements MainActivity.SearchEventsListener {
+    private MainActivity activity;
     private BaseAPI api;
 
     /**
      * Initializes this class with the selected site's API
      *
+     * @param activity the activity that manages the search screen
      * @param api the API of the selected site.
      */
-    public Searcher(BaseAPI api) {
+    public Searcher(MainActivity activity, BaseAPI api) {
+        this.activity = activity;
         this.api = api;
     }
 }
