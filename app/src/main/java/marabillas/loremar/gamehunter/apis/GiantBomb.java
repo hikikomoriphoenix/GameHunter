@@ -38,6 +38,7 @@ import marabillas.loremar.gamehunter.parsers.json.JSON;
 import marabillas.loremar.gamehunter.parsers.json.JSONParser;
 import marabillas.loremar.gamehunter.parsers.json.JSON_Array;
 
+import static marabillas.loremar.gamehunter.utils.LogUtils.logError;
 import static marabillas.loremar.gamehunter.utils.StringUtils.encodeURL;
 
 /**
@@ -46,6 +47,7 @@ import static marabillas.loremar.gamehunter.utils.StringUtils.encodeURL;
 public class GiantBomb extends BaseAPI {
     private final String KEY = BuildConfig.giantbomb_api_key;
     private Map<String, Integer> platforms;
+    private long totalResultsFromLastQuery;
 
     @Override
     protected Set<Feature> configure() {
@@ -120,6 +122,11 @@ public class GiantBomb extends BaseAPI {
     @Override
     public Set<String> getThemeFilters() {
         return null;
+    }
+
+    @Override
+    public long getTotatResultsFromLastQuery() {
+        return totalResultsFromLastQuery;
     }
 
     @Override
@@ -256,6 +263,14 @@ public class GiantBomb extends BaseAPI {
             url = sb.toString();
         }
         JSON data = getData(url);
+
+        try {
+            totalResultsFromLastQuery = data.getLong("number_of_total_results");
+        } catch (FailedToGetFieldException e) {
+            totalResultsFromLastQuery = -1;
+            logError("Can't retrieve number of total results.\n" + e.getMessage());
+        }
+
         return getResults(data, fields);
     }
 
@@ -307,6 +322,12 @@ public class GiantBomb extends BaseAPI {
             }
 
             results.add(resultsItem);
+        }
+
+        // If total results was not retrieved, set the value to the number of results in the
+        // current page
+        if (totalResultsFromLastQuery < 0) {
+            totalResultsFromLastQuery = results.size();
         }
 
         return results;

@@ -253,4 +253,12 @@ public class GiantBombTest {
             return new ArrayList<>();
         }
     }
+
+    @Test
+    public void testGetTotalResultsFromLastQuery() {
+        query.setReleaseYear(2000);
+        queryCall(query);
+        assertThat(api.getTotatResultsFromLastQuery(), is(1360L));
+        assertThat(api.getTotalPages(20), is(68L));
+    }
 }
