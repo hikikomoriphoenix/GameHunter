@@ -24,4 +24,10 @@ package marabillas.loremar.gamehunter.program;
  * for video games.
  */
 public class Chooser {
+    /**
+     * The site that hosts the video game database
+     */
+    public enum Site {
+        GIANTBOMB
+    }
 }
