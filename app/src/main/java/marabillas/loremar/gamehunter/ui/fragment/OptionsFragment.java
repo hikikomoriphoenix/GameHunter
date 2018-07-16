@@ -17,18 +17,13 @@
  *     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-package marabillas.loremar.gamehunter.ui.activity;
+package marabillas.loremar.gamehunter.ui.fragment;
 
-import android.app.Activity;
-import android.os.Bundle;
+import android.app.Fragment;
 
-import marabillas.loremar.gamehunter.R;
-
-public class MainActivity extends Activity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.ui_activity_main_choose);
-    }
+/**
+ * This fragment displays various options like search bar, filter, and sort, for finding video
+ * games.
+ */
+public class OptionsFragment extends Fragment {
 }
