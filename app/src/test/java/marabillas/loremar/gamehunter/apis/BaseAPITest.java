@@ -71,6 +71,11 @@ public class BaseAPITest {
             }
 
             @Override
+            public long getTotatResultsFromLastQuery() {
+                return 0;
+            }
+
+            @Override
             public List<ResultsItem> query(Query query) {
                 return null;
             }
@@ -100,5 +105,47 @@ public class BaseAPITest {
         assertThat(api.hasSearchSortByReversible(), is(true));
         assertThat(api.hasSearchPages(), is(true));
         assertThat(api.hasSearchResultsPerPage(), is(true));
+    }
+
+    @Test
+    public void testGetTotalPages() {
+        BaseAPI api = new BaseAPI() {
+            @Override
+            protected Set<Feature> configure() {
+                return null;
+            }
+
+            @Override
+            public Set<String> getGenreFilters() {
+                return null;
+            }
+
+            @Override
+            public Set<String> getPlatformFilters() {
+                return null;
+            }
+
+            @Override
+            public Set<String> getSortChoices() {
+                return null;
+            }
+
+            @Override
+            public Set<String> getThemeFilters() {
+                return null;
+            }
+
+            @Override
+            public long getTotatResultsFromLastQuery() {
+                return 251;
+            }
+
+            @Override
+            public List<ResultsItem> query(Query query) {
+                return null;
+            }
+        };
+
+        assertThat(api.getTotalPages(10), is(26L));
     }
 }
