@@ -28,8 +28,8 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
-import marabillas.loremar.gamehunter.framework.Query;
-import marabillas.loremar.gamehunter.framework.ResultsItem;
+import marabillas.loremar.gamehunter.program.Query;
+import marabillas.loremar.gamehunter.program.ResultsItem;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;

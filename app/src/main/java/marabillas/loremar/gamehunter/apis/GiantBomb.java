@@ -30,13 +30,13 @@ import java.util.TreeSet;
 
 import marabillas.loremar.gamehunter.BuildConfig;
 import marabillas.loremar.gamehunter.apis.collections.GiantBombCollections;
-import marabillas.loremar.gamehunter.framework.Query;
-import marabillas.loremar.gamehunter.framework.ResultsItem;
 import marabillas.loremar.gamehunter.parsers.FailedToGetFieldException;
 import marabillas.loremar.gamehunter.parsers.FailedToParseException;
 import marabillas.loremar.gamehunter.parsers.json.JSON;
 import marabillas.loremar.gamehunter.parsers.json.JSONParser;
 import marabillas.loremar.gamehunter.parsers.json.JSON_Array;
+import marabillas.loremar.gamehunter.program.Query;
+import marabillas.loremar.gamehunter.program.ResultsItem;
 
 import static marabillas.loremar.gamehunter.utils.LogUtils.logError;
 import static marabillas.loremar.gamehunter.utils.StringUtils.encodeURL;

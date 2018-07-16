@@ -17,7 +17,7 @@
  *     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-package marabillas.loremar.gamehunter.framework;
+package marabillas.loremar.gamehunter.program;
 
 /**
  * This class is meant to store the details of each result when querying through any game database

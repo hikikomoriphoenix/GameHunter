@@ -17,21 +17,11 @@
  *     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-package marabillas.loremar.gamehunter;
+package marabillas.loremar.gamehunter.program;
 
-import org.junit.Test;
-
-import marabillas.loremar.gamehunter.program.GameHunterApp;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
-public class GameHunterAppTest {
-
-    @Test
-    public void getInstance() {
-        GameHunterApp app = GameHunterApp.getInstance();
-        assertThat(app.getApplicationContext().getPackageName(), is("marabillas.loremar" +
-                ".gamehunter"));
-    }
+/**
+ * This class will manage the selection of sites which hosts the database to be used in searching
+ * for video games.
+ */
+public class Chooser {
 }
