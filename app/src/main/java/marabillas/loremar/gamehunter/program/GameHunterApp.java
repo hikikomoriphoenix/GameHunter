@@ -21,16 +21,22 @@ package marabillas.loremar.gamehunter.program;
 
 import android.app.Application;
 
+import java.util.List;
+
+import marabillas.loremar.gamehunter.ui.activity.MainActivity;
+
 /**
  * GameHunter's main application class
  */
 public class GameHunterApp extends Application {
     private static GameHunterApp thisInstance;
+    private List<ActivityChangeListener> activityChangeListeners;
 
     @Override
     public void onCreate() {
         super.onCreate();
         thisInstance = this;
+        new Chooser();
     }
 
     /**
@@ -40,5 +46,23 @@ public class GameHunterApp extends Application {
      */
     public static GameHunterApp getInstance() {
         return thisInstance;
+    }
+
+    public void addActivityChangeListener(ActivityChangeListener activityChangeListener) {
+        activityChangeListeners.add(activityChangeListener);
+    }
+
+    public void removeActivityChangeListner(ActivityChangeListener activityChangeListener) {
+        activityChangeListeners.remove(activityChangeListener);
+    }
+
+    public void setActivity(MainActivity activity) {
+        for (ActivityChangeListener activityChangeListener : activityChangeListeners) {
+            activityChangeListener.onActivityChange(activity);
+        }
+    }
+
+    public interface ActivityChangeListener {
+        void onActivityChange(MainActivity activity);
     }
 }

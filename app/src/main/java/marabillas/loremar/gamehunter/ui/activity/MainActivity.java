@@ -23,13 +23,21 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import marabillas.loremar.gamehunter.R;
+import marabillas.loremar.gamehunter.program.GameHunterApp;
 
 public class MainActivity extends Activity {
+    private ChooseEventsListener chooseEventsListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ui_activity_main_choose);
+
+        GameHunterApp.getInstance().setActivity(this);
+    }
+
+    public void setChooseEventsListener(ChooseEventsListener chooseEventsListener) {
+        this.chooseEventsListener = chooseEventsListener;
     }
 
     public interface ChooseEventsListener {

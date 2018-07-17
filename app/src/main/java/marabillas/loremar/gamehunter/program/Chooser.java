@@ -25,7 +25,7 @@ import marabillas.loremar.gamehunter.ui.activity.MainActivity;
  * This class will manage the selection of sites which hosts the database to be used in searching
  * for video games.
  */
-public class Chooser implements MainActivity.ChooseEventsListener {
+public class Chooser implements MainActivity.ChooseEventsListener, GameHunterApp.ActivityChangeListener {
     private MainActivity activity;
 
     /**
@@ -35,7 +35,13 @@ public class Chooser implements MainActivity.ChooseEventsListener {
         GIANTBOMB
     }
 
-    public Chooser(MainActivity activity) {
+    Chooser() {
+        GameHunterApp.getInstance().addActivityChangeListener(this);
+    }
+
+    @Override
+    public void onActivityChange(MainActivity activity) {
         this.activity = activity;
+        this.activity.setChooseEventsListener(this);
     }
 }
