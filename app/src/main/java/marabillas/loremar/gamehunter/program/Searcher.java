@@ -38,6 +38,7 @@ public class Searcher implements MainActivity.SearchEventsListener, GameHunterAp
      */
     Searcher(MainActivity activity, BaseAPI api) {
         this.activity = activity;
+        this.activity.setSearchEventsListener(this);
         this.api = api;
         GameHunterApp.getInstance().addActivityChangeListener(this);
     }
@@ -45,5 +46,6 @@ public class Searcher implements MainActivity.SearchEventsListener, GameHunterAp
     @Override
     public void onActivityChange(MainActivity activity) {
         this.activity = activity;
+        this.activity.setSearchEventsListener(this);
     }
 }

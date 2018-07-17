@@ -28,6 +28,7 @@ import marabillas.loremar.gamehunter.program.GameHunterApp;
 
 public class MainActivity extends Activity {
     private ChooseEventsListener chooseEventsListener;
+    private SearchEventsListener searchEventsListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,10 @@ public class MainActivity extends Activity {
 
     public void setChooseEventsListener(ChooseEventsListener chooseEventsListener) {
         this.chooseEventsListener = chooseEventsListener;
+    }
+
+    public void setSearchEventsListener(SearchEventsListener searchEventsListener) {
+        this.searchEventsListener = searchEventsListener;
     }
 
     public interface ChooseEventsListener {
