@@ -22,9 +22,14 @@ package marabillas.loremar.gamehunter.ui.activity;
 import android.app.Activity;
 import android.os.Bundle;
 
+import java.util.List;
+import java.util.Set;
+
 import marabillas.loremar.gamehunter.R;
 import marabillas.loremar.gamehunter.program.Chooser;
 import marabillas.loremar.gamehunter.program.GameHunterApp;
+import marabillas.loremar.gamehunter.program.Query;
+import marabillas.loremar.gamehunter.program.ResultsItem;
 
 public class MainActivity extends Activity {
     private ChooseEventsListener chooseEventsListener;
@@ -46,10 +51,43 @@ public class MainActivity extends Activity {
         this.searchEventsListener = searchEventsListener;
     }
 
+    public void displayError(String message) {
+    }
+
+    public void updateResults(List<ResultsItem> results) {
+    }
+
     public interface ChooseEventsListener {
         void choose(Chooser.Site site);
     }
 
     public interface SearchEventsListener {
+        void close();
+
+        void goForQuery();
+
+        void onKeyWordChange(String keyword);
+
+        void onFieldsChange(Set<Query.Field> fields);
+
+        void onPlatformFilterChange(String platformFilter);
+
+        void onGenreFilterChange(String genreFilter);
+
+        void OnThemeFilterChange(String themeFilter);
+
+        void onReleaseYearChange(int releaseYear);
+
+        void onFromYearChange(int fromYear);
+
+        void onToYeatChange(int toYear);
+
+        void onSortChange(String sort);
+
+        void onOrderChange(Query.Order order);
+
+        void onResultsPerPageChange(int resultsPerPage);
+
+        void onPageNumberChange(int pageNumber);
     }
 }

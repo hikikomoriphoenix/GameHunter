@@ -40,6 +40,12 @@ public class Chooser implements MainActivity.ChooseEventsListener, GameHunterApp
         GameHunterApp.getInstance().addActivityChangeListener(this);
     }
 
+    Chooser(MainActivity activity) {
+        GameHunterApp.getInstance().addActivityChangeListener(this);
+        this.activity = activity;
+        this.activity.setChooseEventsListener(this);
+    }
+
     @Override
     public void onActivityChange(MainActivity activity) {
         this.activity = activity;
