@@ -25,7 +25,8 @@ import marabillas.loremar.gamehunter.ui.activity.MainActivity;
 /**
  * This class will manage the page for searching video games.
  */
-public class Searcher implements MainActivity.SearchEventsListener {
+public class Searcher implements MainActivity.SearchEventsListener, GameHunterApp
+        .ActivityChangeListener {
     private MainActivity activity;
     private BaseAPI api;
 
@@ -35,8 +36,14 @@ public class Searcher implements MainActivity.SearchEventsListener {
      * @param activity the activity that manages the search screen
      * @param api the API of the selected site.
      */
-    public Searcher(MainActivity activity, BaseAPI api) {
+    Searcher(MainActivity activity, BaseAPI api) {
         this.activity = activity;
         this.api = api;
+        GameHunterApp.getInstance().addActivityChangeListener(this);
+    }
+
+    @Override
+    public void onActivityChange(MainActivity activity) {
+        this.activity = activity;
     }
 }

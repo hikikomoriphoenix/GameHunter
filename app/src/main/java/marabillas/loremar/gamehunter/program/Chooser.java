@@ -19,6 +19,7 @@
 
 package marabillas.loremar.gamehunter.program;
 
+import marabillas.loremar.gamehunter.apis.GiantBomb;
 import marabillas.loremar.gamehunter.ui.activity.MainActivity;
 
 /**
@@ -43,5 +44,16 @@ public class Chooser implements MainActivity.ChooseEventsListener, GameHunterApp
     public void onActivityChange(MainActivity activity) {
         this.activity = activity;
         this.activity.setChooseEventsListener(this);
+    }
+
+    @Override
+    public void choose(Site site) {
+        switch (site) {
+            case GIANTBOMB:
+                new Searcher(activity, new GiantBomb());
+                GameHunterApp.getInstance().removeActivityChangeListner(this);
+                activity.setChooseEventsListener(null);
+                break;
+        }
     }
 }

@@ -23,6 +23,7 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import marabillas.loremar.gamehunter.R;
+import marabillas.loremar.gamehunter.program.Chooser;
 import marabillas.loremar.gamehunter.program.GameHunterApp;
 
 public class MainActivity extends Activity {
@@ -41,6 +42,7 @@ public class MainActivity extends Activity {
     }
 
     public interface ChooseEventsListener {
+        void choose(Chooser.Site site);
     }
 
     public interface SearchEventsListener {
