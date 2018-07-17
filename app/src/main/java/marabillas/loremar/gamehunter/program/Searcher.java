@@ -17,28 +17,26 @@
  *     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-package marabillas.loremar.gamehunter;
+package marabillas.loremar.gamehunter.program;
 
-import android.app.Application;
+import marabillas.loremar.gamehunter.apis.BaseAPI;
+import marabillas.loremar.gamehunter.ui.activity.MainActivity;
 
 /**
- * GameHunter's main application class
+ * This class will manage the page for searching video games.
  */
-public class GameHunterApp extends Application {
-    private static GameHunterApp thisInstance;
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        thisInstance = this;
-    }
+public class Searcher implements MainActivity.SearchEventsListener {
+    private MainActivity activity;
+    private BaseAPI api;
 
     /**
-     * Main singleton getter for this app.
+     * Initializes this class with the selected site's API
      *
-     * @return the app's object as a GameHunterApp instance.
+     * @param activity the activity that manages the search screen
+     * @param api the API of the selected site.
      */
-    public static GameHunterApp getInstance() {
-        return thisInstance;
+    public Searcher(MainActivity activity, BaseAPI api) {
+        this.activity = activity;
+        this.api = api;
     }
 }

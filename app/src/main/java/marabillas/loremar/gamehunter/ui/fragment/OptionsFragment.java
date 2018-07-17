@@ -17,21 +17,13 @@
  *     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-package marabillas.loremar.gamehunter;
+package marabillas.loremar.gamehunter.ui.fragment;
 
-import org.junit.Test;
+import android.app.Fragment;
 
-import marabillas.loremar.gamehunter.program.GameHunterApp;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
-public class GameHunterAppTest {
-
-    @Test
-    public void getInstance() {
-        GameHunterApp app = GameHunterApp.getInstance();
-        assertThat(app.getApplicationContext().getPackageName(), is("marabillas.loremar" +
-                ".gamehunter"));
-    }
+/**
+ * This fragment displays various options like search bar, filter, and sort, for finding video
+ * games.
+ */
+public class OptionsFragment extends Fragment {
 }
