@@ -21,16 +21,22 @@ package marabillas.loremar.gamehunter.program;
 
 import android.app.Application;
 
+import java.util.List;
+
+import marabillas.loremar.gamehunter.ui.activity.MainActivity;
+
 /**
  * GameHunter's main application class
  */
 public class GameHunterApp extends Application {
     private static GameHunterApp thisInstance;
+    private List<ActivityChangeListener> activityChangeListeners;
 
     @Override
     public void onCreate() {
         super.onCreate();
         thisInstance = this;
+        new Chooser();
     }
 
     /**
@@ -40,5 +46,49 @@ public class GameHunterApp extends Application {
      */
     public static GameHunterApp getInstance() {
         return thisInstance;
+    }
+
+    /**
+     * Adds a listener to MainActivity's onCreate call events
+     *
+     * @param activityChangeListener an object implementing ActivityChangeListener
+     */
+    public void addActivityChangeListener(ActivityChangeListener activityChangeListener) {
+        activityChangeListeners.add(activityChangeListener);
+    }
+
+    /**
+     * Removes this listener from activityChangeListeners list. This method should also be called
+     * especially if you want to remove any reference to this listener.
+     *
+     * @param activityChangeListener an object implementing ActivityChangeListener
+     */
+    public void removeActivityChangeListener(ActivityChangeListener activityChangeListener) {
+        activityChangeListeners.remove(activityChangeListener);
+    }
+
+    /**
+     * Sets a new reference to MainActivity
+     *
+     * @param activity new instance of MainActivity
+     */
+    public void setActivity(MainActivity activity) {
+        for (ActivityChangeListener activityChangeListener : activityChangeListeners) {
+            activityChangeListener.onActivityChange(activity);
+        }
+    }
+
+    /**
+     * If implemented, the object will be notified when MainActivity calls onCreate passing a new
+     * reference to MainActivity
+     */
+    public interface ActivityChangeListener {
+        /**
+         * Whenever MainActivity's onCreate is called, this listener gets a new reference to
+         * MainActivity
+         *
+         * @param activity new reference to MainActivity
+         */
+        void onActivityChange(MainActivity activity);
     }
 }

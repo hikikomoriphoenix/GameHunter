@@ -19,13 +19,14 @@
 
 package marabillas.loremar.gamehunter.program;
 
+import marabillas.loremar.gamehunter.apis.GiantBomb;
 import marabillas.loremar.gamehunter.ui.activity.MainActivity;
 
 /**
  * This class will manage the selection of sites which hosts the database to be used in searching
  * for video games.
  */
-public class Chooser implements MainActivity.ChooseEventsListener {
+public class Chooser implements MainActivity.ChooseEventsListener, GameHunterApp.ActivityChangeListener {
     private MainActivity activity;
 
     /**
@@ -35,7 +36,39 @@ public class Chooser implements MainActivity.ChooseEventsListener {
         GIANTBOMB
     }
 
-    public Chooser(MainActivity activity) {
+    /**
+     * This constructor should be called before MainActivity's onCreate
+     */
+    Chooser() {
+        GameHunterApp.getInstance().addActivityChangeListener(this);
+    }
+
+    /**
+     * Constructor for Chooser. Sets the Chooser to listen to MainActivity's events when
+     * selecting sites.
+     *
+     * @param activity MainActivity
+     */
+    Chooser(MainActivity activity) {
+        GameHunterApp.getInstance().addActivityChangeListener(this);
         this.activity = activity;
+        this.activity.setChooseEventsListener(this);
+    }
+
+    @Override
+    public void onActivityChange(MainActivity activity) {
+        this.activity = activity;
+        this.activity.setChooseEventsListener(this);
+    }
+
+    @Override
+    public void choose(Site site) {
+        switch (site) {
+            case GIANTBOMB:
+                new Searcher(activity, new GiantBomb());
+                GameHunterApp.getInstance().removeActivityChangeListener(this);
+                activity.setChooseEventsListener(null);
+                break;
+        }
     }
 }
