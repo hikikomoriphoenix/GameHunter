@@ -66,7 +66,7 @@ public class Chooser implements MainActivity.ChooseEventsListener, GameHunterApp
         switch (site) {
             case GIANTBOMB:
                 new Searcher(activity, new GiantBomb());
-                GameHunterApp.getInstance().removeActivityChangeListner(this);
+                GameHunterApp.getInstance().removeActivityChangeListener(this);
                 activity.setChooseEventsListener(null);
                 break;
         }

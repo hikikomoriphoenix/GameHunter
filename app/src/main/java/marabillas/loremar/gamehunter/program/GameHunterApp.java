@@ -63,7 +63,7 @@ public class GameHunterApp extends Application {
      *
      * @param activityChangeListener an object implementing ActivityChangeListener
      */
-    public void removeActivityChangeListner(ActivityChangeListener activityChangeListener) {
+    public void removeActivityChangeListener(ActivityChangeListener activityChangeListener) {
         activityChangeListeners.remove(activityChangeListener);
     }
 

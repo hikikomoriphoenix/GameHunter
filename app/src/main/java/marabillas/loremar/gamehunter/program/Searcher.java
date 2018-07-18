@@ -71,7 +71,7 @@ public class Searcher implements MainActivity.SearchEventsListener, GameHunterAp
         handler.removeCallbacksAndMessages(null);
         thread.interrupt();
         thread.quit();
-        GameHunterApp.getInstance().removeActivityChangeListner(this);
+        GameHunterApp.getInstance().removeActivityChangeListener(this);
         activity.setSearchEventsListener(null);
     }
 
