@@ -58,14 +58,28 @@ public class MainActivity extends Activity {
     }
 
     public interface ChooseEventsListener {
+        /**
+         * This is called when the user has selected a website to search for video games.
+         *
+         * @param site the selected website.
+         */
         void choose(Chooser.Site site);
     }
 
     public interface SearchEventsListener {
+        /**
+         * This is called when the user decides to close the search screen
+         */
         void close();
 
+        /**
+         * This is called when the user wants to query the database.
+         */
         void goForQuery();
 
+        /*
+           The following methods are called when the user changes one of the options
+         */
         void onKeyWordChange(String keyword);
 
         void onFieldsChange(Set<Query.Field> fields);

@@ -36,10 +36,19 @@ public class Chooser implements MainActivity.ChooseEventsListener, GameHunterApp
         GIANTBOMB
     }
 
+    /**
+     * This constructor should be called before MainActivity's onCreate
+     */
     Chooser() {
         GameHunterApp.getInstance().addActivityChangeListener(this);
     }
 
+    /**
+     * Constructor for Chooser. Sets the Chooser to listen to MainActivity's events when
+     * selecting sites.
+     *
+     * @param activity MainActivity
+     */
     Chooser(MainActivity activity) {
         GameHunterApp.getInstance().addActivityChangeListener(this);
         this.activity = activity;
