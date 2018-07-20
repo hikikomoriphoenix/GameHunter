@@ -19,4 +19,6 @@
 
 <resources>
     <string name="app_name">Game Hunter</string>
+    <string name="adapter_website_selection_item_view_logo_content_description">Website</string>
+    <string name="activity_main_choose_instruction">Click one of the thumbnails to immediately search through their database.</string>
 </resources>

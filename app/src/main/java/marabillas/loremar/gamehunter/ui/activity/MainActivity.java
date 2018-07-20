@@ -21,17 +21,23 @@ package marabillas.loremar.gamehunter.ui.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import java.util.List;
 import java.util.Set;
 
 import marabillas.loremar.gamehunter.R;
-import marabillas.loremar.gamehunter.program.Chooser;
 import marabillas.loremar.gamehunter.program.GameHunterApp;
 import marabillas.loremar.gamehunter.program.Query;
 import marabillas.loremar.gamehunter.program.ResultsItem;
+import marabillas.loremar.gamehunter.ui.adapter.WebsiteSelectionAdapter;
 
-public class MainActivity extends Activity {
+import static marabillas.loremar.gamehunter.utils.MeasurementUtils.convertPixelsToDp;
+import static marabillas.loremar.gamehunter.utils.MeasurementUtils.getScreenWidthInPixels;
+
+public class MainActivity extends Activity implements View.OnClickListener {
     private ChooseEventsListener chooseEventsListener;
     private SearchEventsListener searchEventsListener;
 
@@ -51,19 +57,48 @@ public class MainActivity extends Activity {
         this.searchEventsListener = searchEventsListener;
     }
 
+    public void setScreenToWebsiteSelectionScreen() {
+        setContentView(R.layout.activity_main_choose);
+
+        RecyclerView websitesView = findViewById(R.id.activity_main_websites_view);
+
+        // The following code enforces maximum width for each element
+        int screenWidthInPixels = getScreenWidthInPixels();
+        float screenWidthInDp = convertPixelsToDp(screenWidthInPixels, this);
+        int spanCount = (int) (screenWidthInDp / 180);
+        if (screenWidthInDp % 180 > 0) {
+            ++spanCount;
+        }
+
+        websitesView.setLayoutManager(new GridLayoutManager(this, spanCount));
+        websitesView.setAdapter(new WebsiteSelectionAdapter(this));
+    }
+
     public void displayError(String message) {
     }
 
     public void updateResults(List<ResultsItem> results) {
     }
 
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        if (id >= 0) {
+            switch (id) {
+                case R.id.adapter_website_selection_item_view_logo:
+                    chooseEventsListener.choose((String) v.getTag());
+                    break;
+            }
+        }
+    }
+
     public interface ChooseEventsListener {
         /**
          * This is called when the user has selected a website to search for video games.
          *
-         * @param site the selected website.
+         * @param website the selected website
          */
-        void choose(Chooser.Site site);
+        void choose(String website);
     }
 
     public interface SearchEventsListener {

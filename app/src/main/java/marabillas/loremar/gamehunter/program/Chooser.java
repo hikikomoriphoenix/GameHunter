@@ -30,13 +30,6 @@ public class Chooser implements MainActivity.ChooseEventsListener, GameHunterApp
     private MainActivity activity;
 
     /**
-     * The site that hosts the video game database
-     */
-    public enum Site {
-        GIANTBOMB
-    }
-
-    /**
      * This constructor should be called before MainActivity's onCreate
      */
     Chooser() {
@@ -53,18 +46,20 @@ public class Chooser implements MainActivity.ChooseEventsListener, GameHunterApp
         GameHunterApp.getInstance().addActivityChangeListener(this);
         this.activity = activity;
         this.activity.setChooseEventsListener(this);
+        this.activity.setScreenToWebsiteSelectionScreen();
     }
 
     @Override
     public void onActivityChange(MainActivity activity) {
         this.activity = activity;
         this.activity.setChooseEventsListener(this);
+        this.activity.setScreenToWebsiteSelectionScreen();
     }
 
     @Override
-    public void choose(Site site) {
-        switch (site) {
-            case GIANTBOMB:
+    public void choose(String website) {
+        switch (website) {
+            case "Giant Bomb":
                 new Searcher(activity, new GiantBomb());
                 GameHunterApp.getInstance().removeActivityChangeListener(this);
                 activity.setChooseEventsListener(null);
