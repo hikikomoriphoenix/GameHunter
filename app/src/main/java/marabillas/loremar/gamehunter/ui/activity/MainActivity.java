@@ -38,7 +38,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ui_activity_main_choose);
+        setContentView(R.layout.activity_main_choose);
 
         GameHunterApp.getInstance().setActivity(this);
     }
