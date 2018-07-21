@@ -35,6 +35,11 @@ public class MeasurementUtils {
         return displayMetrics.widthPixels;
     }
 
+    /**
+     * @param px      value in pixels to convert
+     * @param context context required to get access to the display metrics
+     * @return calculated value in dp
+     */
     public static float convertPixelsToDp(float px, Context context) {
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();

@@ -39,6 +39,11 @@ import java.util.Set;
 import marabillas.loremar.gamehunter.R;
 import marabillas.loremar.gamehunter.ui.activity.MainActivity;
 
+/**
+ * This adapter is for setting up a grid layout containing thumbnails for the selectable websites
+ * . Clicking a thumbnail would notify the MainActivity that a website has been selected. The  user
+ * can also click the link below the thumbnail to go to the website's homepage.
+ */
 public class WebsiteSelectionAdapter extends RecyclerView.Adapter<WebsiteSelectionAdapter
         .WebsiteSelectionViewHolder> {
     private MainActivity activity;
@@ -49,19 +54,21 @@ public class WebsiteSelectionAdapter extends RecyclerView.Adapter<WebsiteSelecti
 
         websiteButtons = new LinkedHashSet<>();
 
+        // Prepare the data
         Resources resources = this.activity.getResources();
         TypedArray drawables = resources.obtainTypedArray(R.array.arrays_websites_drawables);
         String[] labels = resources.getStringArray(R.array.arrays_websites_labels);
         String[] urls = resources.getStringArray(R.array.arrays_websites_urls);
 
+        // Make sure that each element has a drawable, label, and url
         boolean dl = drawables.length() != labels.length;
         boolean lu = labels.length != urls.length;
-
         if (dl || lu) {
             throw new RuntimeException("The number of elements for selectible websites didn't " +
                     "match.");
         }
 
+        // Populate the data
         for (int i = 0; i < drawables.length(); ++i) {
             WebsiteButton wb = new WebsiteButton();
             wb.drawable = drawables.getDrawable(i);
@@ -70,7 +77,7 @@ public class WebsiteSelectionAdapter extends RecyclerView.Adapter<WebsiteSelecti
             websiteButtons.add(wb);
         }
 
-        drawables.recycle();
+        drawables.recycle(); // Required for TypedArray
     }
 
     @NonNull
@@ -91,9 +98,13 @@ public class WebsiteSelectionAdapter extends RecyclerView.Adapter<WebsiteSelecti
         return websiteButtons.size();
     }
 
+    /**
+     * ViewHolder for each of WebsiteSelectionAdapter's items
+     */
     class WebsiteSelectionViewHolder extends RecyclerView.ViewHolder {
         private ImageView imageView;
         private TextView textView;
+
         WebsiteSelectionViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.adapter_website_selection_item_view_logo);
@@ -102,6 +113,7 @@ public class WebsiteSelectionAdapter extends RecyclerView.Adapter<WebsiteSelecti
         }
 
         void bind(WebsiteButton wb) {
+            // Thumbnail with tag
             imageView.setImageDrawable(wb.drawable);
             String tag = wb.label;
             imageView.setTag(tag);
@@ -115,6 +127,7 @@ public class WebsiteSelectionAdapter extends RecyclerView.Adapter<WebsiteSelecti
         }
     }
 
+    // A single element of the data corresponding to a website for selection
     private class WebsiteButton {
         Drawable drawable;
         String label, url;

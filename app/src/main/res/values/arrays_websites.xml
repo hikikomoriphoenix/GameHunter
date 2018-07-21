@@ -17,7 +17,9 @@
   ~     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
   -->
 
+<!--Resources for website selection screen-->
 <resources>
+    <!--Drawables for websites' thumbnails-->
     <array name="arrays_websites_drawables">
         <item>@drawable/logo_giantbomb</item>
         <item>@drawable/logo_giantbomb</item>
@@ -29,6 +31,7 @@
         <item>@drawable/logo_giantbomb</item>
     </array>
 
+    <!--Website titles-->
     <string-array name="arrays_websites_labels">
         <item>Giant Bomb</item>
         <item>Giant Bomb</item>
@@ -40,6 +43,7 @@
         <item>Giant Bomb</item>
     </string-array>
 
+    <!--Links to websites-->
     <string-array name="arrays_websites_urls">
         <item>https://www.giantbomb.com</item>
         <item>https://www.giantbomb.com</item>

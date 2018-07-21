@@ -57,9 +57,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
         this.searchEventsListener = searchEventsListener;
     }
 
+    /**
+     * Sets up the layout of the screen for website selection. Should be called in MainActivity's
+     * onCreate along with setChooseEventsListener after a configuration change while the user is
+     * selecting website.
+     */
     public void setScreenToWebsiteSelectionScreen() {
         setContentView(R.layout.activity_main_choose);
 
+        // Set up the grid layout for selectable websites
         RecyclerView websitesView = findViewById(R.id.activity_main_websites_view);
 
         // The following code enforces maximum width for each element
@@ -85,6 +91,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
         int id = v.getId();
         if (id >= 0) {
             switch (id) {
+                // If the user clicks a thumbnail, then a website has been chosen. The Chooser
+                // should handle this choose event based on the tag set on the ImageView,
+                // corresponding to the selected website.
                 case R.id.adapter_website_selection_item_view_logo:
                     chooseEventsListener.choose((String) v.getTag());
                     break;

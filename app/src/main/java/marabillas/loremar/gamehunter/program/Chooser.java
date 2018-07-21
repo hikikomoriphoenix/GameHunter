@@ -58,9 +58,14 @@ public class Chooser implements MainActivity.ChooseEventsListener, GameHunterApp
 
     @Override
     public void choose(String website) {
+        //Switch to the search screen to start finding games in the selected website's database.
+        // A new Searcher instance is created to listen to user events and an instance of an API
+        // class corresponding to the selected website's API will handle queries for the database.
         switch (website) {
             case "Giant Bomb":
                 new Searcher(activity, new GiantBomb());
+
+                // Remove references to this instance
                 GameHunterApp.getInstance().removeActivityChangeListener(this);
                 activity.setChooseEventsListener(null);
                 break;
