@@ -21,6 +21,7 @@ package marabillas.loremar.gamehunter.program;
 
 import android.app.Application;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import marabillas.loremar.gamehunter.ui.activity.MainActivity;
@@ -36,6 +37,7 @@ public class GameHunterApp extends Application {
     public void onCreate() {
         super.onCreate();
         thisInstance = this;
+        activityChangeListeners = new ArrayList<>();
         new Chooser();
     }
 
