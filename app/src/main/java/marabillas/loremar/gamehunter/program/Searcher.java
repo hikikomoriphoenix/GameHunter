@@ -77,26 +77,15 @@ public class Searcher implements MainActivity.SearchEventsListener, GameHunterAp
 
     @Override
     public void goForQuery() {
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    final List<ResultsItem> results = api.query(currentValues);
-                    activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            activity.updateResults(results);
-                        }
-                    });
-                } catch (final BaseAPIFailedQueryException e) {
-                    activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            activity.displayError("Query failed!");
-                            logError(e.getMessage());
-                        }
-                    });
-                }
+        handler.post(() -> {
+            try {
+                final List<ResultsItem> results = api.query(currentValues);
+                activity.runOnUiThread(() -> activity.updateResults(results));
+            } catch (final BaseAPIFailedQueryException e) {
+                activity.runOnUiThread(() -> {
+                    activity.displayError("Query failed!");
+                    logError(e.getMessage());
+                });
             }
         });
     }
