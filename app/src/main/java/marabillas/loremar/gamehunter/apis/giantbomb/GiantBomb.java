@@ -17,7 +17,7 @@
  *     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-package marabillas.loremar.gamehunter.apis;
+package marabillas.loremar.gamehunter.apis.giantbomb;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
@@ -31,7 +31,10 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import marabillas.loremar.gamehunter.BuildConfig;
-import marabillas.loremar.gamehunter.apis.collections.GiantBombCollections;
+import marabillas.loremar.gamehunter.apis.BaseAPI;
+import marabillas.loremar.gamehunter.apis.BaseAPIFailedQueryException;
+import marabillas.loremar.gamehunter.apis.BaseAPIGetterFailedToGetException;
+import marabillas.loremar.gamehunter.apis.Feature;
 import marabillas.loremar.gamehunter.parsers.FailedToGetFieldException;
 import marabillas.loremar.gamehunter.parsers.FailedToParseException;
 import marabillas.loremar.gamehunter.parsers.json.JSON;

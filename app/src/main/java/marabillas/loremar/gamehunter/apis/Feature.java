@@ -19,7 +19,7 @@
 
 package marabillas.loremar.gamehunter.apis;
 
-enum Feature {
+public enum Feature {
     /**
      * This feature means the API can provide thumbnails for each game in the results
      */

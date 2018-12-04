@@ -19,7 +19,7 @@
 
 package marabillas.loremar.gamehunter.program;
 
-import marabillas.loremar.gamehunter.apis.GiantBomb;
+import marabillas.loremar.gamehunter.apis.giantbomb.GiantBomb;
 import marabillas.loremar.gamehunter.ui.activity.MainActivity;
 
 /**

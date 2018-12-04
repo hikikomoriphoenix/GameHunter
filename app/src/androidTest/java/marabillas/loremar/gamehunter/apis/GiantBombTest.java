@@ -28,6 +28,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
+import marabillas.loremar.gamehunter.apis.giantbomb.GiantBomb;
 import marabillas.loremar.gamehunter.program.Query;
 import marabillas.loremar.gamehunter.program.ResultsItem;
 
