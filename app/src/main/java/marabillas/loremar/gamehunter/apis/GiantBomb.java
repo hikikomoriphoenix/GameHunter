@@ -19,6 +19,8 @@
 
 package marabillas.loremar.gamehunter.apis;
 
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -37,6 +39,8 @@ import marabillas.loremar.gamehunter.parsers.json.JSONParser;
 import marabillas.loremar.gamehunter.parsers.json.JSON_Array;
 import marabillas.loremar.gamehunter.program.Query;
 import marabillas.loremar.gamehunter.program.ResultsItem;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import static marabillas.loremar.gamehunter.utils.LogUtils.logError;
 import static marabillas.loremar.gamehunter.utils.StringUtils.encodeURL;
@@ -48,6 +52,18 @@ public class GiantBomb extends BaseAPI {
     private final String KEY = BuildConfig.giantbomb_api_key;
     private Map<String, Integer> platforms;
     private long totalResultsFromLastQuery;
+
+    private GiantBombInterface api;
+
+    public GiantBomb() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://www.giantbomb.com/api/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build();
+
+        api = retrofit.create(GiantBombInterface.class);
+    }
 
     @Override
     protected Set<Feature> configure() {
