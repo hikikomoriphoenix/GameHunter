@@ -19,24 +19,23 @@
 
 package marabillas.loremar.gamehunter.apis.giantbomb;
 
-import java.util.TreeMap;
-
 import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
 public interface GiantBombInterface {
     @GET("platforms/?api_key={KEY}&format=json&field_list=name,id&offset={OFFSET}")
-    Observable<TreeMap<String, Integer>> getPlatformFilters(@Path("KEY") String key, @Path
+    Observable<GiantBombResponse<GiantBombPlatformFilter>> getPlatformFilters(@Path("KEY") String key, @Path
             ("OFFSET") int offset);
 
     @GET("search/?api_key={KEY}&format=json&resources=game&query={KEYWORD}&limit={LIMIT}&page" +
             "={PAGE}")
-    Observable<GiantBombResponse> search(@Path("KEY") String key, @Path("KEYWORD") String
+    Observable<GiantBombResponse<GiantBombQueryResultsItem>> search(@Path("KEY") String key, @Path("KEYWORD") String
             keyword, @Path("LIMIT") int limit, @Path("PAGE") int page);
 
     @GET("games/?api_key={KEY}&format=json&limit={LIMIT}&page={PAGE}{FILTER}{SORT}")
-    Observable<GiantBombResponse> getGames(@Path("KEY") String key, @Path("LIMIT") int limit,
-                                           @Path("PAGE") int page, @Path("FILTER") String filter,
-                                           @Path("SORT") String sort);
+    Observable<GiantBombResponse<GiantBombQueryResultsItem>> getGames(@Path("KEY") String key, @Path("LIMIT")
+            int limit,
+                                                                      @Path("PAGE") int page, @Path("FILTER") String filter,
+                                                                      @Path("SORT") String sort);
 }

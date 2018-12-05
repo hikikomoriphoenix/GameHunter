@@ -24,7 +24,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-public class GiantBombResponse {
+public class GiantBombResponse<RI extends GiantBombResultsItem> {
     @SerializedName("status_code")
     private int statusCode;
 
@@ -45,7 +45,7 @@ public class GiantBombResponse {
 
     @SerializedName("results")
     @Expose
-    private ArrayList<GiantBombResultsItem> results;
+    private ArrayList<RI> results;
 
     public int getStatusCode() {
         return statusCode;
@@ -95,11 +95,11 @@ public class GiantBombResponse {
         this.offset = offset;
     }
 
-    public ArrayList<GiantBombResultsItem> getResults() {
+    public ArrayList<RI> getResults() {
         return results;
     }
 
-    public void setResults(ArrayList<GiantBombResultsItem> results) {
+    public void setResults(ArrayList<RI> results) {
         this.results = results;
     }
 }

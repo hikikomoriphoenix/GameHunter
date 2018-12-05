@@ -30,10 +30,14 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import io.reactivex.Observer;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import marabillas.loremar.gamehunter.BuildConfig;
 import marabillas.loremar.gamehunter.apis.BaseAPI;
 import marabillas.loremar.gamehunter.apis.BaseAPIFailedQueryException;
-import marabillas.loremar.gamehunter.apis.BaseAPIGetterFailedToGetException;
 import marabillas.loremar.gamehunter.apis.Feature;
 import marabillas.loremar.gamehunter.parsers.FailedToGetFieldException;
 import marabillas.loremar.gamehunter.parsers.FailedToParseException;
@@ -83,54 +87,94 @@ public class GiantBomb extends BaseAPI {
     }
 
     @Override
-    public Set<String> getPlatformFilters() throws BaseAPIGetterFailedToGetException {
+    public void getPlatformFilters() {
         platforms = new TreeMap<>();
-        Set<String> platformFilters = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        api
+                .getPlatformFilters(KEY, 0)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe(new Observer<GiantBombResponse<GiantBombPlatformFilter>>() {
+                    private Disposable disposable;
+                    private int page = 0;
+                    Set<String> platformFilters = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
 
-        int page = 0;
-        while (true) {
-            String url = "https://www.giantbomb.com/api/platforms/?api_key=" + KEY +
-                    "&format=json&field_list=name,id&offset=" + (page * 100);
-            JSON json;
-            try {
-                json = new JSONParser().parse(url);
-            } catch (FailedToParseException e) {
-                throw new BaseAPIGetterFailedToGetException(e);
-            }
-
-            JSON_Array results;
-            try {
-                results = json.getArray("results");
-
-                if (results.getCount() <= 0) {
-                    break;
-                }
-
-                for (int i = 0; i < results.getCount(); ++i) {
-                    String name;
-                    int id;
-                    try {
-                        JSON platform = results.getObject(i);
-                        name = platform.getString("name");
-                        id = platform.getInt("id");
-                    } catch (FailedToGetFieldException e) {
-                        continue;
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        if (disposable != null && !disposable.isDisposed()) {
+                            disposable.dispose();
+                        }
+                        disposable = d;
+                        // TODO Add disposable to be disposed later
                     }
 
-                    platforms.put(name, id);
-                    platformFilters.add(name);
-                }
+                    @Override
+                    public void onNext(GiantBombResponse<GiantBombPlatformFilter>
+                                               giantBombPlatformFilterGiantBombResponse) {
+                        ArrayList<GiantBombPlatformFilter> results =
+                                giantBombPlatformFilterGiantBombResponse.getResults();
 
-                if (results.getCount() < 100) {
-                    break;
-                }
-            } catch (FailedToGetFieldException e) {
-                break;
-            }
-            ++page;
+                        boolean morePlatformFiltersToGet = savePlatformFilters(results,
+                                platformFilters);
+                        if (!morePlatformFiltersToGet) {
+                            initiateCallbackToReturnPlatformFilters(platformFilters);
+                            // TODO Use RxBus for callback
+                            disposable.dispose();
+                            return;
+                        }
+
+                        // Get platform filters for next page.
+                        ++page;
+                        api
+                                .getPlatformFilters(KEY, page * 100)
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(Schedulers.io())
+                                .subscribe(this);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        disposable.dispose();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        disposable.dispose();
+                    }
+                });
+    }
+
+    private boolean savePlatformFilters(ArrayList<GiantBombPlatformFilter> results, Set<String>
+            platformFilters) {
+        // If no more platform filters, proceed to finish.
+        if (results.size() <= 0) {
+            return false;
         }
 
-        return platformFilters;
+        // Get each platform filter and add to collection.
+        for (GiantBombPlatformFilter result :
+                results) {
+            String name = result.getName();
+            int id = result.getId();
+
+            platforms.put(name, id);
+            platformFilters.add(name);
+        }
+
+        // If number of returned platform filters is less than 100, then there is
+        // no more platform filter to get. Proceed to finish.
+        return results.size() >= 100;
+    }
+
+    private void initiateCallbackToReturnPlatformFilters(Set<String> platformFilters) {
+        // TODO Use RxBus instead of this method.
+        Disposable disposable = Single
+                .just(platformFilters)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(strings -> {
+                    // Callback
+                });
+        // Add disposable to be disposed later.
     }
 
     @Override
