@@ -19,11 +19,9 @@
 
 package marabillas.loremar.gamehunter.apis;
 
-import java.util.List;
 import java.util.Set;
 
 import marabillas.loremar.gamehunter.program.Query;
-import marabillas.loremar.gamehunter.program.ResultsItem;
 
 /**
  * This class attempts to wrap any available API from any website with a video games database. It
@@ -111,10 +109,9 @@ public abstract class BaseAPI {
      *
      * @param query an object that contains fields used as parameters for querying the game
      *              database.
-     * @return the results as a list of ResultsItem instances containing the required fields as
-     * set in the Query instance passed to the query method.
+     * @param callback APICallback that will be notified for results.
      */
-    public abstract List<ResultsItem> query(Query query) throws BaseAPIFailedQueryException;
+    public abstract void query(Query query, APICallback callback);
 
     /**
      * Checks if {@link Feature#DESCRIPTION} is supported.

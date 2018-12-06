@@ -19,9 +19,12 @@
 
 package marabillas.loremar.gamehunter.apis.giantbomb;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 
 public interface GiantBombInterface {
     @GET("platforms/?format=json&field_list=name,id")
@@ -32,18 +35,11 @@ public interface GiantBombInterface {
 
     @GET("search/?format=json&resources=game")
     Observable<GiantBombResponse<GiantBombQueryResultsItem>> search(
-            @Query("api_key") String key,
-            @Query("query") String keyword,
-            @Query("limit") int limit,
-            @Query("page") int page
+            @QueryMap Map<String, String> queryMap
     );
 
     @GET("games/?format=json")
     Observable<GiantBombResponse<GiantBombQueryResultsItem>> getGames(
-            @Query("api_key") String key,
-            @Query("limit") int limit,
-            @Query("page") int page,
-            @Query("filter") String filter,
-            @Query("sort") String sort
+            @QueryMap Map<String, String> queryMap
     );
 }

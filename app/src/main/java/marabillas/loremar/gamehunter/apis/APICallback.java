@@ -19,11 +19,16 @@
 
 package marabillas.loremar.gamehunter.apis;
 
+import java.util.List;
 import java.util.Set;
+
+import marabillas.loremar.gamehunter.program.ResultsItem;
 
 /**
  * Callback to notify about results from API requests.
  */
 public interface APICallback {
     void onPlatformFiltersObtained(Set<String> platformFilters);
+
+    void onQueryResults(List<ResultsItem> results);
 }

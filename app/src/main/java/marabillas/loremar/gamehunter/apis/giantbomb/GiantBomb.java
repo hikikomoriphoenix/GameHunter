@@ -24,12 +24,14 @@ import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -38,17 +40,11 @@ import marabillas.loremar.gamehunter.apis.APICallback;
 import marabillas.loremar.gamehunter.apis.BaseAPI;
 import marabillas.loremar.gamehunter.apis.BaseAPIFailedQueryException;
 import marabillas.loremar.gamehunter.apis.Feature;
-import marabillas.loremar.gamehunter.parsers.FailedToGetFieldException;
-import marabillas.loremar.gamehunter.parsers.FailedToParseException;
-import marabillas.loremar.gamehunter.parsers.json.JSON;
-import marabillas.loremar.gamehunter.parsers.json.JSONParser;
-import marabillas.loremar.gamehunter.parsers.json.JSON_Array;
 import marabillas.loremar.gamehunter.program.Query;
 import marabillas.loremar.gamehunter.program.ResultsItem;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static marabillas.loremar.gamehunter.utils.LogUtils.logError;
 import static marabillas.loremar.gamehunter.utils.StringUtils.encodeURL;
 
 /**
@@ -179,9 +175,34 @@ public class GiantBomb extends BaseAPI {
     }
 
     @Override
-    public List<ResultsItem> query(Query query) throws BaseAPIFailedQueryException {
+    public void query(Query query, APICallback callback) {
+        Disposable disposable = Observable.fromCallable(() -> prepareQueryParameters(query))
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .concatMap(queryMap -> {
+                    String keyword = queryMap.get("query");
+                    if (keyword != null) {
+                        return api.search(queryMap);
+                    } else {
+                        return api.getGames(queryMap);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe(response -> {
+                    totalResultsFromLastQuery = response.getNumTotalResults();
+                    List<ResultsItem> results = getResults(response.getResults(), query.getFields
+                            ());
+                    callback.onQueryResults(results);
+                });
+        // TODO Add disposable to be disposed later.
+    }
+
+    private Map<String, String> prepareQueryParameters(Query query) throws
+            BaseAPIFailedQueryException {
+        // Prepare field_list parameter.
         Set<Query.Field> fields = query.getFields();
-        StringBuilder fieldSB = new StringBuilder("&field_list=name");
+        StringBuilder fieldSB = new StringBuilder("name");
         if (fields != null) {
             for (Query.Field field :
                     fields) {
@@ -211,7 +232,7 @@ public class GiantBomb extends BaseAPI {
          * use the 'game' resource. This provides the ability to use filters or to sort results
          * in ascending or descending order based on a selected field.
          */
-        String url;
+        Map<String, String> queryMap = new HashMap<>();
         if (query.getKeyword() != null) {
             String keyword = query.getKeyword();
             try {
@@ -219,35 +240,32 @@ public class GiantBomb extends BaseAPI {
             } catch (UnsupportedEncodingException e) {
                 throw new BaseAPIFailedQueryException(e);
             }
-            url = "https://www.giantbomb.com/api/search/?api_key=" + KEY +
-                    "&format=json" +
-                    "&resources=game" +
-                    "&query=" + keyword +
-                    "&limit=" + query.getResultsPerPage() +
-                    "&page=" + query.getPageNumber() +
-                    fieldSB;
+
+            queryMap.put("api_key", KEY);
+            queryMap.put("format", "json");
+            queryMap.put("resources", "game");
+            queryMap.put("query", keyword);
+            queryMap.put("limit", String.valueOf(query.getResultsPerPage()));
+            queryMap.put("page", String.valueOf(query.getPageNumber()));
+            queryMap.put("field_list", fieldSB.toString());
         } else {
-            url = "https://www.giantbomb.com/api/games/?api_key=" + KEY +
-                    "&format=json" +
-                    "&limit=" + query.getResultsPerPage() +
-                    "&page=" + query.getPageNumber() +
-                    fieldSB;
+            queryMap.put("api_key", KEY);
+            queryMap.put("format", "json");
+            queryMap.put("limit", String.valueOf(query.getResultsPerPage()));
+            queryMap.put("page", String.valueOf(query.getResultsPerPage()));
+            queryMap.put("field_list", fieldSB.toString());
 
-            StringBuilder sb = new StringBuilder(url);
-
-            // Check if query needs the filter parameter
+            // Prepare values for filter field
             String platformFilter = query.getPlatformFilter();
             int releaseYear = query.getReleaseYear();
             int fromYear = query.getFromYear();
             int toYear = query.getToYear();
-            if (platformFilter != null || releaseYear >= 0 || fromYear >= 0 || toYear >= 0) {
-                sb.append("&filter=");
-            }
+            StringBuilder filterSB = new StringBuilder();
 
             // Append platform
             if (platformFilter != null) {
                 int platformId = platforms.get(platformFilter);
-                sb.append("platforms:").append(platformId);
+                filterSB.append("platforms:").append(platformId);
             }
 
             // Append release years
@@ -262,10 +280,10 @@ public class GiantBomb extends BaseAPI {
 
             if (releaseYear >= 0) {
                 if (platformFilter != null) {
-                    sb.append(",");
+                    filterSB.append(",");
                 }
 
-                sb.append("original_release_date:")
+                filterSB.append("original_release_date:")
                         .append(releaseYear)
                         .append(dateTimeBegin)
                         .append("|")
@@ -282,9 +300,10 @@ public class GiantBomb extends BaseAPI {
                     toYear = fromYear;
                 }
                 if (platformFilter != null) {
-                    sb.append(",");
+                    filterSB.append(",");
                 }
-                sb.append("original_release_date:")
+
+                filterSB.append("original_release_date:")
                         .append(fromYear)
                         .append(dateTimeBegin)
                         .append("|")
@@ -292,82 +311,66 @@ public class GiantBomb extends BaseAPI {
                         .append(dateTimeEnd);
             }
 
-            // Append sort
+            // Set filter field to the prepared values if filter field values exist.
+            if (platformFilter != null || query.getReleaseYear() >= 0 || query.getFromYear() >= 0
+                    || query.getToYear() >= 0) {
+                queryMap.put("filter", filterSB.toString());
+            }
+
+            // Set sort field
             String sortSelection = query.getSort();
             if (sortSelection != null) {
                 sortSelection = new GiantBombCollections().getSortChoices().get(sortSelection);
                 String sort;
                 Query.Order order = query.getOrder();
-                if (order == Query.Order.ASCENDING) {
-                    sort = "&sort=" + sortSelection + ":asc";
-                } else if (order == Query.Order.DESCENDING) {
-                    sort = "&sort=" + sortSelection + ":desc";
-                } else {
-                    sort = "&sort=" + sortSelection + ":asc";
+                switch (order) {
+                    case DESCENDING:
+                        sort = sortSelection + ":desc";
+                        break;
+
+                    case ASCENDING:
+                    default:
+                        sort = sortSelection + ":asc";
+                        break;
                 }
-                sb.append(sort);
+                queryMap.put("sort", sort);
             }
-
-            // Complete query url
-            url = sb.toString();
-        }
-        JSON data = getData(url);
-
-        try {
-            totalResultsFromLastQuery = data.getLong("number_of_total_results");
-        } catch (FailedToGetFieldException e) {
-            totalResultsFromLastQuery = -1;
-            logError("Can't retrieve number of total results.\n" + e.getMessage());
         }
 
-        return getResults(data, fields);
+        return queryMap;
     }
 
-    private JSON getData(String url) throws BaseAPIFailedQueryException {
-        JSON json;
-        try {
-            json = new JSONParser().parse(url);
-        } catch (FailedToParseException e) {
-            throw new BaseAPIFailedQueryException(e);
-        }
-        return json;
-    }
-
-    private List<ResultsItem> getResults(JSON data, Set<Query.Field> fields) throws
-            BaseAPIFailedQueryException {
+    private List<ResultsItem> getResults(ArrayList<GiantBombQueryResultsItem> resultsArray,
+                                         Set<Query.Field> fields) {
         List<ResultsItem> results = new ArrayList<>();
-        JSON_Array resultsArray;
-        try {
-            resultsArray = data.getArray("results");
-        } catch (FailedToGetFieldException e) {
-            throw new BaseAPIFailedQueryException(e);
-        }
-        for (int i = 0; i < resultsArray.getCount(); ++i) {
-            JSON result;
-            try {
-                result = resultsArray.getObject(i);
-            } catch (FailedToGetFieldException e) {
-                continue;
-            }
-
+        for (int i = 0; i < resultsArray.size(); ++i) {
+            GiantBombQueryResultsItem item = resultsArray.get(i);
             ResultsItem resultsItem = new ResultsItem();
 
-            resultsItem.title = getTitle(result);
+            resultsItem.title = item.getTitle();
 
             if (fields.contains(Query.Field.THUMBNAIL)) {
-                resultsItem.thumbnailURL = getThumbnailUrl(result);
+                GiantBombImageItem imageItem = item.getImage();
+                resultsItem.thumbnailURL = imageItem.getThumbnailUrl();
             }
 
             if (fields.contains(Query.Field.DESCRIPTION)) {
-                resultsItem.description = getDescription(result);
+                resultsItem.description = item.getDescription();
             }
 
             if (fields.contains(Query.Field.RELEASE_DATE)) {
-                resultsItem.releaseDate = getReleaseDate(result);
+                String originalReleaseDate = item.getOriginalReleaseDate();
+                String expectedReleaseYear = item.getExpectedReleaseYear();
+
+                if (originalReleaseDate != null) {
+                    resultsItem.releaseDate = originalReleaseDate;
+                } else if (expectedReleaseYear != null) {
+                    resultsItem.releaseDate = expectedReleaseYear;
+                }
             }
 
             if (fields.contains(Query.Field.ID)) {
-                resultsItem.id = getId(result);
+                resultsItem.id = item.getId();
             }
 
             results.add(resultsItem);
@@ -380,63 +383,5 @@ public class GiantBomb extends BaseAPI {
         }
 
         return results;
-    }
-
-    private String getTitle(JSON result) {
-        try {
-            return result.getString("name");
-        } catch (FailedToGetFieldException e) {
-            return null;
-        }
-    }
-
-    private String getThumbnailUrl(JSON result) {
-        try {
-            return result.getObject("image").getString("thumb_url");
-        } catch (FailedToGetFieldException e) {
-            return null;
-        }
-    }
-
-    private String getDescription(JSON result) {
-        try {
-            return result.getString("deck");
-        } catch (FailedToGetFieldException e) {
-            return null;
-        }
-    }
-
-    private String getReleaseDate(JSON result) {
-        String originalReleaseDate;
-        String expectedReleaseYear;
-        try {
-            expectedReleaseYear = result.getString("expected_release_year");
-        } catch (FailedToGetFieldException e) {
-            expectedReleaseYear = null;
-        }
-        if (expectedReleaseYear == null) {
-            try {
-                originalReleaseDate = result.getString("original_release_date");
-            } catch (FailedToGetFieldException e) {
-                originalReleaseDate = null;
-            }
-        } else {
-            originalReleaseDate = null;
-        }
-        if (originalReleaseDate != null) {
-            return originalReleaseDate;
-        } else if (expectedReleaseYear != null) {
-            return expectedReleaseYear;
-        } else {
-            return null;
-        }
-    }
-
-    private String getId(JSON result) {
-        try {
-            return result.getString("guid");
-        } catch (FailedToGetFieldException e) {
-            return null;
-        }
     }
 }
