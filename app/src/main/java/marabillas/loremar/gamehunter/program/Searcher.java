@@ -22,14 +22,10 @@ package marabillas.loremar.gamehunter.program;
 import android.os.Handler;
 import android.os.HandlerThread;
 
-import java.util.List;
 import java.util.Set;
 
 import marabillas.loremar.gamehunter.apis.BaseAPI;
-import marabillas.loremar.gamehunter.apis.BaseAPIFailedQueryException;
 import marabillas.loremar.gamehunter.ui.activity.MainActivity;
-
-import static marabillas.loremar.gamehunter.utils.LogUtils.logError;
 
 /**
  * This class will manage the page for searching video games.
@@ -77,7 +73,7 @@ public class Searcher implements MainActivity.SearchEventsListener, GameHunterAp
 
     @Override
     public void goForQuery() {
-        handler.post(() -> {
+        /*handler.post(() -> {
             try {
                 final List<ResultsItem> results = api.query(currentValues);
                 activity.runOnUiThread(() -> activity.updateResults(results));
@@ -87,7 +83,7 @@ public class Searcher implements MainActivity.SearchEventsListener, GameHunterAp
                     logError(e.getMessage());
                 });
             }
-        });
+        });*/
     }
 
     @Override

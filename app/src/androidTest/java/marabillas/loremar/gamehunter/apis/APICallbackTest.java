@@ -19,14 +19,18 @@
 
 package marabillas.loremar.gamehunter.apis;
 
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
+
+import marabillas.loremar.gamehunter.program.ResultsItem;
 
 import static marabillas.loremar.gamehunter.utils.LogUtils.log;
 
 public class APICallbackTest implements APICallback {
     private CountDownLatch countDownLatch;
     private Set<String> platformFilters;
+    private List<ResultsItem> results;
 
     @Override
     public void onPlatformFiltersObtained(Set<String> platformFilters) {
@@ -39,6 +43,19 @@ public class APICallbackTest implements APICallback {
 
     Set<String> getPlatformFilters() {
         return platformFilters;
+    }
+
+    @Override
+    public void onQueryResults(List<ResultsItem> results) {
+        log("Query results obtained.");
+        this.results = results;
+        if (countDownLatch != null) {
+            countDownLatch.countDown();
+        }
+    }
+
+    List<ResultsItem> getResults() {
+        return results;
     }
 
     void setCountDownLatch(CountDownLatch countDownLatch) {

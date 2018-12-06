@@ -45,6 +45,7 @@ import marabillas.loremar.gamehunter.program.ResultsItem;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static marabillas.loremar.gamehunter.utils.LogUtils.log;
 import static marabillas.loremar.gamehunter.utils.StringUtils.encodeURL;
 
 /**
@@ -176,10 +177,12 @@ public class GiantBomb extends BaseAPI {
 
     @Override
     public void query(Query query, APICallback callback) {
+        log("Querying.");
         Disposable disposable = Observable.fromCallable(() -> prepareQueryParameters(query))
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .concatMap(queryMap -> {
+                    log("Query parameters are set.");
                     String keyword = queryMap.get("query");
                     if (keyword != null) {
                         return api.search(queryMap);
@@ -190,6 +193,7 @@ public class GiantBomb extends BaseAPI {
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe(response -> {
+                    log("Query success.");
                     totalResultsFromLastQuery = response.getNumTotalResults();
                     List<ResultsItem> results = getResults(response.getResults(), query.getFields
                             ());
@@ -272,7 +276,7 @@ public class GiantBomb extends BaseAPI {
             String dateTimeBegin;
             String dateTimeEnd;
             try {
-                dateTimeBegin = encodeURL("-01-01 00:00:00");
+                dateTimeBegin = encodeURL("-01-00 00:00:00");
                 dateTimeEnd = encodeURL("-12-31 23:59:59");
             } catch (UnsupportedEncodingException e) {
                 throw new BaseAPIFailedQueryException(e);
