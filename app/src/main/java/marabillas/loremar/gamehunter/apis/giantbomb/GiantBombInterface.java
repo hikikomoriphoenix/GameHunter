@@ -21,21 +21,29 @@ package marabillas.loremar.gamehunter.apis.giantbomb;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface GiantBombInterface {
-    @GET("platforms/?api_key={KEY}&format=json&field_list=name,id&offset={OFFSET}")
-    Observable<GiantBombResponse<GiantBombPlatformFilter>> getPlatformFilters(@Path("KEY") String key, @Path
-            ("OFFSET") int offset);
+    @GET("platforms/?format=json&field_list=name,id")
+    Observable<GiantBombResponse<GiantBombPlatformFilter>> getPlatformFilters(
+            @Query("api_key") String key,
+            @Query("offset") int offset
+    );
 
-    @GET("search/?api_key={KEY}&format=json&resources=game&query={KEYWORD}&limit={LIMIT}&page" +
-            "={PAGE}")
-    Observable<GiantBombResponse<GiantBombQueryResultsItem>> search(@Path("KEY") String key, @Path("KEYWORD") String
-            keyword, @Path("LIMIT") int limit, @Path("PAGE") int page);
+    @GET("search/?format=json&resources=game")
+    Observable<GiantBombResponse<GiantBombQueryResultsItem>> search(
+            @Query("api_key") String key,
+            @Query("query") String keyword,
+            @Query("limit") int limit,
+            @Query("page") int page
+    );
 
-    @GET("games/?api_key={KEY}&format=json&limit={LIMIT}&page={PAGE}{FILTER}{SORT}")
-    Observable<GiantBombResponse<GiantBombQueryResultsItem>> getGames(@Path("KEY") String key, @Path("LIMIT")
-            int limit,
-                                                                      @Path("PAGE") int page, @Path("FILTER") String filter,
-                                                                      @Path("SORT") String sort);
+    @GET("games/?format=json")
+    Observable<GiantBombResponse<GiantBombQueryResultsItem>> getGames(
+            @Query("api_key") String key,
+            @Query("limit") int limit,
+            @Query("page") int page,
+            @Query("filter") String filter,
+            @Query("sort") String sort
+    );
 }

@@ -67,8 +67,7 @@ public abstract class BaseAPI {
      *
      * @param callback APICallback that will be notified for results
      */
-    public abstract void getPlatformFilters(APICallback callback) throws
-            BaseAPIGetterFailedToGetException;
+    public abstract void getPlatformFilters(APICallback callback);
 
     /**
      * Gets all the choices for ordering results.

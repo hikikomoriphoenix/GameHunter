@@ -27,11 +27,13 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
 
 import marabillas.loremar.gamehunter.apis.giantbomb.GiantBomb;
 import marabillas.loremar.gamehunter.program.Query;
 import marabillas.loremar.gamehunter.program.ResultsItem;
 
+import static marabillas.loremar.gamehunter.utils.LogUtils.log;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
@@ -54,19 +56,28 @@ public class GiantBombTest {
 
     @Test
     public void getPlatformFilters() {
-        Set<String> filters = null;
+        Set<String> filters;
+
+        APICallback apiCallback = new APICallbackTest();
+        api.getPlatformFilters(apiCallback);
+
+        CountDownLatch cd = new CountDownLatch(1);
+        ((APICallbackTest) apiCallback).setCountDownLatch(cd);
 
         try {
-            filters = api.getPlatformFilters();
-        } catch (BaseAPIGetterFailedToGetException e) {
-            Assert.fail(e.getMessage());
+            cd.await();
+            log("Waiting for platform filters to be obtained.");
+        } catch (InterruptedException e) {
+            Assert.fail("Await interrupted: " + e.getMessage());
         }
 
-        assertThat(filters.size(), is(155));
+        filters = ((APICallbackTest) apiCallback).getPlatformFilters();
+
+        assertThat(filters.size(), is(157));
         String[] filtersArray = new String[filters.size()];
         filters.toArray(filtersArray);
         assertThat(filtersArray[0], is("3DO"));
-        assertThat(filtersArray[154], is("ZX Spectrum"));
+        assertThat(filtersArray[156], is("ZX Spectrum"));
     }
 
     @Test
@@ -117,11 +128,8 @@ public class GiantBombTest {
 
     @Test
     public void queryFilter() {
-        try {
-            api.getPlatformFilters();
-        } catch (BaseAPIGetterFailedToGetException e) {
-            Assert.fail(e.getMessage());
-        }
+        api.getPlatformFilters(new APICallbackTest());
+
         query.setPlatformFilter("Android");
         results = queryCall(query);
         assertThat(results.get(0).title, is("Metal Slug X: Super Vehicle - 001"));
