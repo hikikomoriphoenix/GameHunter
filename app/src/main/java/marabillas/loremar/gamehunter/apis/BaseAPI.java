@@ -64,8 +64,11 @@ public abstract class BaseAPI {
     /**
      * Gets all the gaming platforms that is made available by the API for the user to choose
      * from as filters.
+     *
+     * @param callback APICallback that will be notified for results
      */
-    public abstract void getPlatformFilters() throws BaseAPIGetterFailedToGetException;
+    public abstract void getPlatformFilters(APICallback callback) throws
+            BaseAPIGetterFailedToGetException;
 
     /**
      * Gets all the choices for ordering results.

@@ -31,11 +31,10 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import io.reactivex.Observer;
-import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import marabillas.loremar.gamehunter.BuildConfig;
+import marabillas.loremar.gamehunter.apis.APICallback;
 import marabillas.loremar.gamehunter.apis.BaseAPI;
 import marabillas.loremar.gamehunter.apis.BaseAPIFailedQueryException;
 import marabillas.loremar.gamehunter.apis.Feature;
@@ -87,7 +86,7 @@ public class GiantBomb extends BaseAPI {
     }
 
     @Override
-    public void getPlatformFilters() {
+    public void getPlatformFilters(APICallback callback) {
         platforms = new TreeMap<>();
         api
                 .getPlatformFilters(KEY, 0)
@@ -116,8 +115,7 @@ public class GiantBomb extends BaseAPI {
                         boolean morePlatformFiltersToGet = savePlatformFilters(results,
                                 platformFilters);
                         if (!morePlatformFiltersToGet) {
-                            initiateCallbackToReturnPlatformFilters(platformFilters);
-                            // TODO Use RxBus for callback
+                            callback.onPlatformFiltersObtained(platformFilters);
                             disposable.dispose();
                             return;
                         }
@@ -163,18 +161,6 @@ public class GiantBomb extends BaseAPI {
         // If number of returned platform filters is less than 100, then there is
         // no more platform filter to get. Proceed to finish.
         return results.size() >= 100;
-    }
-
-    private void initiateCallbackToReturnPlatformFilters(Set<String> platformFilters) {
-        // TODO Use RxBus instead of this method.
-        Disposable disposable = Single
-                .just(platformFilters)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(strings -> {
-                    // Callback
-                });
-        // Add disposable to be disposed later.
     }
 
     @Override
