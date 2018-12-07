@@ -84,7 +84,7 @@ public class WebsiteSelectionAdapter extends RecyclerView.Adapter<WebsiteSelecti
     @Override
     public WebsiteSelectionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(activity);
-        View itemView = inflater.inflate(R.layout.adapter_website_selection_item_view, parent, false);
+        View itemView = inflater.inflate(R.layout.adapter_site_chooser_item, parent, false);
         return new WebsiteSelectionViewHolder(itemView);
     }
 
@@ -107,8 +107,8 @@ public class WebsiteSelectionAdapter extends RecyclerView.Adapter<WebsiteSelecti
 
         WebsiteSelectionViewHolder(View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.adapter_website_selection_item_view_logo);
-            textView = itemView.findViewById(R.id.adapter_website_selection_item_view_label);
+            imageView = itemView.findViewById(R.id.adapter_site_chooser_item_view_logo);
+            textView = itemView.findViewById(R.id.adapter_site_chooser_item_view_label);
             imageView.setOnClickListener(activity);
         }
 

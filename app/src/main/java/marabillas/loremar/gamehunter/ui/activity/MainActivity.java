@@ -44,7 +44,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_choose);
+        setContentView(R.layout.activity_site_chooser);
 
         GameHunterApp.getInstance().setActivity(this);
     }
@@ -63,10 +63,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
      * selecting website.
      */
     public void setScreenToWebsiteSelectionScreen() {
-        setContentView(R.layout.activity_main_choose);
+        setContentView(R.layout.activity_site_chooser);
 
         // Set up the grid layout for selectable websites
-        RecyclerView websitesView = findViewById(R.id.activity_main_websites_view);
+        RecyclerView websitesView = findViewById(R.id.activity_sitechooser_recyclerview);
 
         // The following code enforces maximum width for each element
         int screenWidthInPixels = getScreenWidthInPixels();
@@ -94,7 +94,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 // If the user clicks a thumbnail, then a website has been chosen. The Chooser
                 // should handle this choose event based on the tag set on the ImageView,
                 // corresponding to the selected website.
-                case R.id.adapter_website_selection_item_view_logo:
+                case R.id.adapter_site_chooser_item_view_logo:
                     chooseEventsListener.choose((String) v.getTag());
                     break;
             }
