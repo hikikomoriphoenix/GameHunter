@@ -57,7 +57,7 @@ public abstract class BaseAPI {
      *
      * @return a set containing the names of available game genres as filters
      */
-    public abstract Set<String> getGenreFilters() throws BaseAPIGetterFailedToGetException;
+    public abstract Set<String> getGenreFilters();
 
     /**
      * Gets all the gaming platforms that is made available by the API for the user to choose
@@ -72,14 +72,14 @@ public abstract class BaseAPI {
      *
      * @return a set containing all sort by choices.
      */
-    public abstract Set<String> getSortChoices() throws BaseAPIGetterFailedToGetException;
+    public abstract Set<String> getSortChoices();
 
     /**
      * Gets all the themes that is made available by the API for the user to choose from as filters.
      *
      * @return a set containing the names of available themes as filters
      */
-    public abstract Set<String> getThemeFilters() throws BaseAPIGetterFailedToGetException;
+    public abstract Set<String> getThemeFilters();
 
     /**
      * Computes total number of pages given total results and number of results per page.
