@@ -21,7 +21,7 @@ package marabillas.loremar.gamehunter.apis;
 
 import java.util.Set;
 
-import marabillas.loremar.gamehunter.program.Query;
+import marabillas.loremar.gamehunter.components.Query;
 
 /**
  * This class attempts to wrap any available API from any website with a video games database. It

@@ -22,7 +22,7 @@ package marabillas.loremar.gamehunter.apis;
 import java.util.List;
 import java.util.Set;
 
-import marabillas.loremar.gamehunter.program.ResultsItem;
+import marabillas.loremar.gamehunter.components.ResultsItem;
 
 /**
  * Callback to notify about results from API requests.

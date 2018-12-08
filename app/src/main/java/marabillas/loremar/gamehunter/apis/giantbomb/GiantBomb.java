@@ -40,8 +40,8 @@ import marabillas.loremar.gamehunter.apis.APICallback;
 import marabillas.loremar.gamehunter.apis.BaseAPI;
 import marabillas.loremar.gamehunter.apis.BaseAPIFailedQueryException;
 import marabillas.loremar.gamehunter.apis.Feature;
-import marabillas.loremar.gamehunter.program.Query;
-import marabillas.loremar.gamehunter.program.ResultsItem;
+import marabillas.loremar.gamehunter.components.Query;
+import marabillas.loremar.gamehunter.components.ResultsItem;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 

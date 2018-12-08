@@ -17,7 +17,7 @@
  *     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-package marabillas.loremar.gamehunter.program;
+package marabillas.loremar.gamehunter.components;
 
 import java.util.Set;
 

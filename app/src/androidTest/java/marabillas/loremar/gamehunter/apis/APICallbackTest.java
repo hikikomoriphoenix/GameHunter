@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 
-import marabillas.loremar.gamehunter.program.ResultsItem;
+import marabillas.loremar.gamehunter.components.ResultsItem;
 
 import static marabillas.loremar.gamehunter.utils.LogUtils.log;
 

@@ -30,8 +30,8 @@ import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 
 import marabillas.loremar.gamehunter.apis.giantbomb.GiantBomb;
-import marabillas.loremar.gamehunter.program.Query;
-import marabillas.loremar.gamehunter.program.ResultsItem;
+import marabillas.loremar.gamehunter.components.Query;
+import marabillas.loremar.gamehunter.components.ResultsItem;
 
 import static marabillas.loremar.gamehunter.utils.LogUtils.log;
 import static org.hamcrest.CoreMatchers.is;
@@ -82,13 +82,9 @@ public class GiantBombTest {
 
     @Test
     public void getSortChoices() {
-        Set<String> choices = null;
+        Set<String> choices;
 
-        try {
-            choices = api.getSortChoices();
-        } catch (BaseAPIGetterFailedToGetException e) {
-            Assert.fail(e.getMessage());
-        }
+        choices = api.getSortChoices();
 
         assertThat(choices.size(), is(7));
         String[] choicesArray = new String[choices.size()];

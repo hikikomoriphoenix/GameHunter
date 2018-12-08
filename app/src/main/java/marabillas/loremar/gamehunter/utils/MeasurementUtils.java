@@ -23,7 +23,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
 
-import marabillas.loremar.gamehunter.program.GameHunterApp;
+import marabillas.loremar.gamehunter.GameHunterApp;
 
 /**
  * Utility class related to measurements
