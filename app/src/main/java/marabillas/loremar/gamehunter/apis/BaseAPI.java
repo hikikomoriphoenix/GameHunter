@@ -19,11 +19,9 @@
 
 package marabillas.loremar.gamehunter.apis;
 
-import java.util.List;
 import java.util.Set;
 
-import marabillas.loremar.gamehunter.program.Query;
-import marabillas.loremar.gamehunter.program.ResultsItem;
+import marabillas.loremar.gamehunter.components.Query;
 
 /**
  * This class attempts to wrap any available API from any website with a video games database. It
@@ -31,162 +29,6 @@ import marabillas.loremar.gamehunter.program.ResultsItem;
  */
 public abstract class BaseAPI {
     private Set<Feature> configuration;
-
-    protected enum Feature {
-        /**
-         * This feature means the API can provide thumbnails for each game in the results
-         */
-        THUMBNAIL,
-
-        /**
-         * This feature means the API can provide a brief description of each game in the results
-         */
-        DESCRIPTION,
-
-        /**
-         * This feature means the API can provide the release date of each game in the results
-         */
-        RELEASE_DATE,
-
-        /**
-         * This feature means the API can show results based on the platform the game is
-         * developed for.
-         */
-        FILTER_BY_PLATFORM,
-
-        /**
-         * This feature means the API can show results based on genre
-         */
-        FILTER_BY_GENRE,
-
-        /**
-         * This feature means the API can show results based on theme
-         */
-        FILTER_BY_THEME,
-
-        /**
-         * This feature means the API can show results based on the year the game was released
-         */
-        FILTER_BY_YEAR,
-
-        /**
-         * This feature means the API can show results of video games that are released on
-         * between a set of range of years.
-         */
-        FILTER_BY_YEARS,
-
-        /**
-         * This feature means the API can show ordered results
-         */
-        SORT_BY,
-
-        /**
-         * This feature supports ascending and descending options when ordering results. SORT_BY
-         * feature is implied to be supported, hence, there is no need to include Feature.SORT_BY
-         * in configuration when Feature.SORT_BY_REVERSIBLE is included.
-         */
-        SORT_BY_REVERSIBLE,
-
-        /**
-         * This feature means this API returns a partial amount of the total results as a page.
-         * You have to indicate which page you want to retrieve for partial results.
-         */
-        PAGES,
-
-        /**
-         * This feature allows you to indicate how many results per page to show. PAGES feature
-         * is implied to be supported, hence, there is no need to include Feature
-         * .RESULTS_PER_PAGE in configuration when Feature.RESULTS_PER_PAGE is included.
-         */
-        RESULTS_PER_PAGE,
-
-        /**
-         * This feature allows you to search the game database using a keyword.
-         */
-        SEARCH,
-
-        /**
-         * This feature means the API can provide thumbnails for search results. SEARCH feature
-         * is implied to be supported, hence, there is no need to include Feature.SEARCH in
-         * configuration when Feature.SEARCH_THUMBNAIL is included.
-         */
-        SEARCH_THUMBNAIL,
-
-        /**
-         * This feature means the API can provide a brief description for each search result.
-         * SEARCH feature is implied to be supported, hence, there is no need to include Feature
-         * .SEARCH in configuration when Feature.SEARCH_DESCRIPTION is included.
-         */
-        SEARCH_DESCRIPTION,
-
-        /**
-         * This feature mean the API can provide the release date of each game in the search
-         * results. SEARCH feature is implied to be supported, hence, there is no need to include
-         * Feature.SEARCH in configuration when Feature.SEARCH_RELEASE_DATE is included.
-         */
-        SEARCH_RELEASE_DATE,
-
-        /**
-         * This feature means the API can show results based on the platform the game is
-         * developed for. SEARCH feature is implied to be supported, hence, there is no need to include
-         * Feature.SEARCH in configuration
-         */
-        SEARCH_FILTER_BY_PLATFORM,
-
-        /**
-         * This feature means the API can show results based on genre. SEARCH feature is implied
-         * to be supported, hence, there is no need to include Feature.SEARCH in configuration.
-         */
-        SEARCH_FILTER_BY_GENRE,
-
-        /**
-         * This feature means the API can show results based on theme. SEARCH feature is implied
-         * to be supported, hence, there is no need to include Feature.SEARCH in configuration.
-         */
-        SEARCH_FILTER_BY_THEME,
-
-        /**
-         * This feature means the API can show results based on the year the game was released.
-         * SEARCH feature is implied to be supported, hence, there is no need to include Feature
-         * .SEARCH in configuration.
-         */
-        SEARCH_FILTER_BY_YEAR,
-
-        /**
-         * This feature means the API can show results of video games that are released on
-         * between a set of range of years. SEARCH feature is implied to be supported, hence,
-         * there is no need to include Feature.SEARCH in configuration.
-         */
-        SEARCH_FILTER_BY_YEARS,
-
-        /**
-         * This feature means the API can show ordered results. SEARCH feature is implied to be
-         * supported, hence, there is no need to include Feature.SEARCH in configuration.
-         */
-        SEARCH_SORT_BY,
-
-        /**
-         * This feature supports ascending and descending options when ordering results. SORT_BY
-         * and SEARCH features are implied to be supported, hence, there is no need to include
-         * Feature.SORT_BY or Feature.SEARCH in configuration when Feature.SEARCH_SORT_BY_REVERSIBLE
-         * is included.
-         */
-        SEARCH_SORT_BY_REVERSIBLE,
-
-        /**
-         * This feature means this API returns a partial amount of the total search results as a
-         * page. You have to indicate which page you want to retrieve for partial results.
-         */
-        SEARCH_PAGES,
-
-        /**
-         * This feature allows you to indicate how many results per page to show. PAGES feature
-         * and SEARCH feature are implied to be supported, hence, there is no need to include
-         * Feature.PAGES or Feature.SEARCH in configuration when Feature.SEARCH_RESULTS_PER_PAGE is
-         * included.
-         */
-        SEARCH_RESULTS_PER_PAGE
-    }
 
     protected BaseAPI() {
         configuration = configure();
@@ -215,29 +57,29 @@ public abstract class BaseAPI {
      *
      * @return a set containing the names of available game genres as filters
      */
-    public abstract Set<String> getGenreFilters() throws BaseAPIGetterFailedToGetException;
+    public abstract Set<String> getGenreFilters();
 
     /**
      * Gets all the gaming platforms that is made available by the API for the user to choose
      * from as filters.
      *
-     * @return a set containing the names of available gaming platforms as filters
+     * @param callback APICallback that will be notified for results
      */
-    public abstract Set<String> getPlatformFilters() throws BaseAPIGetterFailedToGetException;
+    public abstract void getPlatformFilters(APICallback callback);
 
     /**
      * Gets all the choices for ordering results.
      *
      * @return a set containing all sort by choices.
      */
-    public abstract Set<String> getSortChoices() throws BaseAPIGetterFailedToGetException;
+    public abstract Set<String> getSortChoices();
 
     /**
      * Gets all the themes that is made available by the API for the user to choose from as filters.
      *
      * @return a set containing the names of available themes as filters
      */
-    public abstract Set<String> getThemeFilters() throws BaseAPIGetterFailedToGetException;
+    public abstract Set<String> getThemeFilters();
 
     /**
      * Computes total number of pages given total results and number of results per page.
@@ -267,10 +109,9 @@ public abstract class BaseAPI {
      *
      * @param query an object that contains fields used as parameters for querying the game
      *              database.
-     * @return the results as a list of ResultsItem instances containing the required fields as
-     * set in the Query instance passed to the query method.
+     * @param callback APICallback that will be notified for results.
      */
-    public abstract List<ResultsItem> query(Query query) throws BaseAPIFailedQueryException;
+    public abstract void query(Query query, APICallback callback);
 
     /**
      * Checks if {@link Feature#DESCRIPTION} is supported.

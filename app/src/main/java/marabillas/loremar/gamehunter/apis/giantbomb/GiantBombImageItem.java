@@ -17,19 +17,19 @@
  *     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-package marabillas.loremar.gamehunter;
+package marabillas.loremar.gamehunter.apis.giantbomb;
 
-import org.junit.Test;
+import com.google.gson.annotations.SerializedName;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+public class GiantBombImageItem {
+    @SerializedName("thumb_url")
+    private String thumbnailUrl;
 
-public class GameHunterAppTest {
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
 
-    @Test
-    public void getInstance() {
-        GameHunterApp app = GameHunterApp.getInstance();
-        assertThat(app.getApplicationContext().getPackageName(), is("marabillas.loremar" +
-                ".gamehunter"));
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
     }
 }

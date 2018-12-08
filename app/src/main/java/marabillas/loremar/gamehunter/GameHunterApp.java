@@ -19,17 +19,26 @@
 
 package marabillas.loremar.gamehunter;
 
-import org.junit.Test;
+import android.app.Application;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+/**
+ * GameHunter's main application class
+ */
+public class GameHunterApp extends Application {
+    private static GameHunterApp thisInstance;
 
-public class GameHunterAppTest {
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        thisInstance = this;
+    }
 
-    @Test
-    public void getInstance() {
-        GameHunterApp app = GameHunterApp.getInstance();
-        assertThat(app.getApplicationContext().getPackageName(), is("marabillas.loremar" +
-                ".gamehunter"));
+    /**
+     * Main singleton getter for this app.
+     *
+     * @return the app's object as a GameHunterApp instance.
+     */
+    public static GameHunterApp getInstance() {
+        return thisInstance;
     }
 }

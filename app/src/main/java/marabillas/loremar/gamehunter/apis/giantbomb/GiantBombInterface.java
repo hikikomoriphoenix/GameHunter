@@ -17,24 +17,29 @@
  *     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-package marabillas.loremar.gamehunter.parsers;
+package marabillas.loremar.gamehunter.apis.giantbomb;
 
-/**
- * This exception is thrown when the required field could not be obtained from a parsed data
- */
-public class FailedToGetFieldException extends Exception {
-    public FailedToGetFieldException() {
-    }
+import java.util.Map;
 
-    public FailedToGetFieldException(String message) {
-        super(message);
-    }
+import io.reactivex.Observable;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 
-    public FailedToGetFieldException(String message, Throwable cause) {
-        super(message, cause);
-    }
+public interface GiantBombInterface {
+    @GET("platforms/?format=json&field_list=name,id")
+    Observable<GiantBombResponse<GiantBombPlatformFilter>> getPlatformFilters(
+            @Query("api_key") String key,
+            @Query("offset") int offset
+    );
 
-    public FailedToGetFieldException(Throwable cause) {
-        super(cause);
-    }
+    @GET("search/?format=json&resources=game")
+    Observable<GiantBombResponse<GiantBombQueryResultsItem>> search(
+            @QueryMap Map<String, String> queryMap
+    );
+
+    @GET("games/?format=json")
+    Observable<GiantBombResponse<GiantBombQueryResultsItem>> getGames(
+            @QueryMap Map<String, String> queryMap
+    );
 }

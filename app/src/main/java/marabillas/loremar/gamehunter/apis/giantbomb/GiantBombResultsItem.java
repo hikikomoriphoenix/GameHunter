@@ -17,26 +17,7 @@
  *     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-package marabillas.loremar.gamehunter.apis.collections;
+package marabillas.loremar.gamehunter.apis.giantbomb;
 
-import java.util.Map;
-import java.util.TreeMap;
-
-public class GiantBombCollections {
-    private Map<String, String> sortChoices;
-
-    public GiantBombCollections() {
-        sortChoices = new TreeMap<>();
-        sortChoices.put("Date added", "dated_added");
-        sortChoices.put("Date last updated", "date_last_updated");
-        sortChoices.put("ID", "id");
-        sortChoices.put("Name", "name");
-        sortChoices.put("Number of user reviews", "number_of_user_reviews");
-        sortChoices.put("Original game rating", "original_game_rating");
-        sortChoices.put("Original release date", "original_release_date");
-    }
-
-    public Map<String, String> getSortChoices() {
-        return sortChoices;
-    }
+public interface GiantBombResultsItem {
 }

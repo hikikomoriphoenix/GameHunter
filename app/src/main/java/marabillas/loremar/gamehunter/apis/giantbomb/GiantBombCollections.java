@@ -17,19 +17,26 @@
  *     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-package marabillas.loremar.gamehunter;
+package marabillas.loremar.gamehunter.apis.giantbomb;
 
-import org.junit.Test;
+import java.util.Map;
+import java.util.TreeMap;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+class GiantBombCollections {
+    private Map<String, String> sortChoices;
 
-public class GameHunterAppTest {
+    GiantBombCollections() {
+        sortChoices = new TreeMap<>();
+        sortChoices.put("Date added", "dated_added");
+        sortChoices.put("Date last updated", "date_last_updated");
+        sortChoices.put("ID", "id");
+        sortChoices.put("Name", "name");
+        sortChoices.put("Number of user reviews", "number_of_user_reviews");
+        sortChoices.put("Original game rating", "original_game_rating");
+        sortChoices.put("Original release date", "original_release_date");
+    }
 
-    @Test
-    public void getInstance() {
-        GameHunterApp app = GameHunterApp.getInstance();
-        assertThat(app.getApplicationContext().getPackageName(), is("marabillas.loremar" +
-                ".gamehunter"));
+    Map<String, String> getSortChoices() {
+        return sortChoices;
     }
 }

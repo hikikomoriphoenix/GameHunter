@@ -17,24 +17,14 @@
  *     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-package marabillas.loremar.gamehunter.parsers;
+package marabillas.loremar.gamehunter.components;
 
-/**
- * This exception is thrown when exception occured while parsing data
- */
-public class FailedToParseException extends Exception {
-    public FailedToParseException() {
-    }
+import android.databinding.ObservableField;
+import android.graphics.drawable.Drawable;
+import android.text.Spanned;
 
-    public FailedToParseException(String message) {
-        super(message);
-    }
-
-    public FailedToParseException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public FailedToParseException(Throwable cause) {
-        super(cause);
-    }
+public class GameSiteViewModel {
+    public ObservableField<Drawable> drawable = new ObservableField<>();
+    public ObservableField<String> tag = new ObservableField<>();
+    public ObservableField<Spanned> label = new ObservableField<>();
 }

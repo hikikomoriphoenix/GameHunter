@@ -27,10 +27,13 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
 
-import marabillas.loremar.gamehunter.program.Query;
-import marabillas.loremar.gamehunter.program.ResultsItem;
+import marabillas.loremar.gamehunter.apis.giantbomb.GiantBomb;
+import marabillas.loremar.gamehunter.components.Query;
+import marabillas.loremar.gamehunter.components.ResultsItem;
 
+import static marabillas.loremar.gamehunter.utils.LogUtils.log;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
@@ -53,30 +56,35 @@ public class GiantBombTest {
 
     @Test
     public void getPlatformFilters() {
-        Set<String> filters = null;
+        Set<String> filters;
+
+        APICallback apiCallback = new APICallbackTest();
+        api.getPlatformFilters(apiCallback);
+
+        CountDownLatch cd = new CountDownLatch(1);
+        ((APICallbackTest) apiCallback).setCountDownLatch(cd);
 
         try {
-            filters = api.getPlatformFilters();
-        } catch (BaseAPIGetterFailedToGetException e) {
-            Assert.fail(e.getMessage());
+            log("Waiting for platform filters to be obtained.");
+            cd.await();
+        } catch (InterruptedException e) {
+            Assert.fail("Await interrupted: " + e.getMessage());
         }
 
-        assertThat(filters.size(), is(155));
+        filters = ((APICallbackTest) apiCallback).getPlatformFilters();
+
+        assertThat(filters.size(), is(157));
         String[] filtersArray = new String[filters.size()];
         filters.toArray(filtersArray);
         assertThat(filtersArray[0], is("3DO"));
-        assertThat(filtersArray[154], is("ZX Spectrum"));
+        assertThat(filtersArray[156], is("ZX Spectrum"));
     }
 
     @Test
     public void getSortChoices() {
-        Set<String> choices = null;
+        Set<String> choices;
 
-        try {
-            choices = api.getSortChoices();
-        } catch (BaseAPIGetterFailedToGetException e) {
-            Assert.fail(e.getMessage());
-        }
+        choices = api.getSortChoices();
 
         assertThat(choices.size(), is(7));
         String[] choicesArray = new String[choices.size()];
@@ -99,11 +107,13 @@ public class GiantBombTest {
         assertThat(results.get(0).releaseDate, is(nullValue()));
         assertThat(results.get(0).id, is("3030-3840"));
 
-        assertThat(results.get(19).title, is("Carpenter Genzo -Robot Empire-"));
-        assertThat(results.get(19).thumbnailURL, is("https://www.giantbomb.com/api/image/scale_avatar/2947034-7759328272-45772.jpg"));
-        assertThat(results.get(19).description, is("The second Hammerin' Harry platformer for Game Boy sees Harry blast off into space and fight robots."));
-        assertThat(results.get(19).releaseDate, is("1994-03-25 00:00:00"));
-        assertThat(results.get(19).id, is("3030-59998"));
+        assertThat(results.get(19).title, is("Super Robot Wars X"));
+        assertThat(results.get(19).thumbnailURL, is("https://www.giantbomb.com/api/image/scale_avatar/3017680-main.png"));
+        assertThat(results.get(19).description, is("An entry in the Super Robot Wars series of " +
+                "turn based mecha strategy, new anime entries include Gundam Reconguista In G, " +
+                "Mashin Hero Wataru, Nadia: The Secret of Blue Water, and Buddy Complex."));
+        assertThat(results.get(19).releaseDate, is("2018-03-29 00:00:00"));
+        assertThat(results.get(19).id, is("3030-65986"));
 
         // Query via 'game' resource
         query = new Query();
@@ -116,11 +126,16 @@ public class GiantBombTest {
 
     @Test
     public void queryFilter() {
+        APICallbackTest callback = new APICallbackTest();
+        CountDownLatch cd = new CountDownLatch(1);
+        callback.setCountDownLatch(cd);
+        api.getPlatformFilters(callback);
         try {
-            api.getPlatformFilters();
-        } catch (BaseAPIGetterFailedToGetException e) {
-            Assert.fail(e.getMessage());
+            cd.await();
+        } catch (InterruptedException e) {
+            Assert.fail("Await interrupted: " + e.getMessage());
         }
+
         query.setPlatformFilter("Android");
         results = queryCall(query);
         assertThat(results.get(0).title, is("Metal Slug X: Super Vehicle - 001"));
@@ -131,7 +146,7 @@ public class GiantBombTest {
         query.setOrder(Query.Order.DESCENDING);
         results = queryCall(query);
         assertThat(results.get(0).title, is("Zyon"));
-        assertThat(results.get(19).title, is("Zombie Driver"));
+        assertThat(results.get(19).title, is("Zombie Flick"));
 
         // Test platform filter with sort and release year filter
         query.setReleaseYear(2018);
@@ -140,7 +155,7 @@ public class GiantBombTest {
         results = queryCall(query);
         assertThat(results.get(0).title, is("Pathfinder Duels"));
         assertThat(results.get(0).releaseDate, is("2018-01-04 00:00:00"));
-        assertThat(results.get(19).title, is("Dx2 Shin Megami Tensei: Liberation"));
+        assertThat(results.get(19).title, is("Onmyoji Arena"));
         assertThat(results.get(19).releaseDate, is("2018-01-21 00:00:00"));
 
         // Test platform filter with release year
@@ -149,8 +164,8 @@ public class GiantBombTest {
                 .setPlatformFilter("PC")
                 .setReleaseYear(2017);
         results = queryCall(query);
-        assertThat(results.get(0).title, is("Flying Tigers: Shadows Over China"));
-        assertThat(results.get(0).releaseDate, is("2017-05-29 00:00:00"));
+        assertThat(results.get(0).title, is("Pizza Tycoon"));
+        assertThat(results.get(0).releaseDate, is("2017-01-05 00:00:00"));
         assertThat(results.get(19).title, is("River City Ransom: Underground"));
         assertThat(results.get(19).releaseDate, is("2017-02-27 00:00:00"));
     }
@@ -166,8 +181,8 @@ public class GiantBombTest {
 
         query.setSort("Date last updated");
         results = queryCall(query);
-        assertThat(results.get(0).title, is("Blanda"));
-        assertThat(results.get(19).title, is("Space Combat"));
+        assertThat(results.get(0).title, is("Björnes magasin"));
+        assertThat(results.get(19).title, is("The New Castle"));
 
         query.setSort("id");
         results = queryCall(query);
@@ -183,15 +198,15 @@ public class GiantBombTest {
     public void queryReleaseYear() {
         query.setReleaseYear(2013);
         results = queryCall(query);
-        assertThat(results.get(0).title, is("Star Traders"));
-        assertThat(results.get(19).title, is("Rust Buccaneers"));
+        assertThat(results.get(0).title, is("Terror of the Catacombs"));
+        assertThat(results.get(19).title, is("Metal Gear Rising: Revengeance"));
 
         // Test if fromYear and toYear are ignored if releaseYear is set
         query.setFromYear(2018);
         query.setToYear(2020);
         results = queryCall(query);
-        assertThat(results.get(0).title, is("Star Traders"));
-        assertThat(results.get(19).title, is("Rust Buccaneers"));
+        assertThat(results.get(0).title, is("Terror of the Catacombs"));
+        assertThat(results.get(19).title, is("Metal Gear Rising: Revengeance"));
 
         query.setSort("Original release date");
         query.setOrder(Query.Order.ASCENDING);
@@ -246,12 +261,19 @@ public class GiantBombTest {
     }
 
     private List<ResultsItem> queryCall(Query query) {
+        APICallbackTest callback = new APICallbackTest();
+        CountDownLatch cd = new CountDownLatch(1);
+        callback.setCountDownLatch(cd);
+
+        api.query(query, callback);
         try {
-            return api.query(query);
-        } catch (BaseAPIFailedQueryException e) {
-            Assert.fail(e.getMessage());
-            return new ArrayList<>();
+            log("Waiting for query results.");
+            cd.await();
+        } catch (InterruptedException e) {
+            Assert.fail("Await interrupted: " + e.getMessage());
         }
+
+        return callback.getResults();
     }
 
     @Test

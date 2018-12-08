@@ -17,19 +17,18 @@
  *     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-package marabillas.loremar.gamehunter;
+package marabillas.loremar.gamehunter.apis;
 
-import org.junit.Test;
+import java.util.List;
+import java.util.Set;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import marabillas.loremar.gamehunter.components.ResultsItem;
 
-public class GameHunterAppTest {
+/**
+ * Callback to notify about results from API requests.
+ */
+public interface APICallback {
+    void onPlatformFiltersObtained(Set<String> platformFilters);
 
-    @Test
-    public void getInstance() {
-        GameHunterApp app = GameHunterApp.getInstance();
-        assertThat(app.getApplicationContext().getPackageName(), is("marabillas.loremar" +
-                ".gamehunter"));
-    }
+    void onQueryResults(List<ResultsItem> results);
 }
