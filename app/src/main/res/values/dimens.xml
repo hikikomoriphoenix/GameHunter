@@ -18,10 +18,8 @@
   -->
 
 <resources>
-    <color name="colorPrimary">#910909</color>
-    <color name="colorPrimaryDark">#6c1414</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="windowBackground">#dddddd</color>
-    <color name="searchOptionsBackground">#333333</color>
-    <color name="white">#ffffff</color>
+    <dimen name="activity_searcher_options_paddingleft">12dp</dimen>
+    <dimen name="activity_searcher_options_paddingright">24dp</dimen>
+    <dimen name="activity_searcher_options_paddingtop">12dp</dimen>
+    <dimen name="activity_searcher_options_paddingbottom">12dp</dimen>
 </resources>

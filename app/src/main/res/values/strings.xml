@@ -18,7 +18,22 @@
   -->
 
 <resources>
+    <string name="app_name">Game Hunter</string>
+
     <string name="activity_site_chooser_instruction">Click one of the thumbnails to immediately search through their database.</string>
     <string name="adapter_site_chooser_item_view_logo_content_description">Website</string>
-    <string name="app_name">Game Hunter</string>
+
+    <string name="activity_searcher_search">Search</string>
+    <string name="activity_searcher_options">Options</string>
+
+    <!-- Labels for search page options-->
+    <string name="activity_searcher_options_search">Search</string>
+    <string name="activity_searcher_options_platform">Filter by platform</string>
+    <string name="activity_searcher_options_theme">Filter by theme</string>
+    <string name="activity_searcher_options_genre">Filter by genre</string>
+    <string name="activity_searcher_options_releaseyear">Release year</string>
+    <string name="activity_searcher_options_yeartoyear">to</string>
+    <string name="activity_searcher_options_sort">Sort by</string>
+    <string name="activity_searcher_options_order">Order by</string>
+    <string name="activity_searcher_options_apply">Apply</string>
 </resources>
