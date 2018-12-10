@@ -17,141 +17,144 @@
   ~     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
   -->
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:layout_gravity="end"
-    android:fitsSystemWindows="true"
-    android:theme="@style/SearchOptionsTheme">
+<layout>
 
-    <LinearLayout
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/searchOptionsBackground"
-        android:orientation="vertical"
-        android:paddingLeft="@dimen/activity_searcher_options_paddingleft"
-        android:paddingTop="@dimen/activity_searcher_options_paddingtop"
-        android:paddingRight="@dimen/activity_searcher_options_paddingright"
-        android:paddingBottom="@dimen/activity_searcher_options_paddingbottom">
-
-
-        <TextView
-            android:id="@+id/activity_searcher_options_search_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/activity_searcher_options_search" />
-
-        <EditText
-            android:id="@+id/activity_searcher_options_search_box"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="text" />
-
-        <TextView
-            android:id="@+id/activity_searcher_options_platform_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/activity_searcher_options_platform" />
-
-        <AutoCompleteTextView
-            android:id="@+id/activity_searcher_options_platform_dropdown"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <TextView
-            android:id="@+id/activity_searcher_options_theme_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/activity_searcher_options_theme" />
-
-        <AutoCompleteTextView
-            android:id="@+id/activity_searcher_options_theme_dropdown"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <TextView
-            android:id="@+id/activity_searcher_options_genre_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/activity_searcher_options_genre" />
-
-        <AutoCompleteTextView
-            android:id="@+id/activity_searcher_options_genre_dropdown"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <TextView
-            android:id="@+id/activity_searcher_options_yearrelease_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/activity_searcher_options_releaseyear" />
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:fitsSystemWindows="true"
+        android:theme="@style/SearchOptionsTheme">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+            android:background="@color/searchOptionsBackground"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/activity_searcher_options_paddingleft"
+            android:paddingTop="@dimen/activity_searcher_options_paddingtop"
+            android:paddingRight="@dimen/activity_searcher_options_paddingright"
+            android:paddingBottom="@dimen/activity_searcher_options_paddingbottom">
 
-            <NumberPicker
-                android:id="@+id/activity_searcher_options_fromyear"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
 
             <TextView
+                android:id="@+id/activity_searcher_options_search_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="@string/activity_searcher_options_yeartoyear" />
+                android:layout_weight="1"
+                android:text="@string/activity_searcher_options_search" />
 
-            <NumberPicker
-                android:id="@+id/activity_searcher_options_toyear"
+            <EditText
+                android:id="@+id/activity_searcher_options_search_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="text" />
+
+            <TextView
+                android:id="@+id/activity_searcher_options_platform_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/activity_searcher_options_platform" />
+
+            <AutoCompleteTextView
+                android:id="@+id/activity_searcher_options_platform_dropdown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/activity_searcher_options_theme_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/activity_searcher_options_theme" />
+
+            <AutoCompleteTextView
+                android:id="@+id/activity_searcher_options_theme_dropdown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/activity_searcher_options_genre_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/activity_searcher_options_genre" />
+
+            <AutoCompleteTextView
+                android:id="@+id/activity_searcher_options_genre_dropdown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/activity_searcher_options_yearrelease_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/activity_searcher_options_releaseyear" />
+
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <NumberPicker
+                    android:id="@+id/activity_searcher_options_fromyear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/activity_searcher_options_yeartoyear" />
+
+                <NumberPicker
+                    android:id="@+id/activity_searcher_options_toyear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/activity_searcher_options_sort_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/activity_searcher_options_sort" />
+
+            <Spinner
+                android:id="@+id/activity_searcher_options_sort_dropdown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/activity_searcher_options_order_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/activity_searcher_options_order" />
+
+            <Spinner
+                android:id="@+id/activity_searcher_options_order_dropdown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/activity_searcher_options_apply"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/activity_searcher_options_apply" />
+
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/activity_searcher_options_sort_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/activity_searcher_options_sort" />
-
-        <Spinner
-            android:id="@+id/activity_searcher_options_sort_dropdown"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <TextView
-            android:id="@+id/activity_searcher_options_order_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/activity_searcher_options_order" />
-
-        <Spinner
-            android:id="@+id/activity_searcher_options_order_dropdown"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <Button
-            android:id="@+id/activity_searcher_options_apply"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/activity_searcher_options_apply" />
-
-    </LinearLayout>
-
-</ScrollView>
+    </ScrollView>
+</layout>
