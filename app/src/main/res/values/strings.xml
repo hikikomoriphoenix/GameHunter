@@ -32,8 +32,17 @@
     <string name="activity_searcher_options_theme">Filter by theme</string>
     <string name="activity_searcher_options_genre">Filter by genre</string>
     <string name="activity_searcher_options_releaseyear">Release year</string>
-    <string name="activity_searcher_options_yeartoyear">to</string>
+    <string name="activity_searcher_options_yeartoyear">"   to   "</string>
     <string name="activity_searcher_options_sort">Sort by</string>
     <string name="activity_searcher_options_order">Order by</string>
     <string name="activity_searcher_options_apply">Apply</string>
+
+    <string name="activity_searcher_options_platform_content_description">Platform
+        filters dropdown</string>
+    <string name="activity_searcher_options_theme_content_description">Theme filters
+        dropdown</string>
+    <string name="activity_searcher_options_genre_content_description">Genre filters
+        dropdown</string>
+    <string name="activity_searcher_options_sort_content_descriptions">Sort dropdown</string>
+    <string name="activity_searcher_options_order_content_description">Order dropdown</string>
 </resources>

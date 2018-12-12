@@ -18,8 +18,12 @@
   -->
 
 <resources>
-    <dimen name="activity_searcher_options_paddingleft">12dp</dimen>
+    <!-- Searcher options dimensions -->
+    <dimen name="activity_searcher_options_paddingleft">24dp</dimen>
     <dimen name="activity_searcher_options_paddingright">24dp</dimen>
-    <dimen name="activity_searcher_options_paddingtop">12dp</dimen>
-    <dimen name="activity_searcher_options_paddingbottom">12dp</dimen>
+    <dimen name="activity_searcher_options_paddingtop">24dp</dimen>
+    <dimen name="activity_searcher_options_paddingbottom">24dp</dimen>
+    <dimen name="activity_searcher_options_fieldspacing">16dp</dimen>
+    <dimen name="activity_searcher_options_searchbox_width">240dp</dimen>
+    <dimen name="activity_searcher_options_autocompletebox_width">240dp</dimen>
 </resources>

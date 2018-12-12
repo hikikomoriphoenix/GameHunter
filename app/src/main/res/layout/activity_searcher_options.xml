@@ -17,144 +17,258 @@
   ~     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
   -->
 
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="end"
-        android:fitsSystemWindows="true"
-        android:theme="@style/SearchOptionsTheme">
+        android:layout_gravity="end">
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/searchOptionsBackground"
-            android:orientation="vertical"
+            android:background="?searcher_options_background"
+            android:paddingStart="@dimen/activity_searcher_options_paddingleft"
             android:paddingLeft="@dimen/activity_searcher_options_paddingleft"
             android:paddingTop="@dimen/activity_searcher_options_paddingtop"
+            android:paddingEnd="@dimen/activity_searcher_options_paddingright"
             android:paddingRight="@dimen/activity_searcher_options_paddingright"
             android:paddingBottom="@dimen/activity_searcher_options_paddingbottom">
-
 
             <TextView
                 android:id="@+id/activity_searcher_options_search_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/activity_searcher_options_search" />
+                android:text="@string/activity_searcher_options_search"
+                android:textAppearance="?searcher_options_label_textappearance"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/activity_searcher_options_search_box"
-                android:layout_width="match_parent"
+                android:layout_width="@dimen/activity_searcher_options_searchbox_width"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:background="?searcher_options_search_box_background"
                 android:ems="10"
-                android:inputType="text" />
+                android:inputType="text"
+                android:padding="?searcher_options_search_box_padding"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/activity_searcher_options_search_label" />
 
             <TextView
                 android:id="@+id/activity_searcher_options_platform_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/activity_searcher_options_platform" />
+                android:layout_marginTop="@dimen/activity_searcher_options_fieldspacing"
+                android:text="@string/activity_searcher_options_platform"
+                android:textAppearance="@style/SearcherOptionsLabelTextAppearanceDefault"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/activity_searcher_options_search_box" />
 
             <AutoCompleteTextView
-                android:id="@+id/activity_searcher_options_platform_dropdown"
-                android:layout_width="match_parent"
+                android:id="@+id/activity_searcher_options_platform_textbox"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:background="?searcher_options_autocompletetextview_background"
+                android:padding="?searcher_options_autocompletetextview_padding"
+                app:layout_constraintEnd_toStartOf="@id/activity_searcher_options_platform_dropdown"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/activity_searcher_options_platform_label" />
+
+            <ImageButton
+                android:id="@+id/activity_searcher_options_platform_dropdown"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:adjustViewBounds="true"
+                android:background="?attr/searcher_options_dropdownicon_background"
+                android:contentDescription="@string/activity_searcher_options_platform_content_description"
+                app:layout_constraintBottom_toBottomOf="@id/activity_searcher_options_platform_textbox"
+                app:layout_constraintEnd_toEndOf="@id/activity_searcher_options_search_box"
+                app:layout_constraintTop_toTopOf="@id/activity_searcher_options_platform_textbox"
+                app:srcCompat="?attr/searcher_options_dropdownicon_src" />
 
             <TextView
                 android:id="@+id/activity_searcher_options_theme_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/activity_searcher_options_theme" />
+                android:layout_marginTop="@dimen/activity_searcher_options_fieldspacing"
+                android:text="@string/activity_searcher_options_theme"
+                android:textAppearance="?searcher_options_label_textappearance"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/activity_searcher_options_platform_textbox" />
 
             <AutoCompleteTextView
-                android:id="@+id/activity_searcher_options_theme_dropdown"
-                android:layout_width="match_parent"
+                android:id="@+id/activity_searcher_options_theme_textbox"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:background="?searcher_options_autocompletetextview_background"
+                android:padding="?searcher_options_autocompletetextview_padding"
+                app:layout_constraintEnd_toStartOf="@id/activity_searcher_options_theme_dropdown"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/activity_searcher_options_theme_label" />
+
+            <ImageButton
+                android:id="@+id/activity_searcher_options_theme_dropdown"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:adjustViewBounds="true"
+                android:background="?attr/searcher_options_dropdownicon_background"
+                android:contentDescription="@string/activity_searcher_options_theme_content_description"
+                app:layout_constraintBottom_toBottomOf="@id/activity_searcher_options_theme_textbox"
+                app:layout_constraintEnd_toEndOf="@id/activity_searcher_options_search_box"
+                app:layout_constraintTop_toTopOf="@id/activity_searcher_options_theme_textbox"
+                app:srcCompat="?attr/searcher_options_dropdownicon_src" />
 
             <TextView
                 android:id="@+id/activity_searcher_options_genre_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/activity_searcher_options_genre" />
+                android:layout_marginTop="@dimen/activity_searcher_options_fieldspacing"
+                android:text="@string/activity_searcher_options_genre"
+                android:textAppearance="?searcher_options_label_textappearance"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/activity_searcher_options_theme_textbox" />
 
             <AutoCompleteTextView
-                android:id="@+id/activity_searcher_options_genre_dropdown"
-                android:layout_width="match_parent"
+                android:id="@+id/activity_searcher_options_genre_textbox"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:background="?searcher_options_autocompletetextview_background"
+                android:padding="?searcher_options_autocompletetextview_padding"
+                app:layout_constraintEnd_toStartOf="@id/activity_searcher_options_genre_dropdown"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/activity_searcher_options_genre_label" />
+
+            <ImageButton
+                android:id="@+id/activity_searcher_options_genre_dropdown"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:adjustViewBounds="true"
+                android:background="?attr/searcher_options_dropdownicon_background"
+                android:contentDescription="@string/activity_searcher_options_genre_content_description"
+                app:layout_constraintBottom_toBottomOf="@id/activity_searcher_options_genre_textbox"
+                app:layout_constraintEnd_toEndOf="@id/activity_searcher_options_search_box"
+                app:layout_constraintTop_toTopOf="@id/activity_searcher_options_genre_textbox"
+                app:srcCompat="?attr/searcher_options_dropdownicon_src" />
 
             <TextView
                 android:id="@+id/activity_searcher_options_yearrelease_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/activity_searcher_options_releaseyear" />
+                android:layout_marginTop="@dimen/activity_searcher_options_fieldspacing"
+                android:text="@string/activity_searcher_options_releaseyear"
+                android:textAppearance="?searcher_options_label_textappearance"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/activity_searcher_options_genre_textbox" />
 
-            <LinearLayout
+            <NumberPicker
+                android:id="@+id/activity_searcher_options_fromyear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal">
+                android:theme="?searcher_options_numberpicker_theme"
+                app:layout_constraintEnd_toStartOf="@id/activity_searcher_options_yeartoyearseparator"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/activity_searcher_options_yearrelease_label" />
 
-                <NumberPicker
-                    android:id="@+id/activity_searcher_options_fromyear"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/activity_searcher_options_yeartoyearseparator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/activity_searcher_options_yeartoyear"
+                android:textAppearance="?searcher_options_label_textappearance"
+                app:layout_constraintBottom_toBottomOf="@id/activity_searcher_options_fromyear"
+                app:layout_constraintEnd_toStartOf="@id/activity_searcher_options_toyear"
+                app:layout_constraintStart_toEndOf="@id/activity_searcher_options_fromyear"
+                app:layout_constraintTop_toTopOf="@id/activity_searcher_options_fromyear" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="@string/activity_searcher_options_yeartoyear" />
-
-                <NumberPicker
-                    android:id="@+id/activity_searcher_options_toyear"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+            <NumberPicker
+                android:id="@+id/activity_searcher_options_toyear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="?searcher_options_numberpicker_theme"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/activity_searcher_options_yeartoyearseparator"
+                app:layout_constraintTop_toTopOf="@id/activity_searcher_options_fromyear" />
 
             <TextView
                 android:id="@+id/activity_searcher_options_sort_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/activity_searcher_options_sort" />
+                android:layout_marginTop="@dimen/activity_searcher_options_fieldspacing"
+                android:text="@string/activity_searcher_options_sort"
+                android:textAppearance="?searcher_options_label_textappearance"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/activity_searcher_options_toyear" />
 
             <Spinner
                 android:id="@+id/activity_searcher_options_sort_dropdown"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_width="0dp"
+                android:layout_height="?searcher_options_spinner_height"
+                android:background="?searcher_options_spinner_background"
+                android:padding="?searcher_options_spinner_padding"
+                app:layout_constraintEnd_toEndOf="@id/activity_searcher_options_search_box"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/activity_searcher_options_sort_label" />
+
+            <ImageButton
+                android:id="@+id/activity_searcher_options_sort_dropdown_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:adjustViewBounds="true"
+                android:background="?searcher_options_dropdownicon_background"
+                android:contentDescription="@string/activity_searcher_options_sort_content_descriptions"
+                app:layout_constraintBottom_toBottomOf="@id/activity_searcher_options_sort_dropdown"
+                app:layout_constraintEnd_toEndOf="@id/activity_searcher_options_sort_dropdown"
+                app:layout_constraintTop_toTopOf="@id/activity_searcher_options_sort_dropdown"
+                app:srcCompat="?searcher_options_dropdownicon_src" />
 
             <TextView
                 android:id="@+id/activity_searcher_options_order_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/activity_searcher_options_order" />
+                android:layout_marginTop="@dimen/activity_searcher_options_fieldspacing"
+                android:text="@string/activity_searcher_options_order"
+                android:textAppearance="?searcher_options_label_textappearance"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/activity_searcher_options_sort_dropdown" />
 
             <Spinner
                 android:id="@+id/activity_searcher_options_order_dropdown"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_width="0dp"
+                android:layout_height="?searcher_options_spinner_height"
+                android:background="?searcher_options_spinner_background"
+                android:padding="?searcher_options_spinner_padding"
+                app:layout_constraintEnd_toEndOf="@id/activity_searcher_options_search_box"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/activity_searcher_options_order_label" />
+
+            <ImageButton
+                android:id="@+id/activity_searcher_options_order_dropdown_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:adjustViewBounds="true"
+                android:background="?searcher_options_dropdownicon_background"
+                android:contentDescription="@string/activity_searcher_options_order_content_description"
+                app:layout_constraintBottom_toBottomOf="@id/activity_searcher_options_order_dropdown"
+                app:layout_constraintEnd_toEndOf="@id/activity_searcher_options_order_dropdown"
+                app:layout_constraintTop_toTopOf="@id/activity_searcher_options_order_dropdown"
+                app:srcCompat="?searcher_options_dropdownicon_src" />
 
             <Button
                 android:id="@+id/activity_searcher_options_apply"
+                style="?searcher_options_button_style"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/activity_searcher_options_apply" />
+                android:layout_marginTop="@dimen/activity_searcher_options_fieldspacing"
+                android:text="@string/activity_searcher_options_apply"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/activity_searcher_options_order_dropdown" />
 
-        </LinearLayout>
+
+        </android.support.constraint.ConstraintLayout>
 
     </ScrollView>
 </layout>

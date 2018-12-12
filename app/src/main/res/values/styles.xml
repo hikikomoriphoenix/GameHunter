@@ -19,15 +19,45 @@
 
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowBackground">@color/windowBackground</item>
+    <style name="AppTheme" parent="DefaultTheme">
+
     </style>
 
-    <style name="SearchOptionsTheme" parent="Theme.AppCompat">
+    <style name="DefaultTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/darkRed</item>
+        <item name="colorPrimaryDark">@color/darkerRed</item>
+        <item name="colorAccent">@color/darkRed</item>
+        <item name="android:windowBackground">@color/almostWhite</item>
+        <item name="searcher_options_background">@color/lighterBlack</item>
+        <item name="searcher_options_search_box_background">@color/white</item>
+        <item name="searcher_options_search_box_padding">8dp</item>
+        <item name="searcher_options_label_textappearance">
+            @style/SearcherOptionsLabelTextAppearanceDefault
+        </item>
+        <item name="searcher_options_autocompletetextview_background">@color/white</item>
+        <item name="searcher_options_autocompletetextview_padding">8dp</item>
+        <item name="searcher_options_dropdownicon_background">@color/darkRed</item>
+        <item name="searcher_options_dropdownicon_src">@drawable/ic_arrow_drop_down_whte_24dp
+        </item>
+        <item name="searcher_options_numberpicker_theme">
+            @style/SearcherOptonsNumberPickerThemeDefault
+        </item>
+        <item name="searcher_options_spinner_background">@color/white</item>
+        <item name="searcher_options_spinner_padding">8dp</item>
+        <item name="searcher_options_spinner_height">40dp</item>
+        <item name="searcher_options_button_style">@style/SearcherOptionsButtonStyleDefault</item>
+    </style>
+
+    <style name="SearcherOptionsLabelTextAppearanceDefault" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="SearcherOptonsNumberPickerThemeDefault">
+        <item name="android:textColorPrimary">@color/white</item>
+    </style>
+
+    <style name="SearcherOptionsButtonStyleDefault" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/background_searcher_options_button</item>
         <item name="android:textColor">@color/white</item>
     </style>
 

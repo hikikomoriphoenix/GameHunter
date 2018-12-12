@@ -23,9 +23,12 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.NumberPicker;
 
 import marabillas.loremar.gamehunter.R;
 import marabillas.loremar.gamehunter.databinding.ActivitySearcherBinding;
+
+import static marabillas.loremar.gamehunter.utils.UIUtils.setNumberPickerDividerColor;
 
 public class SearcherActivity extends AppCompatActivity {
     @Override
@@ -36,5 +39,16 @@ public class SearcherActivity extends AppCompatActivity {
                 .activity_searcher);
 
         binding.searcherToolbar.inflateMenu(R.menu.searcher_menu);
+
+        int color;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            color = getColor(R.color.white);
+        } else {
+            color = getResources().getColor(R.color.darkRed);
+        }
+        NumberPicker picker1 = findViewById(R.id.activity_searcher_options_fromyear);
+        NumberPicker picker2 = findViewById(R.id.activity_searcher_options_toyear);
+        setNumberPickerDividerColor(picker1, color);
+        setNumberPickerDividerColor(picker2, color);
     }
 }
