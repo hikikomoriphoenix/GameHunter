@@ -29,14 +29,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import marabillas.loremar.gamehunter.BuildConfig;
-import marabillas.loremar.gamehunter.apis.APICallback;
 import marabillas.loremar.gamehunter.apis.BaseAPI;
 import marabillas.loremar.gamehunter.apis.BaseAPIFailedQueryException;
 import marabillas.loremar.gamehunter.apis.Feature;
@@ -78,68 +74,40 @@ public class GiantBomb extends BaseAPI {
     }
 
     @Override
-    public Set<String> getGenreFilters() {
+    public Observable<Set<String>> getGenreFilters() {
         return null;
     }
 
     @Override
-    public void getPlatformFilters(APICallback callback) {
+    public Observable<Set<String>> getPlatformFilters() {
         platforms = new TreeMap<>();
-        api
-                .getPlatformFilters(KEY, 0)
+        return getRecursiveObservable(0)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .subscribe(new Observer<GiantBombResponse<GiantBombPlatformFilter>>() {
-                    private Disposable disposable;
-                    private int page = 0;
-                    Set<String> platformFilters = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+                .concatMap(response -> {
+                    Set<String> platformFilters = platforms.keySet();
+                    return Observable.just(platformFilters);
+                });
+    }
 
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        if (disposable != null && !disposable.isDisposed()) {
-                            disposable.dispose();
-                        }
-                        disposable = d;
-                        // TODO Add disposable to be disposed later
-                    }
-
-                    @Override
-                    public void onNext(GiantBombResponse<GiantBombPlatformFilter>
-                                               giantBombPlatformFilterGiantBombResponse) {
-                        ArrayList<GiantBombPlatformFilter> results =
-                                giantBombPlatformFilterGiantBombResponse.getResults();
-
-                        boolean morePlatformFiltersToGet = savePlatformFilters(results,
-                                platformFilters);
-                        if (!morePlatformFiltersToGet) {
-                            callback.onPlatformFiltersObtained(platformFilters);
-                            disposable.dispose();
-                            return;
-                        }
-
-                        // Get platform filters for next page.
-                        ++page;
-                        api
-                                .getPlatformFilters(KEY, page * 100)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(Schedulers.io())
-                                .subscribe(this);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        disposable.dispose();
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        disposable.dispose();
+    private Observable<GiantBombResponse<GiantBombPlatformFilter>> getRecursiveObservable
+            (int page) {
+        return api
+                .getPlatformFilters(KEY, page * 100)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .concatMap(response -> {
+                    ArrayList<GiantBombPlatformFilter> results = response.getResults();
+                    boolean morePlatformFiltersToGet = savePlatformFilters(results);
+                    if (morePlatformFiltersToGet) {
+                        return getRecursiveObservable(page + 1);
+                    } else {
+                        return Observable.empty();
                     }
                 });
     }
 
-    private boolean savePlatformFilters(ArrayList<GiantBombPlatformFilter> results, Set<String>
-            platformFilters) {
+    private boolean savePlatformFilters(ArrayList<GiantBombPlatformFilter> results) {
         // If no more platform filters, proceed to finish.
         if (results.size() <= 0) {
             return false;
@@ -152,7 +120,6 @@ public class GiantBomb extends BaseAPI {
             int id = result.getId();
 
             platforms.put(name, id);
-            platformFilters.add(name);
         }
 
         // If number of returned platform filters is less than 100, then there is
@@ -161,12 +128,13 @@ public class GiantBomb extends BaseAPI {
     }
 
     @Override
-    public Set<String> getSortChoices() {
-        return new GiantBombCollections().getSortChoices().keySet();
+    public Observable<Set<String>> getSortChoices() {
+        Set<String> choices = new GiantBombCollections().getSortChoices().keySet();
+        return Observable.just(choices);
     }
 
     @Override
-    public Set<String> getThemeFilters() {
+    public Observable<Set<String>> getThemeFilters() {
         return null;
     }
 
@@ -176,9 +144,9 @@ public class GiantBomb extends BaseAPI {
     }
 
     @Override
-    public void query(Query query, APICallback callback) {
+    public Observable<List<ResultsItem>> query(Query query) {
         log("Querying.");
-        Disposable disposable = Observable.fromCallable(() -> prepareQueryParameters(query))
+        return Observable.fromCallable(() -> prepareQueryParameters(query))
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .concatMap(queryMap -> {
@@ -192,14 +160,13 @@ public class GiantBomb extends BaseAPI {
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .subscribe(response -> {
+                .concatMap(response -> {
                     log("Query success.");
                     totalResultsFromLastQuery = response.getNumTotalResults();
                     List<ResultsItem> results = getResults(response.getResults(), query.getFields
                             ());
-                    callback.onQueryResults(results);
+                    return Observable.just(results);
                 });
-        // TODO Add disposable to be disposed later.
     }
 
     private Map<String, String> prepareQueryParameters(Query query) throws
