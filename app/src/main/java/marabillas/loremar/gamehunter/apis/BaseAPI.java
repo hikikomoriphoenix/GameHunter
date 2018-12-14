@@ -19,9 +19,12 @@
 
 package marabillas.loremar.gamehunter.apis;
 
+import java.util.List;
 import java.util.Set;
 
+import io.reactivex.Observable;
 import marabillas.loremar.gamehunter.components.Query;
+import marabillas.loremar.gamehunter.components.ResultsItem;
 
 /**
  * This class attempts to wrap any available API from any website with a video games database. It
@@ -55,31 +58,31 @@ public abstract class BaseAPI {
      * Gets all the game genres that is made available by the API for the user to choose from as
      * filters.
      *
-     * @return a set containing the names of available game genres as filters
+     * @return an observable that can be subscribed to to get genre filters.
      */
-    public abstract Set<String> getGenreFilters();
+    public abstract Observable<Set<String>> getGenreFilters();
 
     /**
      * Gets all the gaming platforms that is made available by the API for the user to choose
      * from as filters.
      *
-     * @param callback APICallback that will be notified for results
+     * @return an observable that can be subscribed to to get platform filters.
      */
-    public abstract void getPlatformFilters(APICallback callback);
+    public abstract Observable<Set<String>> getPlatformFilters();
 
     /**
      * Gets all the choices for ordering results.
      *
-     * @return a set containing all sort by choices.
+     * @return an observable that can be subscribed to to get choices.
      */
-    public abstract Set<String> getSortChoices();
+    public abstract Observable<Set<String>> getSortChoices();
 
     /**
      * Gets all the themes that is made available by the API for the user to choose from as filters.
      *
-     * @return a set containing the names of available themes as filters
+     * @return an observable that can be subscribed to to get theme filters.
      */
-    public abstract Set<String> getThemeFilters();
+    public abstract Observable<Set<String>> getThemeFilters();
 
     /**
      * Computes total number of pages given total results and number of results per page.
@@ -109,9 +112,9 @@ public abstract class BaseAPI {
      *
      * @param query an object that contains fields used as parameters for querying the game
      *              database.
-     * @param callback APICallback that will be notified for results.
+     * @return an observable that can be subscribed on to get query results.
      */
-    public abstract void query(Query query, APICallback callback);
+    public abstract Observable<List<ResultsItem>> query(Query query);
 
     /**
      * Checks if {@link Feature#DESCRIPTION} is supported.
