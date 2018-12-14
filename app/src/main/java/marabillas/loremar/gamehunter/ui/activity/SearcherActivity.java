@@ -31,11 +31,14 @@ import marabillas.loremar.gamehunter.apis.APIFactory;
 import marabillas.loremar.gamehunter.apis.BaseAPI;
 import marabillas.loremar.gamehunter.components.SearcherViewModel;
 import marabillas.loremar.gamehunter.databinding.ActivitySearcherBinding;
+import marabillas.loremar.gamehunter.ui.components.ProgressView;
 
 import static marabillas.loremar.gamehunter.utils.UIUtils.setNumberPickerDividerColor;
 
 public class SearcherActivity extends AppCompatActivity {
     private SearcherViewModel viewModel;
+    private ProgressView progressView;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,5 +64,14 @@ public class SearcherActivity extends AppCompatActivity {
         NumberPicker picker2 = findViewById(R.id.activity_searcher_options_toyear);
         setNumberPickerDividerColor(picker1, color);
         setNumberPickerDividerColor(picker2, color);
+
+        progressView = new ProgressView(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        progressView.show();
     }
 }

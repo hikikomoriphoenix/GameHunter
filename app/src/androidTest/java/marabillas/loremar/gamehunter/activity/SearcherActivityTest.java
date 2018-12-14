@@ -19,6 +19,7 @@
 
 package marabillas.loremar.gamehunter.activity;
 
+import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
 
 import junit.framework.Assert;
@@ -33,10 +34,14 @@ import marabillas.loremar.gamehunter.ui.activity.SearcherActivity;
 public class SearcherActivityTest {
     @Rule
     public ActivityTestRule<SearcherActivity> searcherActivityTestRule = new ActivityTestRule<>
-            (SearcherActivity.class);
+            (SearcherActivity.class, false, false);
 
     @Test
     public void test() {
+        Intent intent = new Intent();
+        intent.putExtra("site", "Giant Bomb");
+        searcherActivityTestRule.launchActivity(intent);
+
         CountDownLatch cd = new CountDownLatch(1);
         try {
             cd.await();
