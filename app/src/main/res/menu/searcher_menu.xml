@@ -20,11 +20,13 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/searcher_menu_search"
         android:icon="@drawable/ic_search_white_24dp"
         android:title="@string/activity_searcher_search"
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/searcher_menu_searchoptions"
         android:icon="@drawable/ic_sort_white_24dp"
         android:title="@string/activity_searcher_options"
         app:showAsAction="ifRoom" />

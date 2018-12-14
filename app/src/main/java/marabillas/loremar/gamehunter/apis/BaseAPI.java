@@ -248,7 +248,7 @@ public abstract class BaseAPI {
      *
      * @return true if supported, false if not
      */
-    public boolean hasSearhFilterByTheme() {
+    public boolean hasSearchFilterByTheme() {
         return configuration.contains(Feature.SEARCH_FILTER_BY_THEME);
     }
 

@@ -19,14 +19,53 @@
 
 package marabillas.loremar.gamehunter.components;
 
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
+import io.reactivex.Completable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import marabillas.loremar.gamehunter.apis.BaseAPI;
 
 public class SearcherViewModel extends ViewModel {
     private BaseAPI api;
 
+    public MutableLiveData<SearcherEvent> eventBus = new MutableLiveData<>();
+
     public void setApi(BaseAPI api) {
         this.api = api;
+    }
+
+    public void init() {
+        if (!api.hasSearch()) {
+            Completable.fromRunnable(() -> eventBus.setValue(SearcherEvent.HIDE_SEARCH_ICON))
+                    .subscribeOn(AndroidSchedulers.mainThread())
+                    .subscribe();
+        }
+
+        boolean hasSearchOptions =
+                api.hasFilterByPlatform()
+                        || api.hasFilterByTheme()
+                        || api.hasFilterByGenre()
+                        || api.hasFilterByYear()
+                        || api.hasFilterByYears()
+                        || api.hasSort()
+                        || api.hasSortByReversible()
+                        || api.hasSearchFilterByPlatform()
+                        || api.hasSearchFilterByTheme()
+                        || api.hasSearchFilterByGenre()
+                        || api.hasSearchFilterByYear()
+                        || api.hasSearchFilterByYears()
+                        || api.hasSearchSortBy()
+                        || api.hasSortByReversible();
+
+        if (!hasSearchOptions) {
+            Completable.fromRunnable(() -> eventBus.setValue(SearcherEvent.HIDE_SEARCH_OPTIONS_ICON))
+                    .subscribeOn(AndroidSchedulers.mainThread())
+                    .subscribe();
+        }
+
+        Completable.fromRunnable(() -> eventBus.setValue(SearcherEvent.HIDE_PROGRESS_VIEW))
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 }
