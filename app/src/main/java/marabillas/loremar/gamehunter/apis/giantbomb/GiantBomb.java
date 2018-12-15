@@ -41,7 +41,6 @@ import marabillas.loremar.gamehunter.components.ResultsItem;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static marabillas.loremar.gamehunter.utils.LogUtils.log;
 import static marabillas.loremar.gamehunter.utils.StringUtils.encodeURL;
 
 /**
@@ -145,12 +144,10 @@ public class GiantBomb extends BaseAPI {
 
     @Override
     public Observable<List<ResultsItem>> query(Query query) {
-        log("Querying.");
         return Observable.fromCallable(() -> prepareQueryParameters(query))
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .concatMap(queryMap -> {
-                    log("Query parameters are set.");
                     String keyword = queryMap.get("query");
                     if (keyword != null) {
                         return api.search(queryMap);
@@ -161,7 +158,6 @@ public class GiantBomb extends BaseAPI {
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .concatMap(response -> {
-                    log("Query success.");
                     totalResultsFromLastQuery = response.getNumTotalResults();
                     List<ResultsItem> results = getResults(response.getResults(), query.getFields
                             ());
