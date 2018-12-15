@@ -49,7 +49,9 @@
 
         </FrameLayout>
 
-        <include layout="@layout/activity_searcher_options" />
+        <include
+            android:id="@+id/searcher_options"
+            layout="@layout/activity_searcher_options" />
 
     </android.support.v4.widget.DrawerLayout>
 </layout>

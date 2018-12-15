@@ -23,11 +23,11 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.NumberPicker;
 
 import marabillas.loremar.gamehunter.R;
 import marabillas.loremar.gamehunter.apis.APIFactory;
@@ -65,16 +65,10 @@ public class SearcherActivity extends AppCompatActivity implements Toolbar.OnMen
         binding.searcherToolbar.setOnMenuItemClickListener(this);
         menu = binding.searcherToolbar.getMenu();
 
-        int color;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            color = getColor(R.color.white);
-        } else {
-            color = getResources().getColor(R.color.darkRed);
-        }
-        NumberPicker picker1 = findViewById(R.id.activity_searcher_options_fromyear);
-        NumberPicker picker2 = findViewById(R.id.activity_searcher_options_toyear);
-        setNumberPickerDividerColor(picker1, color);
-        setNumberPickerDividerColor(picker2, color);
+        // Replace the number picker's divider's default color.
+        int color = ResourcesCompat.getColor(getResources(), R.color.white, null);
+        setNumberPickerDividerColor(binding.searcherOptions.activitySearcherOptionsFromyear, color);
+        setNumberPickerDividerColor(binding.searcherOptions.activitySearcherOptionsToyear, color);
 
         progressView = new ProgressView(this);
     }
