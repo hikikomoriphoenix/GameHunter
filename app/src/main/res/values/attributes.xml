@@ -32,4 +32,15 @@
     <attr name="searcher_options_spinner_padding" format="dimension" />
     <attr name="searcher_options_spinner_height" format="dimension" />
     <attr name="searcher_options_button_style" format="reference" />
+
+    <!-- Search box attributes -->
+    <attr name="searcher_searchbox_style" format="reference" />
+    <attr name="searcher_searchbox_background" format="reference" />
+    <attr name="searcher_searchbox_padding" format="dimension" />
+    <attr name="searcher_searchbox_textcolor" format="color" />
+    <attr name="searcher_searchbox_close_drawable" format="reference" />
+    <attr name="searcher_searchbox_close_background" format="reference" />
+    <attr name="searcher_searchbox_edittext_background" format="reference" />
+    <attr name="searcher_searchbox_edittext_padding" format="dimension" />
+    <attr name="searcher_searchbox_edittext_topmargin" format="dimension" />
 </resources>

@@ -25,6 +25,8 @@
 
     <string name="activity_searcher_search">Search</string>
     <string name="activity_searcher_options">Options</string>
+    <string name="activity_searcher_searchbox_label">Search</string>
+    <string name="activtiy_searhcer_close_content_description">Close search box</string>
 
     <!-- Labels for search page options-->
     <string name="activity_searcher_options_search">Search</string>

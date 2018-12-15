@@ -26,6 +26,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -36,6 +37,7 @@ import marabillas.loremar.gamehunter.components.SearcherEvent;
 import marabillas.loremar.gamehunter.components.SearcherViewModel;
 import marabillas.loremar.gamehunter.databinding.ActivitySearcherBinding;
 import marabillas.loremar.gamehunter.ui.components.ProgressView;
+import marabillas.loremar.gamehunter.ui.components.SearchBox;
 
 import static marabillas.loremar.gamehunter.utils.UIUtils.setNumberPickerDividerColor;
 
@@ -98,6 +100,15 @@ public class SearcherActivity extends AppCompatActivity implements Toolbar.OnMen
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        return false;
+        switch (item.getItemId()) {
+            case R.id.searcher_menu_search:
+                SearchBox sb = new SearchBox(this);
+                sb.show(binding.searcherDrawer);
+                break;
+            case R.id.searcher_menu_searchoptions:
+                binding.searcherDrawer.openDrawer(Gravity.END);
+                break;
+        }
+        return true;
     }
 }
