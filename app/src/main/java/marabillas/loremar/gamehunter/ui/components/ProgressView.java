@@ -26,7 +26,8 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
+import android.support.v4.content.res.ResourcesCompat;
+import android.support.v4.view.ViewCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -39,18 +40,15 @@ public class ProgressView {
     private Dialog dialog;
 
     public ProgressView(Context context) {
+        Resources r = context.getResources();
+
         // Create dialog with transparent window of fixed size. The dialog should block user
         // interaction.
         dialog = new Dialog(context);
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
         View decorView = Objects.requireNonNull(dialog.getWindow()).getDecorView();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            decorView.setBackground(new ColorDrawable(Color.TRANSPARENT));
-        } else {
-            decorView.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        }
-        Resources r = context.getResources();
+        ViewCompat.setBackground(decorView, new ColorDrawable(Color.TRANSPARENT));
         int size = r.getDimensionPixelSize(R.dimen.activity_searcher_progressview_size);
         dialog.getWindow().setLayout(size, size);
 
@@ -60,12 +58,7 @@ public class ProgressView {
                 .MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         progressBar.setLayoutParams(params);
         progressBar.setIndeterminate(true);
-        int color;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            color = context.getColor(R.color.neonGreen);
-        } else {
-            color = context.getResources().getColor(R.color.neonGreen);
-        }
+        int color = ResourcesCompat.getColor(r, R.color.neonGreen, null);
         Drawable d = progressBar.getIndeterminateDrawable();
         d.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
 
