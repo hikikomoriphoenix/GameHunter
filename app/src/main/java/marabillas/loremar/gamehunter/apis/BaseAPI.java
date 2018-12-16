@@ -204,16 +204,23 @@ public abstract class BaseAPI {
      * @return true if supported, false if not
      */
     public boolean hasSearch() {
+        return hasSearchBasic() || hasSearchAdvanced();
+    }
+
+    public boolean hasSearchBasic() {
         return configuration.contains(Feature.SEARCH) || configuration.contains(Feature
                 .SEARCH_THUMBNAIL) || configuration.contains(Feature.SEARCH_DESCRIPTION) ||
                 configuration.contains(Feature.SEARCH_RELEASE_DATE) || configuration.contains
-                (Feature.SEARCH_FILTER_BY_PLATFORM) || configuration.contains(Feature
-                .SEARCH_FILTER_BY_GENRE) || configuration.contains(Feature
+                (Feature.SEARCH_PAGES) || configuration.contains(Feature.SEARCH_RESULTS_PER_PAGE);
+    }
+
+    public boolean hasSearchAdvanced() {
+        return configuration.contains(Feature.SEARCH_FILTER_BY_PLATFORM) || configuration
+                .contains(Feature.SEARCH_FILTER_BY_GENRE) || configuration.contains(Feature
                 .SEARCH_FILTER_BY_THEME) || configuration.contains(Feature.SEARCH_FILTER_BY_YEAR) ||
                 configuration.contains(Feature.SEARCH_FILTER_BY_YEARS) || configuration.contains
                 (Feature.SEARCH_SORT_BY) || configuration.contains(Feature
-                .SEARCH_SORT_BY_REVERSIBLE) || configuration.contains(Feature.SEARCH_PAGES) ||
-                configuration.contains(Feature.SEARCH_RESULTS_PER_PAGE);
+                .SEARCH_SORT_BY_REVERSIBLE);
     }
 
     /**
@@ -331,7 +338,7 @@ public abstract class BaseAPI {
      *
      * @return true if supported, false if not
      */
-    public boolean hasSort() {
+    public boolean hasSortBy() {
         return configuration.contains(Feature.SORT_BY) || configuration.contains(Feature.SORT_BY_REVERSIBLE);
     }
 

@@ -17,8 +17,16 @@
   ~     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
   -->
 
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="marabillas.loremar.gamehunter.components.SearcherViewModel" />
+    </data>
 
     <ScrollView
         android:layout_width="wrap_content"
@@ -42,17 +50,18 @@
                 android:layout_height="wrap_content"
                 android:text="@string/activity_searcher_options_search"
                 android:textAppearance="?searcher_options_label_textappearance"
+                android:visibility="@{viewModel.searchVisible}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/activity_searcher_options_search_box"
-                android:layout_width="@dimen/activity_searcher_options_searchbox_width"
+                android:layout_width="@dimen/activity_searcher_options_textbox_width"
                 android:layout_height="wrap_content"
                 android:background="?searcher_options_search_box_background"
-                android:ems="10"
                 android:inputType="text"
                 android:padding="?searcher_options_search_box_padding"
+                android:visibility="@{viewModel.searchVisible}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/activity_searcher_options_search_label" />
 
@@ -63,16 +72,17 @@
                 android:layout_marginTop="@dimen/activity_searcher_options_fieldspacing"
                 android:text="@string/activity_searcher_options_platform"
                 android:textAppearance="@style/SearcherOptionsLabelTextAppearanceDefault"
+                android:visibility="@{viewModel.platformVisible}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/activity_searcher_options_search_box" />
 
             <AutoCompleteTextView
                 android:id="@+id/activity_searcher_options_platform_textbox"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/activity_searcher_options_textbox_width"
                 android:layout_height="wrap_content"
                 android:background="?searcher_options_autocompletetextview_background"
                 android:padding="?searcher_options_autocompletetextview_padding"
-                app:layout_constraintEnd_toStartOf="@id/activity_searcher_options_platform_dropdown"
+                android:visibility="@{viewModel.platformVisible}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/activity_searcher_options_platform_label" />
 
@@ -83,10 +93,12 @@
                 android:adjustViewBounds="true"
                 android:background="?attr/searcher_options_dropdownicon_background"
                 android:contentDescription="@string/activity_searcher_options_platform_content_description"
+                android:visibility="@{viewModel.platformVisible}"
                 app:layout_constraintBottom_toBottomOf="@id/activity_searcher_options_platform_textbox"
-                app:layout_constraintEnd_toEndOf="@id/activity_searcher_options_search_box"
+                app:layout_constraintEnd_toEndOf="@id/activity_searcher_options_platform_textbox"
                 app:layout_constraintTop_toTopOf="@id/activity_searcher_options_platform_textbox"
-                app:srcCompat="?attr/searcher_options_dropdownicon_src" />
+                app:srcCompat="?attr/searcher_options_dropdownicon_src"
+                tools:layout_editor_absoluteX="224dp" />
 
             <TextView
                 android:id="@+id/activity_searcher_options_theme_label"
@@ -95,16 +107,17 @@
                 android:layout_marginTop="@dimen/activity_searcher_options_fieldspacing"
                 android:text="@string/activity_searcher_options_theme"
                 android:textAppearance="?searcher_options_label_textappearance"
+                android:visibility="@{viewModel.themeVisible}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/activity_searcher_options_platform_textbox" />
 
             <AutoCompleteTextView
                 android:id="@+id/activity_searcher_options_theme_textbox"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/activity_searcher_options_textbox_width"
                 android:layout_height="wrap_content"
                 android:background="?searcher_options_autocompletetextview_background"
                 android:padding="?searcher_options_autocompletetextview_padding"
-                app:layout_constraintEnd_toStartOf="@id/activity_searcher_options_theme_dropdown"
+                android:visibility="@{viewModel.themeVisible}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/activity_searcher_options_theme_label" />
 
@@ -115,8 +128,9 @@
                 android:adjustViewBounds="true"
                 android:background="?attr/searcher_options_dropdownicon_background"
                 android:contentDescription="@string/activity_searcher_options_theme_content_description"
+                android:visibility="@{viewModel.themeVisible}"
                 app:layout_constraintBottom_toBottomOf="@id/activity_searcher_options_theme_textbox"
-                app:layout_constraintEnd_toEndOf="@id/activity_searcher_options_search_box"
+                app:layout_constraintEnd_toEndOf="@+id/activity_searcher_options_theme_textbox"
                 app:layout_constraintTop_toTopOf="@id/activity_searcher_options_theme_textbox"
                 app:srcCompat="?attr/searcher_options_dropdownicon_src" />
 
@@ -127,16 +141,17 @@
                 android:layout_marginTop="@dimen/activity_searcher_options_fieldspacing"
                 android:text="@string/activity_searcher_options_genre"
                 android:textAppearance="?searcher_options_label_textappearance"
+                android:visibility="@{viewModel.genreVisible}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/activity_searcher_options_theme_textbox" />
 
             <AutoCompleteTextView
                 android:id="@+id/activity_searcher_options_genre_textbox"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/activity_searcher_options_textbox_width"
                 android:layout_height="wrap_content"
                 android:background="?searcher_options_autocompletetextview_background"
                 android:padding="?searcher_options_autocompletetextview_padding"
-                app:layout_constraintEnd_toStartOf="@id/activity_searcher_options_genre_dropdown"
+                android:visibility="@{viewModel.genreVisible}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/activity_searcher_options_genre_label" />
 
@@ -147,8 +162,9 @@
                 android:adjustViewBounds="true"
                 android:background="?attr/searcher_options_dropdownicon_background"
                 android:contentDescription="@string/activity_searcher_options_genre_content_description"
+                android:visibility="@{viewModel.genreVisible}"
                 app:layout_constraintBottom_toBottomOf="@id/activity_searcher_options_genre_textbox"
-                app:layout_constraintEnd_toEndOf="@id/activity_searcher_options_search_box"
+                app:layout_constraintEnd_toEndOf="@+id/activity_searcher_options_genre_textbox"
                 app:layout_constraintTop_toTopOf="@id/activity_searcher_options_genre_textbox"
                 app:srcCompat="?attr/searcher_options_dropdownicon_src" />
 
@@ -159,6 +175,7 @@
                 android:layout_marginTop="@dimen/activity_searcher_options_fieldspacing"
                 android:text="@string/activity_searcher_options_releaseyear"
                 android:textAppearance="?searcher_options_label_textappearance"
+                android:visibility="@{viewModel.releaseYearVisible}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/activity_searcher_options_genre_textbox" />
 
@@ -167,6 +184,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:theme="?searcher_options_numberpicker_theme"
+                android:visibility="@{viewModel.releaseYearVisible}"
                 app:layout_constraintEnd_toStartOf="@id/activity_searcher_options_yeartoyearseparator"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/activity_searcher_options_yearrelease_label" />
@@ -178,6 +196,7 @@
                 android:layout_gravity="center_vertical"
                 android:text="@string/activity_searcher_options_yeartoyear"
                 android:textAppearance="?searcher_options_label_textappearance"
+                android:visibility="@{viewModel.toReleaseYearVisible}"
                 app:layout_constraintBottom_toBottomOf="@id/activity_searcher_options_fromyear"
                 app:layout_constraintEnd_toStartOf="@id/activity_searcher_options_toyear"
                 app:layout_constraintStart_toEndOf="@id/activity_searcher_options_fromyear"
@@ -188,6 +207,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:theme="?searcher_options_numberpicker_theme"
+                android:visibility="@{viewModel.toReleaseYearVisible}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/activity_searcher_options_yeartoyearseparator"
                 app:layout_constraintTop_toTopOf="@id/activity_searcher_options_fromyear" />
@@ -199,16 +219,17 @@
                 android:layout_marginTop="@dimen/activity_searcher_options_fieldspacing"
                 android:text="@string/activity_searcher_options_sort"
                 android:textAppearance="?searcher_options_label_textappearance"
+                android:visibility="@{viewModel.sortByVisible}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/activity_searcher_options_toyear" />
 
             <Spinner
                 android:id="@+id/activity_searcher_options_sort_dropdown"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/activity_searcher_options_textbox_width"
                 android:layout_height="?searcher_options_spinner_height"
                 android:background="?searcher_options_spinner_background"
                 android:padding="?searcher_options_spinner_padding"
-                app:layout_constraintEnd_toEndOf="@id/activity_searcher_options_search_box"
+                android:visibility="@{viewModel.sortByVisible}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/activity_searcher_options_sort_label" />
 
@@ -219,6 +240,7 @@
                 android:adjustViewBounds="true"
                 android:background="?searcher_options_dropdownicon_background"
                 android:contentDescription="@string/activity_searcher_options_sort_content_descriptions"
+                android:visibility="@{viewModel.sortByVisible}"
                 app:layout_constraintBottom_toBottomOf="@id/activity_searcher_options_sort_dropdown"
                 app:layout_constraintEnd_toEndOf="@id/activity_searcher_options_sort_dropdown"
                 app:layout_constraintTop_toTopOf="@id/activity_searcher_options_sort_dropdown"
@@ -231,16 +253,17 @@
                 android:layout_marginTop="@dimen/activity_searcher_options_fieldspacing"
                 android:text="@string/activity_searcher_options_order"
                 android:textAppearance="?searcher_options_label_textappearance"
+                android:visibility="@{viewModel.orderByVisible}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/activity_searcher_options_sort_dropdown" />
 
             <Spinner
                 android:id="@+id/activity_searcher_options_order_dropdown"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/activity_searcher_options_textbox_width"
                 android:layout_height="?searcher_options_spinner_height"
                 android:background="?searcher_options_spinner_background"
                 android:padding="?searcher_options_spinner_padding"
-                app:layout_constraintEnd_toEndOf="@id/activity_searcher_options_search_box"
+                android:visibility="@{viewModel.orderByVisible}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/activity_searcher_options_order_label" />
 
@@ -251,6 +274,7 @@
                 android:adjustViewBounds="true"
                 android:background="?searcher_options_dropdownicon_background"
                 android:contentDescription="@string/activity_searcher_options_order_content_description"
+                android:visibility="@{viewModel.orderByVisible}"
                 app:layout_constraintBottom_toBottomOf="@id/activity_searcher_options_order_dropdown"
                 app:layout_constraintEnd_toEndOf="@id/activity_searcher_options_order_dropdown"
                 app:layout_constraintTop_toTopOf="@id/activity_searcher_options_order_dropdown"

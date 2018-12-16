@@ -51,7 +51,8 @@
 
         <include
             android:id="@+id/searcher_options"
-            layout="@layout/activity_searcher_options" />
+            layout="@layout/activity_searcher_options"
+            app:viewModel="@{viewModel}" />
 
     </android.support.v4.widget.DrawerLayout>
 </layout>

@@ -24,7 +24,7 @@
     <dimen name="activity_searcher_options_paddingtop">24dp</dimen>
     <dimen name="activity_searcher_options_paddingbottom">24dp</dimen>
     <dimen name="activity_searcher_options_fieldspacing">16dp</dimen>
-    <dimen name="activity_searcher_options_searchbox_width">240dp</dimen>
+    <dimen name="activity_searcher_options_textbox_width">240dp</dimen>
     <dimen name="activity_searcher_options_autocompletebox_width">240dp</dimen>
 
     <dimen name="activity_searcher_progressview_size">240dp</dimen>
