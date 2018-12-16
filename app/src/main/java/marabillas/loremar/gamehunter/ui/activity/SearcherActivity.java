@@ -33,11 +33,11 @@ import android.view.MenuItem;
 import marabillas.loremar.gamehunter.R;
 import marabillas.loremar.gamehunter.apis.APIFactory;
 import marabillas.loremar.gamehunter.apis.BaseAPI;
-import marabillas.loremar.gamehunter.components.SearcherEvent;
 import marabillas.loremar.gamehunter.components.SearcherViewModel;
 import marabillas.loremar.gamehunter.databinding.ActivitySearcherBinding;
 import marabillas.loremar.gamehunter.ui.components.ProgressView;
 import marabillas.loremar.gamehunter.ui.components.SearchBox;
+import marabillas.loremar.gamehunter.ui.manipulator.SearcherManipulator;
 
 import static marabillas.loremar.gamehunter.utils.UIUtils.setNumberPickerDividerColor;
 
@@ -51,12 +51,14 @@ public class SearcherActivity extends AppCompatActivity implements Toolbar.OnMen
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        SearcherManipulator manipulator = new SearcherManipulator(this);
+
         String site = getIntent().getStringExtra("site");
         BaseAPI api = APIFactory.getAPI(site);
 
         viewModel = ViewModelProviders.of(this).get(SearcherViewModel.class);
         viewModel.setApi(api);
-        viewModel.eventBus.observe(this, this::handleEvent);
+        viewModel.eventBus.observe(this, manipulator::handleEvent);
 
         binding = DataBindingUtil.setContentView(this, R.layout
                 .activity_searcher);
@@ -82,23 +84,24 @@ public class SearcherActivity extends AppCompatActivity implements Toolbar.OnMen
         viewModel.init();
     }
 
-    private void handleEvent(SearcherEvent event) {
-        switch (event) {
-            case HIDE_SEARCH_ICON:
-                MenuItem searchTool = menu.findItem(R.id.searcher_menu_search);
-                searchTool.setVisible(false);
-                break;
-            case HIDE_SEARCH_OPTIONS_ICON:
-                MenuItem searchOptionsTool = menu.findItem(R.id.searcher_menu_searchoptions);
-                searchOptionsTool.setVisible(false);
-                break;
-            case HIDE_PROGRESS_VIEW:
-                progressView.dismiss();
-                break;
-        }
+    public SearcherViewModel getViewModel() {
+        return viewModel;
+    }
+
+    public ActivitySearcherBinding getBinding() {
+        return binding;
+    }
+
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public ProgressView getProgressView() {
+        return progressView;
     }
 
     @Override
+
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.searcher_menu_search:
