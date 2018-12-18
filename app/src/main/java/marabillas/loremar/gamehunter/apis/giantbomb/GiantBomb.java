@@ -84,13 +84,13 @@ public class GiantBomb extends BaseAPI {
         return getRecursiveObservable(0)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .concatMap(response -> {
+                .concatMap(object -> {
                     Set<String> platformFilters = platforms.keySet();
                     return Observable.just(platformFilters);
                 });
     }
 
-    private Observable<GiantBombResponse<GiantBombPlatformFilter>> getRecursiveObservable
+    private Observable<Object> getRecursiveObservable
             (int page) {
         return api
                 .getPlatformFilters(KEY, page * 100)
@@ -102,7 +102,7 @@ public class GiantBomb extends BaseAPI {
                     if (morePlatformFiltersToGet) {
                         return getRecursiveObservable(page + 1);
                     } else {
-                        return Observable.empty();
+                        return Observable.just(new Object());
                     }
                 });
     }

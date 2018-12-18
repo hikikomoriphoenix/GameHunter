@@ -46,12 +46,13 @@ public class SearcherActivity extends AppCompatActivity implements Toolbar.OnMen
     private ActivitySearcherBinding binding;
     private Menu menu;
     private ProgressView progressView;
+    private SearcherManipulator manipulator;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SearcherManipulator manipulator = new SearcherManipulator(this);
+        manipulator = new SearcherManipulator(this);
 
         String site = getIntent().getStringExtra("site");
         BaseAPI api = APIFactory.getAPI(site);
@@ -81,6 +82,12 @@ public class SearcherActivity extends AppCompatActivity implements Toolbar.OnMen
     protected void onStart() {
         super.onStart();
         progressView.show();
+
+        viewModel.platformFilters.observe(this, manipulator::setupPlatformFilters);
+        viewModel.themeFilters.observe(this, manipulator::setupThemeFilters);
+        viewModel.genreFilters.observe(this, manipulator::setupGenreFilters);
+        viewModel.sortChoices.observe(this, manipulator::setupSortChoices);
+
         viewModel.init();
     }
 

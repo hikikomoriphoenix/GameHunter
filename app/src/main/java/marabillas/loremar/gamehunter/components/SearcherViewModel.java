@@ -22,8 +22,12 @@ package marabillas.loremar.gamehunter.components;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
+import java.util.Set;
+
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import marabillas.loremar.gamehunter.apis.BaseAPI;
 
 import static android.view.View.GONE;
@@ -36,6 +40,8 @@ public class SearcherViewModel extends ViewModel {
 
     public MutableLiveData<SearcherEvent> eventBus = new MutableLiveData<>();
 
+    private Disposable disposable;
+
     // Search options visibilities
     public MutableLiveData<Integer> platformVisible = new MutableLiveData<>();
     public MutableLiveData<Integer> themeVisible = new MutableLiveData<>();
@@ -45,6 +51,12 @@ public class SearcherViewModel extends ViewModel {
     public MutableLiveData<Integer> releaseYearVisible = new MutableLiveData<>();
     public MutableLiveData<Integer> sortByVisible = new MutableLiveData<>();
     public MutableLiveData<Integer> orderByVisible = new MutableLiveData<>();
+
+    // Search options choices
+    public MutableLiveData<Set<String>> platformFilters = new MutableLiveData<>();
+    public MutableLiveData<Set<String>> themeFilters = new MutableLiveData<>();
+    public MutableLiveData<Set<String>> genreFilters = new MutableLiveData<>();
+    public MutableLiveData<Set<String>> sortChoices = new MutableLiveData<>();
 
     public void setApi(BaseAPI api) {
         this.api = api;
@@ -60,8 +72,35 @@ public class SearcherViewModel extends ViewModel {
         selectAccessibleTools();
         selectAccessibleSearchOptions();
 
-        // End setup by hiding progress view.
-        postEventToMainThread(HIDE_PROGRESS_VIEW);
+        disposable = Completable.fromRunnable(() -> {
+            if (api.hasFilterByPlatform() || api.hasSearchFilterByPlatform()) {
+                api.getPlatformFilters()
+                        .blockingSubscribe(filters -> platformFilters.postValue(filters));
+            }
+
+            if (api.hasFilterByTheme() || api.hasSearchFilterByTheme()) {
+                api.getThemeFilters()
+                        .blockingSubscribe(filters -> themeFilters.postValue(filters));
+            }
+
+            if (api.hasFilterByGenre() || api.hasSearchFilterByGenre()) {
+                api.getGenreFilters()
+                        .blockingSubscribe(filters -> genreFilters.postValue(filters));
+            }
+
+            if (api.hasSortBy()) {
+                api.getSortChoices()
+                        .blockingSubscribe(choices -> sortChoices.postValue(choices));
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {
+                    // End setup by hiding progress view.
+                    postEventToMainThread(HIDE_PROGRESS_VIEW);
+                    disposable.dispose();
+                    disposable = null;
+                });
     }
 
     private void selectAccessibleTools() {
@@ -112,6 +151,8 @@ public class SearcherViewModel extends ViewModel {
             if (!api.hasSortBy() && !api.hasSearchSortBy()) {
                 sortByVisible.postValue(GONE);
             }
+        } else {
+            postEventToMainThread(SearcherEvent.SETUP_ORDER_BY);
         }
 
         if (!api.hasSearchAdvanced()) {
