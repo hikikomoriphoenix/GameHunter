@@ -30,6 +30,8 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.Calendar;
+
 import marabillas.loremar.gamehunter.R;
 import marabillas.loremar.gamehunter.apis.APIFactory;
 import marabillas.loremar.gamehunter.apis.BaseAPI;
@@ -87,6 +89,14 @@ public class SearcherActivity extends AppCompatActivity implements Toolbar.OnMen
         viewModel.themeFilters.observe(this, manipulator::setupThemeFilters);
         viewModel.genreFilters.observe(this, manipulator::setupGenreFilters);
         viewModel.sortChoices.observe(this, manipulator::setupSortChoices);
+
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        binding.searcherOptions.activitySearcherOptionsFromyear.setMinValue(1950);
+        binding.searcherOptions.activitySearcherOptionsFromyear.setMaxValue(currentYear);
+        binding.searcherOptions.activitySearcherOptionsFromyear.setValue(currentYear);
+        binding.searcherOptions.activitySearcherOptionsToyear.setMinValue(1950);
+        binding.searcherOptions.activitySearcherOptionsToyear.setMaxValue(currentYear);
+        binding.searcherOptions.activitySearcherOptionsToyear.setValue(currentYear);
 
         viewModel.init();
     }
