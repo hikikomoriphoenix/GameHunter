@@ -159,4 +159,24 @@ public class SearcherViewModel extends ViewModel {
             searchVisible.postValue(GONE);
         }
     }
+
+    public void onPlatformFilterDropDownClick() {
+        postEventToMainThread(SearcherEvent.SHOW_PLATFORM_FILTERS);
+    }
+
+    public void onThemeFilterDropDownClick() {
+        postEventToMainThread(SearcherEvent.SHOW_THEME_FILTERS);
+    }
+
+    public void onGenreFilterDropDownClick() {
+        postEventToMainThread(SearcherEvent.SHOW_GENRE_FILTERS);
+    }
+
+    public void onSortByDropDownClick() {
+        postEventToMainThread(SearcherEvent.SHOW_SORT_CHOICES);
+    }
+
+    public void onOrderByDropDownClick() {
+        postEventToMainThread(SearcherEvent.SHOW_ORDER_CHOICES);
+    }
 }
