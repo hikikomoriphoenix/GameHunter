@@ -31,12 +31,12 @@
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="end">
+        android:layout_gravity="end"
+        android:background="?searcher_options_background">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="?searcher_options_background"
             android:paddingStart="@dimen/activity_searcher_options_paddingleft"
             android:paddingLeft="@dimen/activity_searcher_options_paddingleft"
             android:paddingTop="@dimen/activity_searcher_options_paddingtop"
