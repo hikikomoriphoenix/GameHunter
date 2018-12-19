@@ -57,10 +57,25 @@ public class SearchBox implements TextView.OnEditorActionListener {
 
     public void show(ViewGroup parent) {
         parent.addView(binding.getRoot());
+        binding.activitySearcherSearchboxEdittext.requestFocus();
+
+        // Open soft keyboard
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Service.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.showSoftInput(binding.activitySearcherSearchboxEdittext, InputMethodManager
+                    .SHOW_IMPLICIT);
+        }
+
         // TODO perform animation
     }
 
     public void dismiss() {
+        // Close soft keyboard
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Service.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(binding.activitySearcherSearchboxEdittext.getWindowToken(), 0);
+        }
+
         ViewGroup parent = (ViewGroup) binding.getRoot().getParent();
         parent.removeView(binding.getRoot());
     }
@@ -71,12 +86,6 @@ public class SearchBox implements TextView.OnEditorActionListener {
             String keyword = String.valueOf(v.getText());
             if (onSearchBoxActionListener != null) {
                 onSearchBoxActionListener.onSearchBoxAction(keyword);
-            }
-
-            // Close keyboard
-            InputMethodManager imm = (InputMethodManager) context.getSystemService(Service.INPUT_METHOD_SERVICE);
-            if (imm != null) {
-                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
             }
 
             dismiss();
