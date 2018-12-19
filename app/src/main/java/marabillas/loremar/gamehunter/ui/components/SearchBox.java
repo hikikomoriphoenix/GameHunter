@@ -19,28 +19,40 @@
 
 package marabillas.loremar.gamehunter.ui.components;
 
+import android.app.Service;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 
 import marabillas.loremar.gamehunter.R;
 import marabillas.loremar.gamehunter.databinding.ActivitySearcherSearchboxBinding;
 
-public class SearchBox {
+public class SearchBox implements TextView.OnEditorActionListener {
+    private Context context;
     private ActivitySearcherSearchboxBinding binding;
+    private OnSearchBoxActionListener onSearchBoxActionListener;
 
     public SearchBox(Context context) {
+        this.context = context;
+
         LayoutInflater inflater = LayoutInflater.from(context);
         binding = DataBindingUtil.inflate(inflater, R.layout.activity_searcher_searchbox, null,
                 false);
         binding.setSearchBox(this);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             int e = context.getResources().getDimensionPixelSize(R.dimen
                     .activity_searcher_searchbox_elevation);
             binding.activitySearcherSearchboxContainer.setElevation(e);
         }
+
+        binding.activitySearcherSearchboxEdittext.setOnEditorActionListener(this);
     }
 
     public void show(ViewGroup parent) {
@@ -51,5 +63,32 @@ public class SearchBox {
     public void dismiss() {
         ViewGroup parent = (ViewGroup) binding.getRoot().getParent();
         parent.removeView(binding.getRoot());
+    }
+
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+            String keyword = String.valueOf(v.getText());
+            if (onSearchBoxActionListener != null) {
+                onSearchBoxActionListener.onSearchBoxAction(keyword);
+            }
+
+            // Close keyboard
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(Service.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            }
+
+            dismiss();
+        }
+        return false;
+    }
+
+    public void setOnSearchBoxActionListener(OnSearchBoxActionListener onSearchBoxActionListener) {
+        this.onSearchBoxActionListener = onSearchBoxActionListener;
+    }
+
+    public interface OnSearchBoxActionListener {
+        void onSearchBoxAction(String keyword);
     }
 }

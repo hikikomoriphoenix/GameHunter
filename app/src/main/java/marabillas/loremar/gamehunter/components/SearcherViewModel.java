@@ -30,6 +30,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import marabillas.loremar.gamehunter.apis.BaseAPI;
+import marabillas.loremar.gamehunter.ui.components.SearchBox;
 
 import static android.view.View.GONE;
 import static marabillas.loremar.gamehunter.components.SearcherEvent.HIDE_PROGRESS_VIEW;
@@ -37,7 +38,7 @@ import static marabillas.loremar.gamehunter.components.SearcherEvent.HIDE_SEARCH
 import static marabillas.loremar.gamehunter.components.SearcherEvent.HIDE_SEARCH_OPTIONS_ICON;
 import static marabillas.loremar.gamehunter.utils.LogUtils.log;
 
-public class SearcherViewModel extends ViewModel {
+public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBoxActionListener {
     private BaseAPI api;
 
     public MutableLiveData<SearcherEvent> eventBus = new MutableLiveData<>();
@@ -277,5 +278,13 @@ public class SearcherViewModel extends ViewModel {
 
     private boolean hasReleaseYearExact() {
         return api.hasFilterByYear() || api.hasSearchFilterByYear();
+    }
+
+    @Override
+    public void onSearchBoxAction(String keyword) {
+        Query query = new Query();
+        query.setKeyword(keyword);
+        log("search:" + keyword);
+        // TODO Perform query.
     }
 }

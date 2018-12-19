@@ -123,6 +123,7 @@ public class SearcherActivity extends AppCompatActivity implements Toolbar.OnMen
         switch (item.getItemId()) {
             case R.id.searcher_menu_search:
                 SearchBox sb = new SearchBox(this);
+                sb.setOnSearchBoxActionListener(viewModel);
                 sb.show(binding.searcherDrawer);
                 break;
             case R.id.searcher_menu_searchoptions:
