@@ -91,12 +91,12 @@ public class SearcherActivity extends AppCompatActivity implements Toolbar.OnMen
         viewModel.sortChoices.observe(this, manipulator::setupSortChoices);
 
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        viewModel.fromYear.setValue(currentYear);
+        viewModel.toYear.setValue(currentYear);
         binding.searcherOptions.activitySearcherOptionsFromyear.setMinValue(1950);
         binding.searcherOptions.activitySearcherOptionsFromyear.setMaxValue(currentYear);
-        binding.searcherOptions.activitySearcherOptionsFromyear.setValue(currentYear);
         binding.searcherOptions.activitySearcherOptionsToyear.setMinValue(1950);
         binding.searcherOptions.activitySearcherOptionsToyear.setMaxValue(currentYear);
-        binding.searcherOptions.activitySearcherOptionsToyear.setValue(currentYear);
 
         viewModel.init();
     }

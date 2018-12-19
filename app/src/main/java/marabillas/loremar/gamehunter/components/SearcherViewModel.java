@@ -22,6 +22,7 @@ package marabillas.loremar.gamehunter.components;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
+import java.util.Objects;
 import java.util.Set;
 
 import io.reactivex.Completable;
@@ -34,6 +35,7 @@ import static android.view.View.GONE;
 import static marabillas.loremar.gamehunter.components.SearcherEvent.HIDE_PROGRESS_VIEW;
 import static marabillas.loremar.gamehunter.components.SearcherEvent.HIDE_SEARCH_ICON;
 import static marabillas.loremar.gamehunter.components.SearcherEvent.HIDE_SEARCH_OPTIONS_ICON;
+import static marabillas.loremar.gamehunter.utils.LogUtils.log;
 
 public class SearcherViewModel extends ViewModel {
     private BaseAPI api;
@@ -58,6 +60,11 @@ public class SearcherViewModel extends ViewModel {
     public MutableLiveData<Set<String>> genreFilters = new MutableLiveData<>();
     public MutableLiveData<Set<String>> sortChoices = new MutableLiveData<>();
 
+    public MutableLiveData<Query> query = new MutableLiveData<>();
+
+    public MutableLiveData<Integer> fromYear = new MutableLiveData<>();
+    public MutableLiveData<Integer> toYear = new MutableLiveData<>();
+
     public void setApi(BaseAPI api) {
         this.api = api;
     }
@@ -69,6 +76,7 @@ public class SearcherViewModel extends ViewModel {
     }
 
     public void init() {
+        query.postValue(new Query());
         selectAccessibleTools();
         selectAccessibleSearchOptions();
 
@@ -136,12 +144,9 @@ public class SearcherViewModel extends ViewModel {
             genreVisible.postValue(GONE);
         }
 
-        boolean hasReleaseYears = api.hasFilterByYears() || api.hasSearchFilterByYears();
-        boolean hasReleaseYearExact = api.hasFilterByYear() || api.hasSearchFilterByYear();
-
-        if (!hasReleaseYears) {
+        if (hasNoReleaseYearsRange()) {
             toReleaseYearVisible.postValue(GONE);
-            if (hasReleaseYearExact) {
+            if (hasReleaseYearExact()) {
                 releaseYearVisible.postValue(GONE);
             }
         }
@@ -178,5 +183,99 @@ public class SearcherViewModel extends ViewModel {
 
     public void onOrderByDropDownClick() {
         postEventToMainThread(SearcherEvent.SHOW_ORDER_CHOICES);
+    }
+
+    public void onOrderSelected(String order) {
+        switch (order) {
+            case "Ascending":
+                Objects.requireNonNull(query.getValue()).setOrder(Query.Order.ASCENDING);
+                break;
+            case "Descending":
+                Objects.requireNonNull(query.getValue()).setOrder(Query.Order.DESCENDING);
+                break;
+        }
+    }
+
+    public void onApplyButtonClick() {
+        validateQuery();
+
+        log("Query:\nkeyword=" + Objects.requireNonNull(query.getValue()).getKeyword() +
+                "\nplatform=" + query.getValue().getPlatformFilter() +
+                "\ntheme=" + query.getValue().getThemeFilter() +
+                "\ngenre=" + query.getValue().getGenreFilter() +
+                "\nreleaseYear=" + query.getValue().getReleaseYear() +
+                "\nfromYear=" + query.getValue().getFromYear() +
+                "\ntoYear=" + query.getValue().getToYear() +
+                "\nsort=" + query.getValue().getSort() +
+                "\norder=" + query.getValue().getOrder().toString()
+        );
+    }
+
+    private void validateQuery() {
+        String keyword = query.getValue().getKeyword();
+        if (keyword != null && keyword.equals("")) {
+            query.getValue().setKeyword(null);
+        }
+
+        String platformFilter = query.getValue().getPlatformFilter();
+        if (noFilter(platformFilters.getValue(), platformFilter)) {
+            query.getValue().setPlatformFilter(null);
+        }
+
+        String themeFilter = query.getValue().getThemeFilter();
+        if (noFilter(themeFilters.getValue(), themeFilter)) {
+            query.getValue().setThemeFilter(null);
+        }
+
+        String genreFilter = query.getValue().getGenreFilter();
+        if (noFilter(genreFilters.getValue(), genreFilter)) {
+            query.getValue().setGenreFilter(null);
+        }
+
+        if (hasNoReleaseYearsRange() && hasReleaseYearExact()) {
+            query.getValue().setReleaseYear(fromYear.getValue());
+        } else {
+            query.getValue().setFromYear(fromYear.getValue());
+            query.getValue().setToYear(toYear.getValue());
+        }
+    }
+
+    private boolean noFilter(Set<String> filters, String filter) {
+        if (filters != null && filters.size() > 0 && filter != null) {
+            return !filters.contains(filter);
+        } else {
+            return true;
+        }
+    }
+
+    public void onFromYearValueChange(int newValue) {
+        if (hasNoReleaseYearsRange() && hasReleaseYearExact()) {
+            Objects.requireNonNull(query.getValue()).setReleaseYear(newValue);
+            return;
+        }
+
+        if (toYear.getValue() == null || toYear.getValue() < newValue) {
+            toYear.setValue(newValue);
+            Objects.requireNonNull(query.getValue()).setToYear(newValue);
+        }
+
+        query.getValue().setFromYear(newValue);
+    }
+
+    public void onToYearValueChange(int newValue) {
+        if (fromYear.getValue() == null || fromYear.getValue() > newValue) {
+            fromYear.setValue(newValue);
+            Objects.requireNonNull(query.getValue()).setFromYear(newValue);
+        }
+
+        query.getValue().setToYear(newValue);
+    }
+
+    private boolean hasNoReleaseYearsRange() {
+        return !api.hasFilterByYears() && !api.hasSearchFilterByYears();
+    }
+
+    private boolean hasReleaseYearExact() {
+        return api.hasFilterByYear() || api.hasSearchFilterByYear();
     }
 }
