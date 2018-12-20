@@ -47,6 +47,7 @@
         <item name="searcher_options_spinner_height">40dp</item>
         <item name="searcher_options_button_style">@style/SearcherOptionsButtonStyleDefault</item>
         <item name="searcher_searchbox_style">@style/SearcherSearchBoxStyleDefault</item>
+        <item name="searcher_results_item_style">@style/SearcherResultsItemStyleWhite</item>
     </style>
 
     <style name="SearcherOptionsLabelTextAppearanceDefault" parent="TextAppearance.AppCompat">
@@ -71,6 +72,20 @@
         <item name="searcher_searchbox_edittext_background">@color/white</item>
         <item name="searcher_searchbox_edittext_padding">8dp</item>
         <item name="searcher_searchbox_edittext_topmargin">8dp</item>
+    </style>
+
+    <style name="SearcherResultsItemStyleWhite" parent="AppTheme">
+        <item name="searcher_results_item_background">
+            @drawable/background_searcher_results_item_white
+        </item>
+        <item name="searcher_results_item_textcolor">@color/lighterBlack</item>
+    </style>
+
+    <style name="SearcherResultsItemStyleBlack" parent="AppTheme">
+        <item name="searcher_results_item_background">
+            @drawable/background_searcher_results_item_black
+        </item>
+        <item name="searcher_results_item_textcolor">@color/white</item>
     </style>
 
 </resources>

@@ -30,9 +30,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/searcher_toolbar"
@@ -45,9 +46,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/searcher_results_view"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginLeft="@dimen/activity_searcher_results_view_side_margin"
+                    android:layout_marginRight="@dimen/activity_searcher_results_view_side_margin"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
             </android.support.constraint.ConstraintLayout>
 
-        </FrameLayout>
+        </LinearLayout>
 
         <include
             android:id="@+id/searcher_options"

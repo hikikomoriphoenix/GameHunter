@@ -43,4 +43,9 @@
     <attr name="searcher_searchbox_edittext_background" format="reference" />
     <attr name="searcher_searchbox_edittext_padding" format="dimension" />
     <attr name="searcher_searchbox_edittext_topmargin" format="dimension" />
+
+    <!-- Results item attributes -->
+    <attr name="searcher_results_item_style" format="reference" />
+    <attr name="searcher_results_item_background" format="reference" />
+    <attr name="searcher_results_item_textcolor" format="color" />
 </resources>

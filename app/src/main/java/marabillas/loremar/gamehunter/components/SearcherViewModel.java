@@ -22,6 +22,8 @@ package marabillas.loremar.gamehunter.components;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
+import java.util.EnumSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -65,6 +67,8 @@ public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBo
 
     public MutableLiveData<Integer> fromYear = new MutableLiveData<>();
     public MutableLiveData<Integer> toYear = new MutableLiveData<>();
+
+    public MutableLiveData<List<ResultsItem>> results = new MutableLiveData<>();
 
     public void setApi(BaseAPI api) {
         this.api = api;
@@ -285,6 +289,18 @@ public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBo
         Query query = new Query();
         query.setKeyword(keyword);
         log("search:" + keyword);
-        // TODO Perform query.
+
+        Set<Query.Field> fields = EnumSet.of(Query.Field.THUMBNAIL, Query.Field.DESCRIPTION, Query
+                .Field.RELEASE_DATE, Query.Field.ID);
+        query.setFields(fields);
+
+        disposable = api.query(query)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(results -> {
+                    SearcherViewModel.this.results.setValue(results);
+                    disposable.dispose();
+                    disposable = null;
+                });
     }
 }

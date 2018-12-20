@@ -47,4 +47,6 @@
         dropdown</string>
     <string name="activity_searcher_options_sort_content_descriptions">Sort dropdown</string>
     <string name="activity_searcher_options_order_content_description">Order dropdown</string>
+    <string name="activity_searcher_results_item_image_content_description">Game thumbnail
+        image</string>
 </resources>

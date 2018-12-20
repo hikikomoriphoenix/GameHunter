@@ -25,6 +25,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
@@ -37,6 +38,7 @@ import marabillas.loremar.gamehunter.apis.APIFactory;
 import marabillas.loremar.gamehunter.apis.BaseAPI;
 import marabillas.loremar.gamehunter.components.SearcherViewModel;
 import marabillas.loremar.gamehunter.databinding.ActivitySearcherBinding;
+import marabillas.loremar.gamehunter.ui.adapter.SearcherResultsViewAdapter;
 import marabillas.loremar.gamehunter.ui.components.ProgressView;
 import marabillas.loremar.gamehunter.ui.components.SearchBox;
 import marabillas.loremar.gamehunter.ui.manipulator.SearcherManipulator;
@@ -71,6 +73,12 @@ public class SearcherActivity extends AppCompatActivity implements Toolbar.OnMen
         binding.searcherToolbar.inflateMenu(R.menu.searcher_menu);
         binding.searcherToolbar.setOnMenuItemClickListener(this);
         menu = binding.searcherToolbar.getMenu();
+
+        // Setup recycler view
+        SearcherResultsViewAdapter adapter = new SearcherResultsViewAdapter();
+        viewModel.results.observe(this, adapter::updateList);
+        binding.searcherResultsView.setAdapter(adapter);
+        binding.searcherResultsView.setLayoutManager(new LinearLayoutManager(this));
 
         // Replace the number picker's divider's default color.
         int color = ResourcesCompat.getColor(getResources(), R.color.white, null);
