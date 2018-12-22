@@ -23,23 +23,36 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.ListPreloader;
+import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.util.ViewPreloadSizeProvider;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import marabillas.loremar.gamehunter.GlideRequest;
 import marabillas.loremar.gamehunter.R;
 import marabillas.loremar.gamehunter.components.ResultsItem;
 import marabillas.loremar.gamehunter.databinding.ActivitySearcherResultsViewItemBinding;
 
-public class SearcherResultsViewAdapter extends RecyclerView.Adapter<SearcherResultsViewAdapter.SearcherResultsItemViewHolder> {
+public class SearcherResultsViewAdapter extends RecyclerView.Adapter<SearcherResultsViewAdapter
+        .SearcherResultsItemViewHolder> implements ListPreloader.PreloadModelProvider<ResultsItem> {
+    private ViewPreloadSizeProvider<ResultsItem> sizeProvider;
+    private GlideRequest<Drawable> glideRequest;
     private List<ResultsItem> results;
 
-    public SearcherResultsViewAdapter() {
+    public SearcherResultsViewAdapter(GlideRequest<Drawable> glideRequest,
+                                      ViewPreloadSizeProvider<ResultsItem> sizeProvider) {
+        this.glideRequest = glideRequest;
+        this.sizeProvider = sizeProvider;
         results = new ArrayList<>();
     }
 
@@ -76,6 +89,12 @@ public class SearcherResultsViewAdapter extends RecyclerView.Adapter<SearcherRes
         holder.getBinding().activitySearcherResultsViewItemTitle.setTextColor(textColor);
         holder.getBinding().activitySearcherResultsViewItemDescription.setTextColor(textColor);
         holder.getBinding().activitySearcherResultsViewItemReleaseDate.setTextColor(textColor);
+
+        glideRequest
+                .load(resultsItem.thumbnailURL)
+                .into(holder.getBinding().activitySearcherResultsViewItemImage);
+
+        sizeProvider.setView(holder.getBinding().activitySearcherResultsViewItemImage);
     }
 
     @Override
@@ -86,6 +105,18 @@ public class SearcherResultsViewAdapter extends RecyclerView.Adapter<SearcherRes
     public void updateList(List<ResultsItem> results) {
         this.results = results;
         notifyDataSetChanged();
+    }
+
+    @NonNull
+    @Override
+    public List<ResultsItem> getPreloadItems(int position) {
+        return Collections.singletonList(results.get(position));
+    }
+
+    @Nullable
+    @Override
+    public RequestBuilder<?> getPreloadRequestBuilder(@NonNull ResultsItem item) {
+        return glideRequest.load(item.thumbnailURL);
     }
 
     class SearcherResultsItemViewHolder extends RecyclerView.ViewHolder {

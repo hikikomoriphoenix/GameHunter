@@ -21,6 +21,7 @@ package marabillas.loremar.gamehunter.ui.activity;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.res.ResourcesCompat;
@@ -31,11 +32,19 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.util.ViewPreloadSizeProvider;
+
 import java.util.Calendar;
 
+import marabillas.loremar.gamehunter.GlideApp;
+import marabillas.loremar.gamehunter.GlideRequest;
 import marabillas.loremar.gamehunter.R;
 import marabillas.loremar.gamehunter.apis.APIFactory;
 import marabillas.loremar.gamehunter.apis.BaseAPI;
+import marabillas.loremar.gamehunter.components.ResultsItem;
 import marabillas.loremar.gamehunter.components.SearcherViewModel;
 import marabillas.loremar.gamehunter.databinding.ActivitySearcherBinding;
 import marabillas.loremar.gamehunter.ui.adapter.SearcherResultsViewAdapter;
@@ -51,6 +60,8 @@ public class SearcherActivity extends AppCompatActivity implements Toolbar.OnMen
     private Menu menu;
     private ProgressView progressView;
     private SearcherManipulator manipulator;
+
+    private static final int MAX_PRELOAD = 20;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,10 +86,18 @@ public class SearcherActivity extends AppCompatActivity implements Toolbar.OnMen
         menu = binding.searcherToolbar.getMenu();
 
         // Setup recycler view
-        SearcherResultsViewAdapter adapter = new SearcherResultsViewAdapter();
+        ViewPreloadSizeProvider<ResultsItem> sizeProvider = new ViewPreloadSizeProvider<>();
+        GlideRequest<Drawable> gliderRequest = GlideApp.with(this)
+                .asDrawable()
+                .fitCenter()
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+        SearcherResultsViewAdapter adapter = new SearcherResultsViewAdapter(gliderRequest, sizeProvider);
         viewModel.results.observe(this, adapter::updateList);
         binding.searcherResultsView.setAdapter(adapter);
         binding.searcherResultsView.setLayoutManager(new LinearLayoutManager(this));
+        RecyclerViewPreloader<ResultsItem> preloader = new RecyclerViewPreloader<>(Glide.with(this),
+                adapter, sizeProvider, MAX_PRELOAD);
+        binding.searcherResultsView.addOnScrollListener(preloader);
 
         // Replace the number picker's divider's default color.
         int color = ResourcesCompat.getColor(getResources(), R.color.white, null);

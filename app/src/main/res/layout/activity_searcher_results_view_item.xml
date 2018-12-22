@@ -30,7 +30,7 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/searcher_results_view_item"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/activity_searcher_results_view_item_height"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_searcher_results_view_item_top_margin"
         android:background="?searcher_results_item_background"
         android:padding="@dimen/activity_searcher_results_view_item_padding"
@@ -38,15 +38,13 @@
 
         <ImageView
             android:id="@+id/activity_searcher_results_view_item_image"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginBottom="@dimen/small_spacing"
+            android:layout_width="@dimen/activity_searcher_results_view_item_image_size"
+            android:layout_height="@dimen/activity_searcher_results_view_item_image_size"
             android:adjustViewBounds="true"
+            android:background="@color/almostWhite"
             android:contentDescription="@string/activity_searcher_results_item_image_content_description"
-            app:layout_constraintBottom_toTopOf="@+id/activity_searcher_results_view_item_release_date"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@color/gray" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/activity_searcher_results_view_item_title"
@@ -80,10 +78,11 @@
             android:id="@+id/activity_searcher_results_view_item_release_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_spacing"
             android:text="@{`Release Date: ` + resultsItem.releaseDate}"
             android:textColor="?searcher_results_item_textcolor"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/activity_searcher_results_view_item_image" />
     </android.support.constraint.ConstraintLayout>
 </layout>

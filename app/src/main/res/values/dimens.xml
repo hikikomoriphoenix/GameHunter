@@ -32,7 +32,7 @@
     <dimen name="activity_searcher_searchbox_topmargin">32dp</dimen>
     <dimen name="activity_searcher_searchbox_elevation">20dp</dimen>
     <dimen name="activity_searcher_results_view_item_top_margin">12dp</dimen>
-    <dimen name="activity_searcher_results_view_item_height">120dp</dimen>
     <dimen name="activity_searcher_results_view_item_padding">8dp</dimen>
+    <dimen name="activity_searcher_results_view_item_image_size">120dp</dimen>
     <dimen name="activity_searcher_results_view_side_margin">12dp</dimen>
 </resources>
