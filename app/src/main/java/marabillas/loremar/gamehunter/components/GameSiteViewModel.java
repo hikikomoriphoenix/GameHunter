@@ -19,12 +19,13 @@
 
 package marabillas.loremar.gamehunter.components;
 
-import android.databinding.ObservableField;
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.ViewModel;
 import android.graphics.drawable.Drawable;
 import android.text.Spanned;
 
-public class GameSiteViewModel {
-    public ObservableField<Drawable> drawable = new ObservableField<>();
-    public ObservableField<String> tag = new ObservableField<>();
-    public ObservableField<Spanned> label = new ObservableField<>();
+public class GameSiteViewModel extends ViewModel {
+    public MutableLiveData<Drawable> drawable = new MutableLiveData<>();
+    public MutableLiveData<String> tag = new MutableLiveData<>();
+    public MutableLiveData<Spanned> label = new MutableLiveData<>();
 }

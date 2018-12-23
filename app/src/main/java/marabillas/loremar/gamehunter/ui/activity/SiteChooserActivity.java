@@ -68,12 +68,12 @@ public class SiteChooserActivity extends AppCompatActivity {
         for (int i = 0; i < drawables.length(); ++i) {
             GameSiteViewModel gs = new GameSiteViewModel();
 
-            gs.drawable.set(drawables.getDrawable(i));
-            gs.tag.set(labels[i]);
+            gs.drawable.setValue(drawables.getDrawable(i));
+            gs.tag.setValue(labels[i]);
 
             String hyperlink = "<a href=" + urls[i] + ">" + labels[i] + "</a>";
             Spanned label = Html.fromHtml(hyperlink);
-            gs.label.set(label);
+            gs.label.setValue(label);
 
             sites.add(gs);
         }
