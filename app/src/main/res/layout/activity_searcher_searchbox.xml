@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~     GameHunter is an Android app for searching video games
+  ~     Copyright (C) 2018 Loremar Marabillas
+  ~
+  ~     This program is free software; you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation; either version 2 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License along
+  ~     with this program; if not, write to the Free Software Foundation, Inc.,
+  ~     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="searchBox"
+            type="marabillas.loremar.gamehunter.ui.components.SearchBox" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:onClick="@{() -> searchBox.dismiss()}">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/activity_searcher_searchbox_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_marginTop="@dimen/activity_searcher_searchbox_topmargin"
+            android:background="?searcher_searchbox_background"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="?searcher_searchbox_padding"
+            android:theme="?searcher_searchbox_style">
+
+            <TextView
+                android:id="@+id/activity_searcher_searchbox_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/activity_searcher_searchbox_label"
+                android:textColor="?searcher_searchbox_textcolor"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/activity_searcher_searchbox_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?searcher_searchbox_close_background"
+                android:contentDescription="@string/activtiy_searhcer_close_content_description"
+                android:onClick="@{() -> searchBox.dismiss()}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="?searcher_searchbox_close_drawable" />
+
+            <EditText
+                android:id="@+id/activity_searcher_searchbox_edittext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="?searcher_searchbox_edittext_topmargin"
+                android:background="?searcher_searchbox_edittext_background"
+                android:ems="10"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:padding="?searcher_searchbox_edittext_padding"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/activity_searcher_searchbox_label" />
+        </android.support.constraint.ConstraintLayout>
+
+    </FrameLayout>
+</layout>

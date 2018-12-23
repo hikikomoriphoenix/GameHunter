@@ -17,13 +17,17 @@
   ~     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
   -->
 
-<resources>
-    <color name="darkRed">#910909</color>
-    <color name="darkerRed">#6c1414</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="almostWhite">#dddddd</color>
-    <color name="lighterBlack">#333333</color>
-    <color name="white">#ffffff</color>
-    <color name="neonGreen">#39ff14</color>
-    <color name="gray">#999999</color>
-</resources>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/white" />
+            <stroke android:color="@color/lighterBlack" android:width="3dp" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/white" />
+        </shape>
+    </item>
+</selector>

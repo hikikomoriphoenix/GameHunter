@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~     GameHunter is an Android app for searching video games
+  ~     Copyright (C) 2018 Loremar Marabillas
+  ~
+  ~     This program is free software; you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation; either version 2 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License along
+  ~     with this program; if not, write to the Free Software Foundation, Inc.,
+  ~     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+  -->
+
+<resources>
+    <!-- Searcher Options attributes -->
+    <attr name="searcher_options_background" format="color" />
+    <attr name="searcher_options_search_box_background" format="reference" />
+    <attr name="searcher_options_search_box_padding" format="dimension" />
+    <attr name="searcher_options_label_textappearance" format="reference" />
+    <attr name="searcher_options_autocompletetextview_background" format="reference" />
+    <attr name="searcher_options_autocompletetextview_padding" format="dimension" />
+    <attr name="searcher_options_dropdownicon_background" format="reference" />
+    <attr name="searcher_options_dropdownicon_src" format="reference" />
+    <attr name="searcher_options_numberpicker_theme" format="reference" />
+    <attr name="searcher_options_spinner_background" format="reference" />
+    <attr name="searcher_options_spinner_padding" format="dimension" />
+    <attr name="searcher_options_spinner_height" format="dimension" />
+    <attr name="searcher_options_button_style" format="reference" />
+
+    <!-- Search box attributes -->
+    <attr name="searcher_searchbox_style" format="reference" />
+    <attr name="searcher_searchbox_background" format="reference" />
+    <attr name="searcher_searchbox_padding" format="dimension" />
+    <attr name="searcher_searchbox_textcolor" format="color" />
+    <attr name="searcher_searchbox_close_drawable" format="reference" />
+    <attr name="searcher_searchbox_close_background" format="reference" />
+    <attr name="searcher_searchbox_edittext_background" format="reference" />
+    <attr name="searcher_searchbox_edittext_padding" format="dimension" />
+    <attr name="searcher_searchbox_edittext_topmargin" format="dimension" />
+
+    <!-- Attributes for dual-themed search results items -->
+    <declare-styleable name="DarkOrLightLayout">
+        <attr name="searcher_results_item_light_themed_background" format="reference" />
+        <attr name="searcher_results_item_light_themed_text_color" format="color" />
+        <attr name="searcher_results_item_dark_themed_background" format="reference" />
+        <attr name="searcher_results_item_dark_themed_text_color" format="color" />
+    </declare-styleable>
+</resources>

@@ -19,6 +19,8 @@
 
 package marabillas.loremar.gamehunter.components;
 
+import android.support.annotation.Nullable;
+
 import java.util.Set;
 
 /**
@@ -42,6 +44,7 @@ public class Query {
 
     public enum Order {ASCENDING, DESCENDING}
 
+    @Nullable
     public String getKeyword() {
         return keyword;
     }
@@ -50,14 +53,17 @@ public class Query {
         return fields;
     }
 
+    @Nullable
     public String getPlatformFilter() {
         return platformFilter;
     }
 
+    @Nullable
     public String getGenreFilter() {
         return genreFilter;
     }
 
+    @Nullable
     public String getThemeFilter() {
         return themeFilter;
     }
