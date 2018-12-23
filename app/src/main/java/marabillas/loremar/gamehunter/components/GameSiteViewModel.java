@@ -28,4 +28,9 @@ public class GameSiteViewModel extends ViewModel {
     public MutableLiveData<Drawable> drawable = new MutableLiveData<>();
     public MutableLiveData<String> tag = new MutableLiveData<>();
     public MutableLiveData<Spanned> label = new MutableLiveData<>();
+    public MutableLiveData<String> selection = new MutableLiveData<>();
+
+    public void postOnSiteSelectedEvent() {
+        selection.postValue(tag.getValue());
+    }
 }

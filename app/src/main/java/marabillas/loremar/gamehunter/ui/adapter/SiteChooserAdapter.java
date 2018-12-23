@@ -67,7 +67,6 @@ public class SiteChooserAdapter extends RecyclerView.Adapter<SiteChooserAdapter.
         public SiteChooserViewHolder(AdapterSiteChooserItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
-            binding.setLifecycleOwner(this);
         }
 
         public AdapterSiteChooserItemBinding getBinding() {

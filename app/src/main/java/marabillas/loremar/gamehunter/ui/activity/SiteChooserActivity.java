@@ -19,6 +19,7 @@
 
 package marabillas.loremar.gamehunter.ui.activity;
 
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -75,6 +76,10 @@ public class SiteChooserActivity extends AppCompatActivity {
             Spanned label = Html.fromHtml(hyperlink);
             gs.label.setValue(label);
 
+            // Observe for site selection event. Event is triggered when user clicks/presses one
+            // of the sites.
+            gs.selection.observe(this, this::openSearcher);
+
             sites.add(gs);
         }
         drawables.recycle(); // Required for TypedArray
@@ -91,5 +96,11 @@ public class SiteChooserActivity extends AppCompatActivity {
         SiteChooserAdapter adapter = new SiteChooserAdapter(sites);
         binding.activitySitechooserRecyclerview.setAdapter(adapter);
         binding.activitySitechooserRecyclerview.setLayoutManager(new GridLayoutManager(this, spanCount));
+    }
+
+    public void openSearcher(String gameSite) {
+        Intent searcher = new Intent(this, SearcherActivity.class);
+        searcher.putExtra("site", gameSite);
+        startActivity(searcher);
     }
 }
