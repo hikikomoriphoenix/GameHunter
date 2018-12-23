@@ -26,9 +26,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.text.Html;
-import android.text.Spanned;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,13 +68,15 @@ public class SiteChooserActivity extends AppCompatActivity {
         List<GameSiteViewModel> sites = new ArrayList<>();
         for (int i = 0; i < drawables.length(); ++i) {
             GameSiteViewModel gs = new GameSiteViewModel();
-
             gs.drawable.setValue(drawables.getDrawable(i));
-            gs.tag.setValue(labels[i]);
+            gs.label.setValue(labels[i]);
 
-            String hyperlink = "<a href=" + urls[i] + ">" + labels[i] + "</a>";
-            Spanned label = Html.fromHtml(hyperlink);
-            gs.label.setValue(label);
+            try {
+                URL url = new URL(urls[i]);
+                gs.url.setValue(url.getHost());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
 
             // Observe for site selection event. Event is triggered when user clicks/presses one
             // of the sites.

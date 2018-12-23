@@ -22,7 +22,6 @@ package marabillas.loremar.gamehunter.ui.adapter;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -46,7 +45,6 @@ public class SiteChooserAdapter extends RecyclerView.Adapter<SiteChooserAdapter.
         AdapterSiteChooserItemBinding binding = DataBindingUtil.inflate(inflater, R.layout
                         .adapter_site_chooser_item, parent,
                 false);
-        binding.adapterSiteChooserItemViewLabel.setMovementMethod(LinkMovementMethod.getInstance());
         return new SiteChooserViewHolder(binding);
     }
 
