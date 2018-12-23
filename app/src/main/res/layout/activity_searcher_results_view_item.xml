@@ -21,20 +21,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="resultsItem"
             type="marabillas.loremar.gamehunter.components.ResultsItem" />
+
+        <variable
+            name="textColor"
+            type="Integer" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <marabillas.loremar.gamehunter.ui.components.DarkOrLightLayout
         android:id="@+id/searcher_results_view_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_searcher_results_view_item_top_margin"
-        android:background="?searcher_results_item_background"
-        android:padding="@dimen/activity_searcher_results_view_item_padding"
-        android:theme="?searcher_results_item_style">
+        android:padding="@dimen/activity_searcher_results_view_item_padding">
 
         <ImageView
             android:id="@+id/activity_searcher_results_view_item_image"
@@ -53,7 +54,7 @@
             android:layout_marginStart="@dimen/small_spacing"
             android:layout_marginLeft="@dimen/small_spacing"
             android:text="@{resultsItem.title}"
-            android:textColor="?searcher_results_item_textcolor"
+            android:textColor="@{textColor}"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/activity_searcher_results_view_item_image"
@@ -68,7 +69,7 @@
             android:layout_marginTop="@dimen/small_spacing"
             android:layout_marginBottom="@dimen/small_spacing"
             android:text="@{resultsItem.description}"
-            android:textColor="?searcher_results_item_textcolor"
+            android:textColor="@{textColor}"
             app:layout_constraintBottom_toTopOf="@+id/activity_searcher_results_view_item_release_date"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/activity_searcher_results_view_item_image"
@@ -80,9 +81,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/small_spacing"
             android:text="@{`Release Date: ` + resultsItem.releaseDate}"
-            android:textColor="?searcher_results_item_textcolor"
+            android:textColor="@{textColor}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/activity_searcher_results_view_item_image" />
-    </android.support.constraint.ConstraintLayout>
+    </marabillas.loremar.gamehunter.ui.components.DarkOrLightLayout>
 </layout>

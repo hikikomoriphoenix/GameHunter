@@ -19,13 +19,10 @@
 
 package marabillas.loremar.gamehunter.ui.adapter;
 
-import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -42,6 +39,9 @@ import marabillas.loremar.gamehunter.GlideRequest;
 import marabillas.loremar.gamehunter.R;
 import marabillas.loremar.gamehunter.components.ResultsItem;
 import marabillas.loremar.gamehunter.databinding.ActivitySearcherResultsViewItemBinding;
+
+import static marabillas.loremar.gamehunter.ui.components.DarkOrLightLayout.Theme.DARK;
+import static marabillas.loremar.gamehunter.ui.components.DarkOrLightLayout.Theme.LIGHT;
 
 public class SearcherResultsViewAdapter extends RecyclerView.Adapter<SearcherResultsViewAdapter
         .SearcherResultsItemViewHolder> implements ListPreloader.PreloadModelProvider<ResultsItem> {
@@ -70,25 +70,14 @@ public class SearcherResultsViewAdapter extends RecyclerView.Adapter<SearcherRes
         ResultsItem resultsItem = results.get(position);
         holder.getBinding().setResultsItem(resultsItem);
 
-        Context context = holder.getBinding().getRoot().getContext();
-        Drawable drawable;
-        int textColor;
         boolean multiple2 = position % 2 == 0;
         if (multiple2) {
-            drawable = context.getResources().getDrawable(R.drawable
-                    .background_searcher_results_item_white);
-            textColor = ResourcesCompat.getColor(context.getResources(), R.color.lighterBlack,
-                    null);
+            holder.getBinding().searcherResultsViewItem.setTheme(LIGHT);
         } else {
-            drawable = context.getResources().getDrawable(R.drawable
-                    .background_searcher_results_item_black);
-            textColor = ResourcesCompat.getColor(context.getResources(), R.color.white, null);
+            holder.getBinding().searcherResultsViewItem.setTheme(DARK);
         }
-
-        ViewCompat.setBackground(holder.getBinding().searcherResultsViewItem, drawable);
-        holder.getBinding().activitySearcherResultsViewItemTitle.setTextColor(textColor);
-        holder.getBinding().activitySearcherResultsViewItemDescription.setTextColor(textColor);
-        holder.getBinding().activitySearcherResultsViewItemReleaseDate.setTextColor(textColor);
+        int textColor = holder.getBinding().searcherResultsViewItem.getDefaultTextColor();
+        holder.getBinding().setTextColor(textColor);
 
         glideRequest
                 .load(resultsItem.thumbnailURL)
