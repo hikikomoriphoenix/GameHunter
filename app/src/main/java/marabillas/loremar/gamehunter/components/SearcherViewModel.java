@@ -64,11 +64,12 @@ public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBo
     public MutableLiveData<Set<String>> sortChoices = new MutableLiveData<>();
 
     public MutableLiveData<Query> query = new MutableLiveData<>();
-
     public MutableLiveData<Integer> fromYear = new MutableLiveData<>();
     public MutableLiveData<Integer> toYear = new MutableLiveData<>();
-
     public MutableLiveData<List<ResultsItem>> results = new MutableLiveData<>();
+    public MutableLiveData<String> pageStatus = new MutableLiveData<>();
+
+    private Query lastQuery;
 
     public void setApi(BaseAPI api) {
         this.api = api;
@@ -293,14 +294,77 @@ public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBo
         Set<Query.Field> fields = EnumSet.of(Query.Field.THUMBNAIL, Query.Field.DESCRIPTION, Query
                 .Field.RELEASE_DATE, Query.Field.ID);
         query.setFields(fields);
+        performQuery(query);
 
+        lastQuery = query;
+    }
+
+    public void goToFirstPage() {
+        if (lastQuery != null) {
+            lastQuery.setPageNumber(1);
+            performQuery(lastQuery);
+        }
+    }
+
+    public void goToPreviousPage() {
+        if (lastQuery != null) {
+            int currentPage = lastQuery.getPageNumber();
+            if (currentPage <= 1) {
+                return;
+            }
+
+            lastQuery.setPageNumber(currentPage - 1);
+            performQuery(lastQuery);
+        }
+    }
+
+    public void goToNextPage() {
+        if (lastQuery != null) {
+            int currentPage = lastQuery.getPageNumber();
+            int lastPage = (int) api.getTotalPages(lastQuery.getResultsPerPage());
+            if (currentPage >= lastPage) {
+                return;
+            }
+
+            lastQuery.setPageNumber(currentPage + 1);
+            performQuery(lastQuery);
+        }
+    }
+
+    public void goToLastPage() {
+        if (lastQuery != null) {
+            int lastPage = (int) api.getTotalPages(lastQuery.getResultsPerPage());
+            lastQuery.setPageNumber(lastPage);
+            performQuery(lastQuery);
+        }
+    }
+
+    public void goToPage(int targetPage) {
+        if (lastQuery != null) {
+            lastQuery.setPageNumber(targetPage);
+            performQuery(lastQuery);
+        }
+    }
+
+    public void onPageStatusClick() {
+
+    }
+
+    private void performQuery(Query query) {
         disposable = api.query(query)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(results -> {
                     SearcherViewModel.this.results.setValue(results);
+                    updatePageStatus();
                     disposable.dispose();
                     disposable = null;
                 });
+    }
+
+    private void updatePageStatus() {
+        int page = lastQuery.getPageNumber();
+        int total = (int) api.getTotalPages(lastQuery.getResultsPerPage());
+        pageStatus.setValue(page + " / " + total);
     }
 }
