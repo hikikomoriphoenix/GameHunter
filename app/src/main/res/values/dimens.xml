@@ -35,4 +35,6 @@
     <dimen name="activity_searcher_results_view_item_padding">8dp</dimen>
     <dimen name="activity_searcher_results_view_item_image_size">120dp</dimen>
     <dimen name="activity_searcher_results_view_side_margin">12dp</dimen>
+
+    <dimen name="activity_searcher_footer_height">56dp</dimen>
 </resources>
