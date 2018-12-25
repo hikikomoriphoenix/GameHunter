@@ -18,17 +18,16 @@
   -->
 
 <!--Layout for each cell element in the website selection's grid layout-->
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
         <variable
             name="viewModel"
             type="marabillas.loremar.gamehunter.components.GameSiteViewModel" />
     </data>
 
-    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -44,6 +43,7 @@
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:onClick="@{() -> viewModel.postOnSiteSelectedEvent()}"
             app:cardCornerRadius="20dp"
             app:cardElevation="20dp"
             app:layout_constraintBottom_toTopOf="@+id/adapter_site_chooser_item_view_label"
@@ -58,20 +58,27 @@
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/adapter_site_chooser_item_view_logo_content_description"
-                android:src="@{viewModel.drawable.get()}"
-                android:tag="@{viewModel.tag.get()}" />
+                android:src="@{viewModel.drawable.getValue()}"
+                android:tag="@{viewModel.label.getValue()}" />
 
         </android.support.v7.widget.CardView>
 
-        <!--Clickable textview containing the title of the website and which links to the website's
-        homepage
-         -->
         <TextView
             android:id="@+id/adapter_site_chooser_item_view_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="@{viewModel.label.get()}"
+            android:text="@{viewModel.label.getValue()}"
+            app:layout_constraintBottom_toTopOf="@+id/adapter_site_chooser_item_view_link"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/adapter_site_chooser_item_view_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:text="@{viewModel.url.getValue()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

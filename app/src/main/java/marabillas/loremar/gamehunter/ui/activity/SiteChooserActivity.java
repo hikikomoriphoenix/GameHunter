@@ -19,15 +19,16 @@
 
 package marabillas.loremar.gamehunter.ui.activity;
 
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.text.Html;
-import android.text.Spanned;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,13 +68,19 @@ public class SiteChooserActivity extends AppCompatActivity {
         List<GameSiteViewModel> sites = new ArrayList<>();
         for (int i = 0; i < drawables.length(); ++i) {
             GameSiteViewModel gs = new GameSiteViewModel();
+            gs.drawable.setValue(drawables.getDrawable(i));
+            gs.label.setValue(labels[i]);
 
-            gs.drawable.set(drawables.getDrawable(i));
-            gs.tag.set(labels[i]);
+            try {
+                URL url = new URL(urls[i]);
+                gs.url.setValue(url.getHost());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
 
-            String hyperlink = "<a href=" + urls[i] + ">" + labels[i] + "</a>";
-            Spanned label = Html.fromHtml(hyperlink);
-            gs.label.set(label);
+            // Observe for site selection event. Event is triggered when user clicks/presses one
+            // of the sites.
+            gs.selection.observe(this, this::openSearcher);
 
             sites.add(gs);
         }
@@ -91,5 +98,11 @@ public class SiteChooserActivity extends AppCompatActivity {
         SiteChooserAdapter adapter = new SiteChooserAdapter(sites);
         binding.activitySitechooserRecyclerview.setAdapter(adapter);
         binding.activitySitechooserRecyclerview.setLayoutManager(new GridLayoutManager(this, spanCount));
+    }
+
+    public void openSearcher(String gameSite) {
+        Intent searcher = new Intent(this, SearcherActivity.class);
+        searcher.putExtra("site", gameSite);
+        startActivity(searcher);
     }
 }
