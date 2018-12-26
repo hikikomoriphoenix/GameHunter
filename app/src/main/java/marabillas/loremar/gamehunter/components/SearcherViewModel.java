@@ -32,15 +32,18 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import marabillas.loremar.gamehunter.apis.BaseAPI;
+import marabillas.loremar.gamehunter.ui.components.GoToPageDialog;
 import marabillas.loremar.gamehunter.ui.components.SearchBox;
 
 import static android.view.View.GONE;
 import static marabillas.loremar.gamehunter.components.SearcherEvent.HIDE_PROGRESS_VIEW;
 import static marabillas.loremar.gamehunter.components.SearcherEvent.HIDE_SEARCH_ICON;
 import static marabillas.loremar.gamehunter.components.SearcherEvent.HIDE_SEARCH_OPTIONS_ICON;
+import static marabillas.loremar.gamehunter.components.SearcherEvent.SHOW_GO_TO_PAGE_DIALOG;
 import static marabillas.loremar.gamehunter.utils.LogUtils.log;
 
-public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBoxActionListener {
+public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBoxActionListener,
+        GoToPageDialog.OnGoToPageDialogActionListener {
     private BaseAPI api;
 
     public MutableLiveData<SearcherEvent> eventBus = new MutableLiveData<>();
@@ -339,7 +342,7 @@ public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBo
         }
     }
 
-    public void goToPage(int targetPage) {
+    private void goToPage(int targetPage) {
         if (lastQuery != null) {
             lastQuery.setPageNumber(targetPage);
             performQuery(lastQuery);
@@ -347,7 +350,12 @@ public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBo
     }
 
     public void onPageStatusClick() {
-
+        if (lastQuery != null) {
+            SearcherEvent ev = SHOW_GO_TO_PAGE_DIALOG;
+            int rpp = lastQuery.getResultsPerPage();
+            ev.putExtra("total_pages", api.getTotalPages(rpp));
+            postEventToMainThread(ev);
+        }
     }
 
     private void performQuery(Query query) {
@@ -366,5 +374,10 @@ public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBo
         int page = lastQuery.getPageNumber();
         int total = (int) api.getTotalPages(lastQuery.getResultsPerPage());
         pageStatus.setValue(page + " / " + total);
+    }
+
+    @Override
+    public void onGoToPageDialogAction(long pageNumber) {
+        goToPage((int) pageNumber);
     }
 }

@@ -31,6 +31,7 @@ import java.util.Set;
 import marabillas.loremar.gamehunter.R;
 import marabillas.loremar.gamehunter.components.SearcherEvent;
 import marabillas.loremar.gamehunter.ui.activity.SearcherActivity;
+import marabillas.loremar.gamehunter.ui.components.GoToPageDialog;
 
 public class SearcherManipulator {
     private SearcherActivity activity;
@@ -92,6 +93,13 @@ public class SearcherManipulator {
             case SHOW_ORDER_CHOICES:
                 activity.getBinding().searcherOptions.activitySearcherOptionsOrderDropdown
                         .performClick();
+                break;
+
+            case SHOW_GO_TO_PAGE_DIALOG:
+                long totalPages = (long) event.getExtra("total_pages");
+                GoToPageDialog pd = new GoToPageDialog(activity, totalPages);
+                pd.setOnGoToPageDialogActionListener(activity.getViewModel());
+                pd.show();
                 break;
         }
     }

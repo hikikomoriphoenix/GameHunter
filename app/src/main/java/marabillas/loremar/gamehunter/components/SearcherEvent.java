@@ -19,6 +19,7 @@
 
 package marabillas.loremar.gamehunter.components;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public enum SearcherEvent {
@@ -30,9 +31,10 @@ public enum SearcherEvent {
     SHOW_THEME_FILTERS,
     SHOW_GENRE_FILTERS,
     SHOW_SORT_CHOICES,
-    SHOW_ORDER_CHOICES;
+    SHOW_ORDER_CHOICES,
+    SHOW_GO_TO_PAGE_DIALOG;
 
-    private Map<String, Object> extras;
+    private Map<String, Object> extras = new HashMap<>();
 
     public void putExtra(String key, Object value) {
         extras.put(key, value);
