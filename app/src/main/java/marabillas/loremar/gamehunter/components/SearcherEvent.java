@@ -19,6 +19,8 @@
 
 package marabillas.loremar.gamehunter.components;
 
+import java.util.Map;
+
 public enum SearcherEvent {
     HIDE_SEARCH_ICON,
     HIDE_SEARCH_OPTIONS_ICON,
@@ -28,5 +30,15 @@ public enum SearcherEvent {
     SHOW_THEME_FILTERS,
     SHOW_GENRE_FILTERS,
     SHOW_SORT_CHOICES,
-    SHOW_ORDER_CHOICES
+    SHOW_ORDER_CHOICES;
+
+    private Map<String, Object> extras;
+
+    public void putExtra(String key, Object value) {
+        extras.put(key, value);
+    }
+
+    public Object getExtra(String key) {
+        return extras.get(key);
+    }
 }
