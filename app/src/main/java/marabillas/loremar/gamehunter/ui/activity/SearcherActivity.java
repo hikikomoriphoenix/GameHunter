@@ -83,6 +83,7 @@ public class SearcherActivity extends AppCompatActivity implements Toolbar.OnMen
 
         binding.searcherToolbar.inflateMenu(R.menu.searcher_menu);
         binding.searcherToolbar.setOnMenuItemClickListener(this);
+        binding.searcherToolbar.setTitle(site);
         menu = binding.searcherToolbar.getMenu();
 
         // Setup recycler view

@@ -39,7 +39,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
-                app:navigationIcon="@drawable/ic_arrow_back_white_24dp" />
+                app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
+                app:titleTextColor="?android:textColorPrimaryInverse" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/searcher_results_view"
