@@ -36,6 +36,7 @@ import marabillas.loremar.gamehunter.ui.components.GoToPageDialog;
 import marabillas.loremar.gamehunter.ui.components.SearchBox;
 
 import static android.view.View.GONE;
+import static marabillas.loremar.gamehunter.components.SearcherEvent.CLOSE_SEARCH_OPTIONS;
 import static marabillas.loremar.gamehunter.components.SearcherEvent.HIDE_PROGRESS_VIEW;
 import static marabillas.loremar.gamehunter.components.SearcherEvent.HIDE_SEARCH_ICON;
 import static marabillas.loremar.gamehunter.components.SearcherEvent.HIDE_SEARCH_OPTIONS_ICON;
@@ -218,6 +219,22 @@ public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBo
                 "\nsort=" + query.getValue().getSort() +
                 "\norder=" + query.getValue().getOrder().toString()
         );
+
+        // TODO Set fields as set by the user and that are available for the specific api.
+        Set<Query.Field> fields = EnumSet.of(Query.Field.THUMBNAIL, Query.Field.DESCRIPTION, Query
+                .Field.RELEASE_DATE, Query.Field.ID);
+        query.getValue().setFields(fields);
+        disposable = api.query(query.getValue())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(results -> {
+                    eventBus.setValue(CLOSE_SEARCH_OPTIONS);
+                    SearcherViewModel.this.results.setValue(results);
+                    updatePageStatus();
+                    disposable.dispose();
+                    disposable = null;
+                });
+        lastQuery = query.getValue();
     }
 
     private void validateQuery() {
@@ -294,6 +311,7 @@ public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBo
         query.setKeyword(keyword);
         log("search:" + keyword);
 
+        // TODO Set fields as set by the user and that are available for the specific api.
         Set<Query.Field> fields = EnumSet.of(Query.Field.THUMBNAIL, Query.Field.DESCRIPTION, Query
                 .Field.RELEASE_DATE, Query.Field.ID);
         query.setFields(fields);

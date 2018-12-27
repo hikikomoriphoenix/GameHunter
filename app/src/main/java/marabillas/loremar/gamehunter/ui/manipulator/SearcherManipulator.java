@@ -101,6 +101,10 @@ public class SearcherManipulator {
                 pd.setOnGoToPageDialogActionListener(activity.getViewModel());
                 pd.show();
                 break;
+
+            case CLOSE_SEARCH_OPTIONS:
+                activity.getBinding().searcherDrawer.closeDrawers();
+                break;
         }
     }
 

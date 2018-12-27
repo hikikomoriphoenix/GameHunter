@@ -219,8 +219,12 @@ public class GiantBomb extends BaseAPI {
             queryMap.put("api_key", KEY);
             queryMap.put("format", "json");
             queryMap.put("limit", String.valueOf(query.getResultsPerPage()));
-            queryMap.put("page", String.valueOf(query.getResultsPerPage()));
             queryMap.put("field_list", fieldSB.toString());
+
+            long pageNumber = query.getPageNumber();
+            long limit = query.getResultsPerPage();
+            long offset = (pageNumber - 1) * limit;
+            queryMap.put("offset", String.valueOf(offset));
 
             // Prepare values for filter field
             String platformFilter = query.getPlatformFilter();
