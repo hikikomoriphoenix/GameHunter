@@ -73,6 +73,22 @@ public class GiantBomb extends BaseAPI {
     }
 
     @Override
+    public Query getDefaultQuery() {
+        Query query = new Query();
+        Set<Query.Field> fields = EnumSet.of(Query.Field.THUMBNAIL, Query.Field.DESCRIPTION, Query
+                .Field.RELEASE_DATE, Query.Field.ID);
+
+        query
+                .setFromYear(1950)
+                .setToYear(2018)
+                .setSort("Original release date")
+                .setOrder(Query.Order.DESCENDING)
+                .setFields(fields);
+
+        return query;
+    }
+
+    @Override
     public Observable<Set<String>> getGenreFilters() {
         return null;
     }

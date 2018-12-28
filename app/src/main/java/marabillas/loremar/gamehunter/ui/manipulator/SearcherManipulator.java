@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.PopupMenu;
+import android.widget.Spinner;
 
 import java.util.Objects;
 import java.util.Set;
@@ -35,6 +36,7 @@ import marabillas.loremar.gamehunter.ui.components.GoToPageDialog;
 
 public class SearcherManipulator {
     private SearcherActivity activity;
+    private ArrayAdapter<String> sortByAdapter;
 
     public SearcherManipulator(SearcherActivity activity) {
         this.activity = activity;
@@ -105,6 +107,16 @@ public class SearcherManipulator {
             case CLOSE_SEARCH_OPTIONS:
                 activity.getBinding().searcherDrawer.closeDrawers();
                 break;
+
+            case SET_DEFAULT_SORT_BY_SELECTION:
+                if (sortByAdapter != null) {
+                    String defS = (String) event.getExtra("default_selection");
+                    Spinner spinner = activity.getBinding().searcherOptions
+                            .activitySearcherOptionsSortDropdown;
+                    int pos = sortByAdapter.getPosition(defS);
+                    spinner.setSelection(pos);
+                }
+                break;
         }
     }
 
@@ -152,8 +164,8 @@ public class SearcherManipulator {
     public void setupSortChoices(@NonNull Set<String> sortChoices) {
         String[] array = new String[sortChoices.size()];
         sortChoices.toArray(array);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(activity, android.R.layout
+        sortByAdapter = new ArrayAdapter<>(activity, android.R.layout
                 .simple_list_item_1, array);
-        activity.getBinding().searcherOptions.activitySearcherOptionsSortDropdown.setAdapter(adapter);
+        activity.getBinding().searcherOptions.activitySearcherOptionsSortDropdown.setAdapter(sortByAdapter);
     }
 }

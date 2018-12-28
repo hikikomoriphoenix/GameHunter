@@ -62,6 +62,7 @@
                 android:inputType="text"
                 android:onTextChanged="@{(text,start,before,count) -> viewModel.query.getValue().setKeyword(text.toString())}"
                 android:padding="?searcher_options_search_box_padding"
+                android:text="@{viewModel.query.getValue().getKeyword()}"
                 android:visibility="@{viewModel.searchVisible}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/activity_searcher_options_search_label" />
@@ -84,6 +85,7 @@
                 android:background="?searcher_options_autocompletetextview_background"
                 android:onTextChanged="@{(text,start,before,count) -> viewModel.query.getValue().setPlatformFilter(text.toString())}"
                 android:padding="?searcher_options_autocompletetextview_padding"
+                android:text="@{viewModel.query.getValue().getPlatformFilter()}"
                 android:visibility="@{viewModel.platformVisible}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/activity_searcher_options_platform_label" />
@@ -121,6 +123,7 @@
                 android:background="?searcher_options_autocompletetextview_background"
                 android:onTextChanged="@{(text,start,before,count) -> viewModel.query.getValue().setThemeFilter(text.toString())}"
                 android:padding="?searcher_options_autocompletetextview_padding"
+                android:text="@{viewModel.query.getValue().getThemeFilter()}"
                 android:visibility="@{viewModel.themeVisible}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/activity_searcher_options_theme_label" />
@@ -157,6 +160,7 @@
                 android:background="?searcher_options_autocompletetextview_background"
                 android:onTextChanged="@{(text,start,before,count) -> viewModel.query.getValue().setGenreFilter(text.toString())}"
                 android:padding="?searcher_options_autocompletetextview_padding"
+                android:text="@{viewModel.query.getValue().getGenreFilter()}"
                 android:visibility="@{viewModel.genreVisible}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/activity_searcher_options_genre_label" />
@@ -192,7 +196,7 @@
                 android:layout_height="wrap_content"
                 android:onValueChange="@{(picker,oldVal,newVal) -> viewModel.onFromYearValueChange(newVal)}"
                 android:theme="?searcher_options_numberpicker_theme"
-                android:value="@={viewModel.fromYear}"
+                android:value="@{viewModel.fromYear.getValue()}"
                 android:visibility="@{viewModel.releaseYearVisible}"
                 app:layout_constraintEnd_toStartOf="@id/activity_searcher_options_yeartoyearseparator"
                 app:layout_constraintStart_toStartOf="parent"
@@ -217,7 +221,7 @@
                 android:layout_height="wrap_content"
                 android:onValueChange="@{(picker,oldVal,newVal) -> viewModel.onToYearValueChange(newVal)}"
                 android:theme="?searcher_options_numberpicker_theme"
-                android:value="@={viewModel.toYear}"
+                android:value="@{viewModel.toYear.getValue()}"
                 android:visibility="@{viewModel.toReleaseYearVisible}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/activity_searcher_options_yeartoyearseparator"
@@ -277,6 +281,7 @@
                 android:background="?searcher_options_spinner_background"
                 android:onItemSelected="@{(p,v,i,id) -> viewModel.onOrderSelected(p.getItemAtPosition(i).toString())}"
                 android:padding="?searcher_options_spinner_padding"
+                android:selectedItemPosition="@{viewModel.selectedOrderPos.getValue()}"
                 android:visibility="@{viewModel.orderByVisible}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/activity_searcher_options_order_label" />
