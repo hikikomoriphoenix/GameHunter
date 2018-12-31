@@ -22,10 +22,14 @@ package marabillas.loremar.gamehunter.apis.giantbomb;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -350,7 +354,15 @@ public class GiantBomb extends BaseAPI {
                 String expectedReleaseYear = item.getExpectedReleaseYear();
 
                 if (originalReleaseDate != null) {
-                    resultsItem.releaseDate = originalReleaseDate;
+                    SimpleDateFormat f1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                    SimpleDateFormat f2 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                    try {
+                        Date dt = f1.parse(originalReleaseDate);
+                        resultsItem.releaseDate = f2.format(dt);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                        resultsItem.releaseDate = originalReleaseDate;
+                    }
                 } else if (expectedReleaseYear != null) {
                     resultsItem.releaseDate = expectedReleaseYear;
                 }
