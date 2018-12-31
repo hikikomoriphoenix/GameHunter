@@ -25,6 +25,7 @@ import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -82,9 +83,10 @@ public class GiantBomb extends BaseAPI {
         Set<Query.Field> fields = EnumSet.of(Query.Field.THUMBNAIL, Query.Field.DESCRIPTION, Query
                 .Field.RELEASE_DATE, Query.Field.ID);
 
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
         query
                 .setFromYear(1950)
-                .setToYear(2018)
+                .setToYear(currentYear)
                 .setSort("Original release date")
                 .setOrder(Query.Order.DESCENDING)
                 .setFields(fields);
