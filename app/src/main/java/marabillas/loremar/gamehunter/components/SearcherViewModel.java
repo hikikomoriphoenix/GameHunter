@@ -334,7 +334,7 @@ public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBo
             Objects.requireNonNull(query.getValue()).setToYear(newValue);
         }
 
-        query.getValue().setFromYear(newValue);
+        fromYear.setValue(newValue);
     }
 
     public void onToYearValueChange(int newValue) {
@@ -343,7 +343,7 @@ public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBo
             Objects.requireNonNull(query.getValue()).setFromYear(newValue);
         }
 
-        query.getValue().setToYear(newValue);
+        toYear.setValue(newValue);
     }
 
     private boolean hasNoReleaseYearsRange() {
