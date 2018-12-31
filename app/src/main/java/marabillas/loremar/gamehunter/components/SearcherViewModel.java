@@ -42,6 +42,7 @@ import static marabillas.loremar.gamehunter.components.SearcherEvent.HIDE_SEARCH
 import static marabillas.loremar.gamehunter.components.SearcherEvent.HIDE_SEARCH_OPTIONS_ICON;
 import static marabillas.loremar.gamehunter.components.SearcherEvent.SET_DEFAULT_SORT_BY_SELECTION;
 import static marabillas.loremar.gamehunter.components.SearcherEvent.SHOW_GO_TO_PAGE_DIALOG;
+import static marabillas.loremar.gamehunter.components.SearcherEvent.SHOW_PROGRESS_VIEW;
 import static marabillas.loremar.gamehunter.utils.LogUtils.log;
 
 public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBoxActionListener,
@@ -190,6 +191,7 @@ public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBo
         })
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .blockingAwait();
+
         if (query.getValue() != null) {
             logQuery(query.getValue());
         }
@@ -273,27 +275,15 @@ public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBo
     }
 
     public void onApplyButtonClick() {
-        validateQuery();
+        postEventToMainThread(CLOSE_SEARCH_OPTIONS);
 
-        if (query.getValue() != null) {
-            logQuery(query.getValue());
-        }
+        validateQuery();
 
         // TODO Set fields as set by the user and that are available for the specific api.
         Set<Query.Field> fields = EnumSet.of(Query.Field.THUMBNAIL, Query.Field.DESCRIPTION, Query
                 .Field.RELEASE_DATE, Query.Field.ID);
         query.getValue().setFields(fields);
-        disposable = api.query(query.getValue())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(results -> {
-                    eventBus.setValue(CLOSE_SEARCH_OPTIONS);
-                    SearcherViewModel.this.results.setValue(results);
-                    updatePageStatus();
-                    disposable.dispose();
-                    disposable = null;
-                });
-        lastQuery = query.getValue();
+        performQuery(query.getValue());
     }
 
     private void validateQuery() {
@@ -368,15 +358,12 @@ public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBo
     public void onSearchBoxAction(String keyword) {
         Query query = new Query();
         query.setKeyword(keyword);
-        log("search:" + keyword);
 
         // TODO Set fields as set by the user and that are available for the specific api.
         Set<Query.Field> fields = EnumSet.of(Query.Field.THUMBNAIL, Query.Field.DESCRIPTION, Query
                 .Field.RELEASE_DATE, Query.Field.ID);
         query.setFields(fields);
         performQuery(query);
-
-        lastQuery = query;
     }
 
     public void goToFirstPage() {
@@ -436,6 +423,7 @@ public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBo
     }
 
     private void performQuery(Query query) {
+        postEventToMainThread(SHOW_PROGRESS_VIEW);
         logQuery(query);
 
         disposable = api.query(query)
@@ -444,9 +432,12 @@ public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBo
                 .subscribe(results -> {
                     SearcherViewModel.this.results.setValue(results);
                     updatePageStatus();
+                    postEventToMainThread(HIDE_PROGRESS_VIEW);
                     disposable.dispose();
                     disposable = null;
                 });
+
+        lastQuery = query;
     }
 
     private void updatePageStatus() {
@@ -469,7 +460,8 @@ public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBo
                 "\nfromYear=" + query.getFromYear() +
                 "\ntoYear=" + query.getToYear() +
                 "\nsort=" + query.getSort() +
-                "\norder=" + query.getOrder().toString()
+                "\norder=" + query.getOrder().toString() +
+                "\npage=" + query.getPageNumber()
         );
     }
 }

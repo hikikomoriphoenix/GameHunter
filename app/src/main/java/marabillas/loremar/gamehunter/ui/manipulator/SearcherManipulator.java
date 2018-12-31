@@ -54,6 +54,10 @@ public class SearcherManipulator {
                 searchOptionsTool.setVisible(false);
                 break;
 
+            case SHOW_PROGRESS_VIEW:
+                activity.getProgressView().show();
+                break;
+
             case HIDE_PROGRESS_VIEW:
                 activity.getProgressView().dismiss();
                 break;

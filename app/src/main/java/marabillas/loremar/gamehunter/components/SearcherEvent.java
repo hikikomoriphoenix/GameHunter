@@ -25,6 +25,7 @@ import java.util.Map;
 public enum SearcherEvent {
     HIDE_SEARCH_ICON,
     HIDE_SEARCH_OPTIONS_ICON,
+    SHOW_PROGRESS_VIEW,
     HIDE_PROGRESS_VIEW,
     SETUP_ORDER_BY,
     SHOW_PLATFORM_FILTERS,

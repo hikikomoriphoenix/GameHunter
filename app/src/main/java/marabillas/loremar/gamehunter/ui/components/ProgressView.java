@@ -58,7 +58,7 @@ public class ProgressView {
                 .MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         progressBar.setLayoutParams(params);
         progressBar.setIndeterminate(true);
-        int color = ResourcesCompat.getColor(r, R.color.neonGreen, null);
+        int color = ResourcesCompat.getColor(r, R.color.green, null);
         Drawable d = progressBar.getIndeterminateDrawable();
         d.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
 
