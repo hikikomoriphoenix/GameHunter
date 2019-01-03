@@ -19,6 +19,8 @@
 
 <resources>
     <dimen name="small_spacing">8dp</dimen>
+    <dimen name="medium_spacing">12dp</dimen>
+
     <!-- Searcher options dimensions -->
     <dimen name="activity_searcher_options_paddingleft">24dp</dimen>
     <dimen name="activity_searcher_options_paddingright">24dp</dimen>
@@ -32,8 +34,7 @@
     <dimen name="activity_searcher_searchbox_topmargin">32dp</dimen>
     <dimen name="activity_searcher_searchbox_elevation">20dp</dimen>
     <dimen name="activity_searcher_results_view_item_top_margin">12dp</dimen>
-    <dimen name="activity_searcher_results_view_item_padding">8dp</dimen>
-    <dimen name="activity_searcher_results_view_item_image_size">120dp</dimen>
+    <dimen name="activity_searcher_results_view_item_desc_height">80dp</dimen>
     <dimen name="activity_searcher_results_view_side_margin">12dp</dimen>
 
     <dimen name="activity_searcher_footer_height">56dp</dimen>

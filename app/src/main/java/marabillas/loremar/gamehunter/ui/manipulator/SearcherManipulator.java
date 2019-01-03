@@ -19,24 +19,43 @@
 
 package marabillas.loremar.gamehunter.ui.manipulator;
 
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.PopupMenu;
 import android.widget.Spinner;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.util.ViewPreloadSizeProvider;
+
 import java.util.Objects;
 import java.util.Set;
 
+import marabillas.loremar.gamehunter.GlideApp;
+import marabillas.loremar.gamehunter.GlideRequest;
 import marabillas.loremar.gamehunter.R;
+import marabillas.loremar.gamehunter.components.ResultsItem;
 import marabillas.loremar.gamehunter.components.SearcherEvent;
 import marabillas.loremar.gamehunter.ui.activity.SearcherActivity;
+import marabillas.loremar.gamehunter.ui.adapter.SearcherResultsViewAdapter;
 import marabillas.loremar.gamehunter.ui.components.GoToPageDialog;
+
+import static marabillas.loremar.gamehunter.components.Query.Field.DESCRIPTION;
+import static marabillas.loremar.gamehunter.components.Query.Field.RELEASE_DATE;
+import static marabillas.loremar.gamehunter.components.Query.Field.THUMBNAIL;
+import static marabillas.loremar.gamehunter.utils.UIUtils.getSpanCountGivenMaxWidth;
 
 public class SearcherManipulator {
     private SearcherActivity activity;
     private ArrayAdapter<String> sortByAdapter;
+
+    private static final int MAX_PRELOAD = 20;
 
     public SearcherManipulator(SearcherActivity activity) {
         this.activity = activity;
@@ -121,6 +140,10 @@ public class SearcherManipulator {
                     spinner.setSelection(pos);
                 }
                 break;
+
+            case SET_RESULTS_VIEW_MODE:
+                Set fields = (Set) event.getExtra("fields");
+                setResultsViewMode(fields);
         }
     }
 
@@ -171,5 +194,61 @@ public class SearcherManipulator {
         sortByAdapter = new ArrayAdapter<>(activity, android.R.layout
                 .simple_list_item_1, array);
         activity.getBinding().searcherOptions.activitySearcherOptionsSortDropdown.setAdapter(sortByAdapter);
+    }
+
+    private void setResultsViewMode(Set fields) {
+        int layoutID;
+        boolean displayReleaseDate = true;
+        boolean displayThumbnail = true;
+        boolean displayDescription = true;
+        int spanCount = 0;
+
+        if (!fields.contains(DESCRIPTION) && fields.contains(THUMBNAIL)) {
+            layoutID = R.layout.activity_searcher_results_view_item_grid;
+
+            if (!fields.contains(RELEASE_DATE)) {
+                displayReleaseDate = false;
+            }
+
+            spanCount = getSpanCountGivenMaxWidth(activity, 180);
+            GridLayoutManager gm = new GridLayoutManager(activity, spanCount);
+            activity.getBinding().searcherResultsView.setLayoutManager(gm);
+        } else {
+            layoutID = R.layout.activity_searcher_results_view_item;
+
+            if (!fields.contains(DESCRIPTION)) {
+                displayDescription = false;
+                displayThumbnail = false;
+            } // Else it contains both description and thumbnail.
+
+            if (!fields.contains(RELEASE_DATE)) {
+                displayReleaseDate = false;
+            }
+
+            activity.getBinding().searcherResultsView.setLayoutManager(new LinearLayoutManager(activity));
+        }
+
+        ViewPreloadSizeProvider<ResultsItem> sizeProvider = new ViewPreloadSizeProvider<>();
+        GlideRequest<Drawable> gliderRequest = GlideApp.with(activity)
+                .asDrawable()
+                .fitCenter()
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+
+        SearcherResultsViewAdapter adapter = new SearcherResultsViewAdapter.Builder()
+                .setSizeProvider(sizeProvider)
+                .setGlideRequest(gliderRequest)
+                .setLayoutID(layoutID)
+                .setDisplayThumbnail(displayThumbnail)
+                .setDisplayDescription(displayDescription)
+                .setDisplayReleaseDate(displayReleaseDate)
+                .setSpanCount(spanCount)
+                .create();
+
+        activity.getViewModel().results.observe(activity, adapter::updateList);
+        activity.getBinding().searcherResultsView.setAdapter(adapter);
+        RecyclerViewPreloader<ResultsItem> preloader = new RecyclerViewPreloader<>(Glide.with(activity),
+                adapter, sizeProvider, MAX_PRELOAD);
+        activity.getBinding().searcherResultsView.clearOnScrollListeners();
+        activity.getBinding().searcherResultsView.addOnScrollListener(preloader);
     }
 }

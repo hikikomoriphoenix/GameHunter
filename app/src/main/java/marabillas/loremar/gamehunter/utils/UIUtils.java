@@ -19,9 +19,13 @@
 
 package marabillas.loremar.gamehunter.utils;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.widget.NumberPicker;
+
+import static marabillas.loremar.gamehunter.utils.MeasurementUtils.convertPixelsToDp;
+import static marabillas.loremar.gamehunter.utils.MeasurementUtils.getScreenWidthInPixels;
 
 public final class UIUtils {
     private UIUtils() {
@@ -44,5 +48,16 @@ public final class UIUtils {
                 break;
             }
         }
+    }
+
+    public static int getSpanCountGivenMaxWidth(Context context, int maxWidth) {
+        int screenWidthInPixels = getScreenWidthInPixels();
+        float screenWidthInDp = convertPixelsToDp(screenWidthInPixels, context);
+        int spanCount = (int) (screenWidthInDp / maxWidth);
+        if (screenWidthInDp % maxWidth > 0) {
+            ++spanCount;
+        }
+
+        return spanCount;
     }
 }

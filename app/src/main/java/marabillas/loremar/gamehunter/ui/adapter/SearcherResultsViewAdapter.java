@@ -20,12 +20,14 @@
 package marabillas.loremar.gamehunter.ui.adapter;
 
 import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.bumptech.glide.ListPreloader;
 import com.bumptech.glide.RequestBuilder;
@@ -35,11 +37,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import marabillas.loremar.gamehunter.BR;
 import marabillas.loremar.gamehunter.GlideRequest;
 import marabillas.loremar.gamehunter.R;
 import marabillas.loremar.gamehunter.components.ResultsItem;
-import marabillas.loremar.gamehunter.databinding.ActivitySearcherResultsViewItemBinding;
+import marabillas.loremar.gamehunter.ui.components.DarkOrLightLayout;
 
+import static android.view.View.GONE;
 import static marabillas.loremar.gamehunter.ui.components.DarkOrLightLayout.Theme.DARK;
 import static marabillas.loremar.gamehunter.ui.components.DarkOrLightLayout.Theme.LIGHT;
 
@@ -48,11 +52,77 @@ public class SearcherResultsViewAdapter extends RecyclerView.Adapter<SearcherRes
     private ViewPreloadSizeProvider<ResultsItem> sizeProvider;
     private GlideRequest<Drawable> glideRequest;
     private List<ResultsItem> results;
+    private int layoutID;
+    private boolean displayThumbnail;
+    private boolean displayDescription;
+    private boolean displayReleaseDate;
+    private int spanCount;
 
-    public SearcherResultsViewAdapter(GlideRequest<Drawable> glideRequest,
-                                      ViewPreloadSizeProvider<ResultsItem> sizeProvider) {
+    public static class Builder {
+        private ViewPreloadSizeProvider<ResultsItem> sizeProvider;
+        private GlideRequest<Drawable> glideRequest;
+        private int layoutID;
+        private boolean displayThumbnail;
+        private boolean displayDescription;
+        private boolean displayReleaseDate;
+        private int spanCount;
+
+        public Builder setSizeProvider(ViewPreloadSizeProvider<ResultsItem> sizeProvider) {
+            this.sizeProvider = sizeProvider;
+            return this;
+        }
+
+        public Builder setGlideRequest(GlideRequest<Drawable> glideRequest) {
+            this.glideRequest = glideRequest;
+            return this;
+        }
+
+        public Builder setLayoutID(int layoutID) {
+            this.layoutID = layoutID;
+            return this;
+        }
+
+        public Builder setDisplayThumbnail(boolean displayThumbnail) {
+            this.displayThumbnail = displayThumbnail;
+            return this;
+        }
+
+        public Builder setDisplayDescription(boolean displayDescription) {
+            this.displayDescription = displayDescription;
+            return this;
+        }
+
+        public Builder setDisplayReleaseDate(boolean displayReleaseDate) {
+            this.displayReleaseDate = displayReleaseDate;
+            return this;
+        }
+
+        public Builder setSpanCount(int spanCount) {
+            this.spanCount = spanCount;
+            return this;
+        }
+
+        public SearcherResultsViewAdapter create() {
+            return new SearcherResultsViewAdapter(glideRequest, sizeProvider, layoutID,
+                    displayThumbnail, displayDescription, displayReleaseDate, spanCount);
+        }
+    }
+
+    private SearcherResultsViewAdapter(GlideRequest<Drawable> glideRequest,
+                                       ViewPreloadSizeProvider<ResultsItem> sizeProvider,
+                                       int layoutID,
+                                       boolean displayThumbnail,
+                                       boolean displayDescription,
+                                       boolean displayReleaseDate,
+                                       int spanCount) {
         this.glideRequest = glideRequest;
         this.sizeProvider = sizeProvider;
+        this.layoutID = layoutID;
+        this.displayThumbnail = displayThumbnail;
+        this.displayDescription = displayDescription;
+        this.displayReleaseDate = displayReleaseDate;
+        this.spanCount = spanCount;
+
         results = new ArrayList<>();
     }
 
@@ -60,30 +130,62 @@ public class SearcherResultsViewAdapter extends RecyclerView.Adapter<SearcherRes
     @Override
     public SearcherResultsItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        ActivitySearcherResultsViewItemBinding binding = DataBindingUtil.inflate(inflater, R.layout
-                .activity_searcher_results_view_item, parent, false);
+        ViewDataBinding binding = DataBindingUtil.inflate(inflater, layoutID, parent, false);
+
+        if (!displayThumbnail) {
+            binding.setVariable(BR.thumbnailVisibility, GONE);
+        }
+
         return new SearcherResultsItemViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull SearcherResultsItemViewHolder holder, int position) {
         ResultsItem resultsItem = results.get(position);
-        holder.getBinding().setResultsItem(resultsItem);
+        holder.getBinding().setVariable(BR.resultsItem, resultsItem);
+        DarkOrLightLayout dol = holder.getBinding().getRoot().findViewById(R.id
+                .searcher_results_view_item);
 
-        boolean multiple2 = position % 2 == 0;
-        if (multiple2) {
-            holder.getBinding().searcherResultsViewItem.setTheme(LIGHT);
+        if (spanCount > 0) {
+            setDarkOrLightThemeForGridLayoutItem(position, spanCount, dol);
         } else {
-            holder.getBinding().searcherResultsViewItem.setTheme(DARK);
+            boolean multiple2 = position % 2 == 0;
+            if (multiple2) {
+                dol.setTheme(LIGHT);
+            } else {
+                dol.setTheme(DARK);
+            }
         }
-        int textColor = holder.getBinding().searcherResultsViewItem.getDefaultTextColor();
-        holder.getBinding().setTextColor(textColor);
 
-        glideRequest
-                .load(resultsItem.thumbnailURL)
-                .into(holder.getBinding().activitySearcherResultsViewItemImage);
+        int textColor = dol.getDefaultTextColor();
+        holder.getBinding().setVariable(BR.textColor, textColor);
 
-        sizeProvider.setView(holder.getBinding().activitySearcherResultsViewItemImage);
+        if (resultsItem.thumbnailURL != null) {
+            ImageView thumbnail = holder.getBinding().getRoot().findViewById(R.id
+                    .activity_searcher_results_view_item_image);
+            glideRequest
+                    .load(resultsItem.thumbnailURL)
+                    .into(thumbnail);
+
+            sizeProvider.setView(thumbnail);
+        }
+    }
+
+    private void setDarkOrLightThemeForGridLayoutItem(int position, int spanCount,
+                                                      DarkOrLightLayout layout) {
+        int row = position / spanCount;
+        int column = position % spanCount;
+
+        boolean rowEven = row % 2 == 0; // Row position is an even number
+        boolean columnEven = column % 2 == 0; // Column position is an even number
+
+        // Set theme to be alternatively light and dark for each item in the grid layout. This
+        // makes the recycler view look like a checkerboard.
+        if (rowEven && columnEven || !rowEven && !columnEven) {
+            layout.setTheme(LIGHT);
+        } else {
+            layout.setTheme(DARK);
+        }
     }
 
     @Override
@@ -109,14 +211,14 @@ public class SearcherResultsViewAdapter extends RecyclerView.Adapter<SearcherRes
     }
 
     class SearcherResultsItemViewHolder extends RecyclerView.ViewHolder {
-        private ActivitySearcherResultsViewItemBinding binding;
+        private ViewDataBinding binding;
 
-        public SearcherResultsItemViewHolder(ActivitySearcherResultsViewItemBinding binding) {
+        public SearcherResultsItemViewHolder(ViewDataBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
 
-        public ActivitySearcherResultsViewItemBinding getBinding() {
+        public ViewDataBinding getBinding() {
             return binding;
         }
     }

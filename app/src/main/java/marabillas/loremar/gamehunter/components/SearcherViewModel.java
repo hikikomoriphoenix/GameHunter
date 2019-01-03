@@ -22,7 +22,6 @@ package marabillas.loremar.gamehunter.components;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -74,6 +73,7 @@ public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBo
     public MutableLiveData<Integer> toYear = new MutableLiveData<>();
     public MutableLiveData<Integer> selectedOrderPos = new MutableLiveData<>();
     public MutableLiveData<List<ResultsItem>> results = new MutableLiveData<>();
+    public MutableLiveData<Set<Query.Field>> fields = new MutableLiveData<>();
     public MutableLiveData<String> pageStatus = new MutableLiveData<>();
 
     private Query lastQuery;
@@ -187,6 +187,7 @@ public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBo
         // Get default query and update search options with its values
         Completable.fromRunnable(() -> {
             query.setValue(api.getDefaultQuery());
+            setDefaultFields();
             setDefaultSearchOptionsValues();
         })
                 .subscribeOn(AndroidSchedulers.mainThread())
@@ -207,6 +208,17 @@ public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBo
                     pageStatus.postValue(page + " / " + total);
                 });
         lastQuery = query.getValue();
+    }
+
+    private void setDefaultFields() {
+        if (query.getValue() != null) {
+            Set<Query.Field> fields = query.getValue().getFields();
+            this.fields.setValue(fields);
+
+            SearcherEvent event = SearcherEvent.SET_RESULTS_VIEW_MODE;
+            event.putExtra("fields", fields);
+            postEventToMainThread(event);
+        }
     }
 
     private void setDefaultSearchOptionsValues() {
@@ -279,10 +291,6 @@ public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBo
 
         validateQuery();
 
-        // TODO Set fields as set by the user and that are available for the specific api.
-        Set<Query.Field> fields = EnumSet.of(Query.Field.THUMBNAIL, Query.Field.DESCRIPTION, Query
-                .Field.RELEASE_DATE, Query.Field.ID);
-        query.getValue().setFields(fields);
         performQuery(query.getValue());
     }
 
@@ -359,10 +367,7 @@ public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBo
         Query query = new Query();
         query.setKeyword(keyword);
 
-        // TODO Set fields as set by the user and that are available for the specific api.
-        Set<Query.Field> fields = EnumSet.of(Query.Field.THUMBNAIL, Query.Field.DESCRIPTION, Query
-                .Field.RELEASE_DATE, Query.Field.ID);
-        query.setFields(fields);
+        query.setFields(fields.getValue());
         performQuery(query);
     }
 
