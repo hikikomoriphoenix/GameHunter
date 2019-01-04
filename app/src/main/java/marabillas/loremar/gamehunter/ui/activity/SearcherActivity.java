@@ -35,6 +35,7 @@ import java.util.Calendar;
 import marabillas.loremar.gamehunter.R;
 import marabillas.loremar.gamehunter.apis.APIFactory;
 import marabillas.loremar.gamehunter.apis.BaseAPI;
+import marabillas.loremar.gamehunter.components.Query;
 import marabillas.loremar.gamehunter.components.SearcherViewModel;
 import marabillas.loremar.gamehunter.databinding.ActivitySearcherBinding;
 import marabillas.loremar.gamehunter.ui.components.ProgressView;
@@ -49,18 +50,24 @@ public class SearcherActivity extends AppCompatActivity implements Toolbar.OnMen
     private Menu menu;
     private ProgressView progressView;
     private SearcherManipulator manipulator;
+    private boolean configurationChanged;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        String site = getIntent().getStringExtra("site");
 
         manipulator = new SearcherManipulator(this);
 
-        String site = getIntent().getStringExtra("site");
-        BaseAPI api = APIFactory.getAPI(site);
-
         viewModel = ViewModelProviders.of(this).get(SearcherViewModel.class);
-        viewModel.setApi(api);
+
+        if (savedInstanceState != null) {
+            configurationChanged = true;
+        } else {
+            BaseAPI api = APIFactory.getAPI(site);
+            viewModel.setApi(api);
+        }
+
         viewModel.eventBus.observe(this, manipulator::handleEvent);
 
         binding = DataBindingUtil.setContentView(this, R.layout
@@ -92,14 +99,19 @@ public class SearcherActivity extends AppCompatActivity implements Toolbar.OnMen
         viewModel.sortChoices.observe(this, manipulator::setupSortChoices);
 
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-        viewModel.fromYear.setValue(currentYear);
-        viewModel.toYear.setValue(currentYear);
         binding.searcherOptions.activitySearcherOptionsFromyear.setMinValue(1950);
         binding.searcherOptions.activitySearcherOptionsFromyear.setMaxValue(currentYear);
         binding.searcherOptions.activitySearcherOptionsToyear.setMinValue(1950);
         binding.searcherOptions.activitySearcherOptionsToyear.setMaxValue(currentYear);
 
-        viewModel.init();
+        if (!configurationChanged) {
+            viewModel.init();
+        } else {
+            viewModel.setDefaultFields();
+            Query q = viewModel.getLastQuery().copy();
+            viewModel.query.setValue(q);
+            progressView.dismiss();
+        }
     }
 
     public SearcherViewModel getViewModel() {

@@ -207,10 +207,10 @@ public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBo
                     int total = (int) api.getTotalPages(q.getResultsPerPage());
                     pageStatus.postValue(page + " / " + total);
                 });
-        lastQuery = query.getValue();
+        lastQuery = Objects.requireNonNull(query.getValue()).copy();
     }
 
-    private void setDefaultFields() {
+    public void setDefaultFields() {
         if (query.getValue() != null) {
             Set<Query.Field> fields = query.getValue().getFields();
             this.fields.setValue(fields);
@@ -442,7 +442,7 @@ public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBo
                     disposable = null;
                 });
 
-        lastQuery = query;
+        lastQuery = query.copy();
     }
 
     private void updatePageStatus() {
@@ -468,5 +468,9 @@ public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBo
                 "\norder=" + query.getOrder().toString() +
                 "\npage=" + query.getPageNumber()
         );
+    }
+
+    public Query getLastQuery() {
+        return lastQuery;
     }
 }
