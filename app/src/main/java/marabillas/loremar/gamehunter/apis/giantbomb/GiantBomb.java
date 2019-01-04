@@ -46,6 +46,7 @@ import marabillas.loremar.gamehunter.components.ResultsItem;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static marabillas.loremar.gamehunter.components.Query.Field.DESCRIPTION;
 import static marabillas.loremar.gamehunter.components.Query.Field.ID;
 import static marabillas.loremar.gamehunter.components.Query.Field.RELEASE_DATE;
 import static marabillas.loremar.gamehunter.components.Query.Field.THUMBNAIL;
@@ -83,7 +84,7 @@ public class GiantBomb extends BaseAPI {
     @Override
     public Query getDefaultQuery() {
         Query query = new Query();
-        Set<Query.Field> fields = EnumSet.of(THUMBNAIL, RELEASE_DATE, ID);
+        Set<Query.Field> fields = EnumSet.of(THUMBNAIL, DESCRIPTION, RELEASE_DATE, ID);
 
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
         query
@@ -349,7 +350,7 @@ public class GiantBomb extends BaseAPI {
                 resultsItem.thumbnailURL = imageItem.getThumbnailUrl();
             }
 
-            if (fields.contains(Query.Field.DESCRIPTION)) {
+            if (fields.contains(DESCRIPTION)) {
                 resultsItem.description = item.getDescription();
             }
 
