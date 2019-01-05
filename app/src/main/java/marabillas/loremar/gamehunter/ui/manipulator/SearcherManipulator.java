@@ -81,14 +81,6 @@ public class SearcherManipulator {
                 activity.getProgressView().dismiss();
                 break;
 
-            case SETUP_ORDER_BY:
-                String[] order = {"Descending", "Ascending"};
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(activity, android.R.layout
-                        .simple_list_item_1, order);
-                activity.getBinding().searcherOptions.activitySearcherOptionsOrderDropdown
-                        .setAdapter(adapter);
-                break;
-
             case SHOW_PLATFORM_FILTERS:
                 AutoCompleteTextView v1 = activity.getBinding().searcherOptions
                         .activitySearcherOptionsPlatformTextbox;

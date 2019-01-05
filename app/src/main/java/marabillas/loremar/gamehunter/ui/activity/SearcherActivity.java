@@ -29,6 +29,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 
 import java.util.Calendar;
 
@@ -86,6 +87,8 @@ public class SearcherActivity extends AppCompatActivity implements Toolbar.OnMen
         setNumberPickerDividerColor(binding.searcherOptions.activitySearcherOptionsToyear, color);
 
         progressView = new ProgressView(this);
+
+        setupOrderByDropDown();
     }
 
     @Override
@@ -131,7 +134,6 @@ public class SearcherActivity extends AppCompatActivity implements Toolbar.OnMen
     }
 
     @Override
-
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.searcher_menu_search:
@@ -144,5 +146,13 @@ public class SearcherActivity extends AppCompatActivity implements Toolbar.OnMen
                 break;
         }
         return true;
+    }
+
+    private void setupOrderByDropDown() {
+        String[] order = {"Descending", "Ascending"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout
+                .simple_list_item_1, order);
+        binding.searcherOptions.activitySearcherOptionsOrderDropdown
+                .setAdapter(adapter);
     }
 }

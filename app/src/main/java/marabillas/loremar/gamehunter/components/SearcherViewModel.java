@@ -152,8 +152,6 @@ public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBo
             if (!api.hasSortBy() && !api.hasSearchSortBy()) {
                 sortByVisible.postValue(GONE);
             }
-        } else {
-            postEventToMainThread(SearcherEvent.SETUP_ORDER_BY);
         }
 
         if (!api.hasSearchAdvanced()) {
