@@ -36,7 +36,8 @@ public enum SearcherEvent {
     SHOW_GO_TO_PAGE_DIALOG,
     CLOSE_SEARCH_OPTIONS,
     SET_DEFAULT_SORT_BY_SELECTION,
-    SET_RESULTS_VIEW_MODE;
+    SET_RESULTS_VIEW_MODE,
+    NONE;
 
     private Map<String, Object> extras = new HashMap<>();
 

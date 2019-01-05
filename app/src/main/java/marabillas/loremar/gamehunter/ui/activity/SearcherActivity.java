@@ -35,13 +35,13 @@ import java.util.Calendar;
 import marabillas.loremar.gamehunter.R;
 import marabillas.loremar.gamehunter.apis.APIFactory;
 import marabillas.loremar.gamehunter.apis.BaseAPI;
-import marabillas.loremar.gamehunter.components.Query;
 import marabillas.loremar.gamehunter.components.SearcherViewModel;
 import marabillas.loremar.gamehunter.databinding.ActivitySearcherBinding;
 import marabillas.loremar.gamehunter.ui.components.ProgressView;
 import marabillas.loremar.gamehunter.ui.components.SearchBox;
 import marabillas.loremar.gamehunter.ui.manipulator.SearcherManipulator;
 
+import static marabillas.loremar.gamehunter.components.SearcherEvent.NONE;
 import static marabillas.loremar.gamehunter.utils.UIUtils.setNumberPickerDividerColor;
 
 public class SearcherActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener {
@@ -63,6 +63,7 @@ public class SearcherActivity extends AppCompatActivity implements Toolbar.OnMen
 
         if (savedInstanceState != null) {
             configurationChanged = true;
+            viewModel.eventBus.setValue(NONE);
         } else {
             BaseAPI api = APIFactory.getAPI(site);
             viewModel.setApi(api);
@@ -72,7 +73,6 @@ public class SearcherActivity extends AppCompatActivity implements Toolbar.OnMen
 
         binding = DataBindingUtil.setContentView(this, R.layout
                 .activity_searcher);
-        binding.setViewModel(viewModel);
         binding.setLifecycleOwner(this);
 
         binding.searcherToolbar.inflateMenu(R.menu.searcher_menu);
@@ -93,6 +93,8 @@ public class SearcherActivity extends AppCompatActivity implements Toolbar.OnMen
         super.onStart();
         progressView.show();
 
+        binding.setViewModel(viewModel);
+
         viewModel.platformFilters.observe(this, manipulator::setupPlatformFilters);
         viewModel.themeFilters.observe(this, manipulator::setupThemeFilters);
         viewModel.genreFilters.observe(this, manipulator::setupGenreFilters);
@@ -108,8 +110,6 @@ public class SearcherActivity extends AppCompatActivity implements Toolbar.OnMen
             viewModel.init();
         } else {
             viewModel.setDefaultFields();
-            Query q = viewModel.getLastQuery().copy();
-            viewModel.query.setValue(q);
             progressView.dismiss();
         }
     }
