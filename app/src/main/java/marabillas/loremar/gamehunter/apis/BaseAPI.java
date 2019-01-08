@@ -55,6 +55,13 @@ public abstract class BaseAPI {
     protected abstract Set<Feature> configure();
 
     /**
+     * Prepare a default query to get a list of games to be shown when Search page is displayed.
+     *
+     * @return a Query.
+     */
+    public abstract Query getDefaultQuery();
+
+    /**
      * Gets all the game genres that is made available by the API for the user to choose from as
      * filters.
      *

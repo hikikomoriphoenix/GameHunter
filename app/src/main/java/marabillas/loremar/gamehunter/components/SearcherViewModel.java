@@ -22,7 +22,6 @@ package marabillas.loremar.gamehunter.components;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -32,15 +31,21 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import marabillas.loremar.gamehunter.apis.BaseAPI;
+import marabillas.loremar.gamehunter.ui.components.GoToPageDialog;
 import marabillas.loremar.gamehunter.ui.components.SearchBox;
 
 import static android.view.View.GONE;
+import static marabillas.loremar.gamehunter.components.SearcherEvent.CLOSE_SEARCH_OPTIONS;
 import static marabillas.loremar.gamehunter.components.SearcherEvent.HIDE_PROGRESS_VIEW;
 import static marabillas.loremar.gamehunter.components.SearcherEvent.HIDE_SEARCH_ICON;
 import static marabillas.loremar.gamehunter.components.SearcherEvent.HIDE_SEARCH_OPTIONS_ICON;
+import static marabillas.loremar.gamehunter.components.SearcherEvent.SET_DEFAULT_SORT_BY_SELECTION;
+import static marabillas.loremar.gamehunter.components.SearcherEvent.SHOW_GO_TO_PAGE_DIALOG;
+import static marabillas.loremar.gamehunter.components.SearcherEvent.SHOW_PROGRESS_VIEW;
 import static marabillas.loremar.gamehunter.utils.LogUtils.log;
 
-public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBoxActionListener {
+public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBoxActionListener,
+        GoToPageDialog.OnGoToPageDialogActionListener {
     private BaseAPI api;
 
     public MutableLiveData<SearcherEvent> eventBus = new MutableLiveData<>();
@@ -64,11 +69,14 @@ public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBo
     public MutableLiveData<Set<String>> sortChoices = new MutableLiveData<>();
 
     public MutableLiveData<Query> query = new MutableLiveData<>();
-
     public MutableLiveData<Integer> fromYear = new MutableLiveData<>();
     public MutableLiveData<Integer> toYear = new MutableLiveData<>();
-
+    public MutableLiveData<Integer> selectedOrderPos = new MutableLiveData<>();
     public MutableLiveData<List<ResultsItem>> results = new MutableLiveData<>();
+    public MutableLiveData<Set<Query.Field>> fields = new MutableLiveData<>();
+    public MutableLiveData<String> pageStatus = new MutableLiveData<>();
+
+    private Query lastQuery;
 
     public void setApi(BaseAPI api) {
         this.api = api;
@@ -86,25 +94,8 @@ public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBo
         selectAccessibleSearchOptions();
 
         disposable = Completable.fromRunnable(() -> {
-            if (api.hasFilterByPlatform() || api.hasSearchFilterByPlatform()) {
-                api.getPlatformFilters()
-                        .blockingSubscribe(filters -> platformFilters.postValue(filters));
-            }
-
-            if (api.hasFilterByTheme() || api.hasSearchFilterByTheme()) {
-                api.getThemeFilters()
-                        .blockingSubscribe(filters -> themeFilters.postValue(filters));
-            }
-
-            if (api.hasFilterByGenre() || api.hasSearchFilterByGenre()) {
-                api.getGenreFilters()
-                        .blockingSubscribe(filters -> genreFilters.postValue(filters));
-            }
-
-            if (api.hasSortBy()) {
-                api.getSortChoices()
-                        .blockingSubscribe(choices -> sortChoices.postValue(choices));
-            }
+            getSelectableSearchOptionValues();
+            setupAndShowDefaultQuery();
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -161,12 +152,104 @@ public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBo
             if (!api.hasSortBy() && !api.hasSearchSortBy()) {
                 sortByVisible.postValue(GONE);
             }
-        } else {
-            postEventToMainThread(SearcherEvent.SETUP_ORDER_BY);
         }
 
         if (!api.hasSearchAdvanced()) {
             searchVisible.postValue(GONE);
+        }
+    }
+
+    private void getSelectableSearchOptionValues() {
+        if (api.hasFilterByPlatform() || api.hasSearchFilterByPlatform()) {
+            api.getPlatformFilters()
+                    .blockingSubscribe(filters -> platformFilters.postValue(filters));
+        }
+
+        if (api.hasFilterByTheme() || api.hasSearchFilterByTheme()) {
+            api.getThemeFilters()
+                    .blockingSubscribe(filters -> themeFilters.postValue(filters));
+        }
+
+        if (api.hasFilterByGenre() || api.hasSearchFilterByGenre()) {
+            api.getGenreFilters()
+                    .blockingSubscribe(filters -> genreFilters.postValue(filters));
+        }
+
+        if (api.hasSortBy()) {
+            api.getSortChoices()
+                    .blockingSubscribe(choices -> sortChoices.postValue(choices));
+        }
+    }
+
+    private void setupAndShowDefaultQuery() {
+        // Get default query and update search options with its values
+        Completable.fromRunnable(() -> {
+            query.setValue(api.getDefaultQuery());
+            setDefaultFields();
+            setDefaultSearchOptionsValues();
+        })
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .blockingAwait();
+
+        if (query.getValue() != null) {
+            logQuery(query.getValue());
+        }
+
+        // Show default query
+        api.query(query.getValue())
+                .blockingSubscribe(results -> {
+                    SearcherViewModel.this.results.postValue(results);
+
+                    Query q = query.getValue();
+                    int page = Objects.requireNonNull(q).getPageNumber();
+                    int total = (int) api.getTotalPages(q.getResultsPerPage());
+                    pageStatus.postValue(page + " / " + total);
+                });
+        lastQuery = Objects.requireNonNull(query.getValue()).copy();
+    }
+
+    public void setDefaultFields() {
+        if (query.getValue() != null) {
+            Set<Query.Field> fields = query.getValue().getFields();
+            this.fields.setValue(fields);
+
+            SearcherEvent event = SearcherEvent.SET_RESULTS_VIEW_MODE;
+            event.putExtra("fields", fields);
+            postEventToMainThread(event);
+        }
+    }
+
+    private void setDefaultSearchOptionsValues() {
+        if (query.getValue() != null) {
+            if (hasNoReleaseYearsRange() && hasReleaseYearExact()) {
+                int ry = query.getValue().getReleaseYear();
+                fromYear.setValue(ry);
+            } else if (!hasNoReleaseYearsRange()) {
+                int fy = query.getValue().getFromYear();
+                int ty = query.getValue().getToYear();
+                fromYear.setValue(fy);
+                toYear.setValue(ty);
+            }
+
+            // Set default selection for sort by spinner.
+            if (api.hasSortBy() && query.getValue().getSort() != null) {
+                SearcherEvent ev = SET_DEFAULT_SORT_BY_SELECTION;
+                String defS = query.getValue().getSort();
+                ev.putExtra("default_selection", defS);
+                postEventToMainThread(ev);
+            }
+
+            if (api.hasSortByReversible() && query.getValue().getOrder() != null) {
+                Query.Order o = query.getValue().getOrder();
+                switch (o) {
+                    case DESCENDING:
+                        selectedOrderPos.setValue(0);
+                        break;
+                    case ASCENDING:
+                        selectedOrderPos.setValue(1);
+                        break;
+                }
+            }
         }
     }
 
@@ -202,18 +285,11 @@ public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBo
     }
 
     public void onApplyButtonClick() {
+        postEventToMainThread(CLOSE_SEARCH_OPTIONS);
+
         validateQuery();
 
-        log("Query:\nkeyword=" + Objects.requireNonNull(query.getValue()).getKeyword() +
-                "\nplatform=" + query.getValue().getPlatformFilter() +
-                "\ntheme=" + query.getValue().getThemeFilter() +
-                "\ngenre=" + query.getValue().getGenreFilter() +
-                "\nreleaseYear=" + query.getValue().getReleaseYear() +
-                "\nfromYear=" + query.getValue().getFromYear() +
-                "\ntoYear=" + query.getValue().getToYear() +
-                "\nsort=" + query.getValue().getSort() +
-                "\norder=" + query.getValue().getOrder().toString()
-        );
+        performQuery(query.getValue());
     }
 
     private void validateQuery() {
@@ -264,7 +340,7 @@ public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBo
             Objects.requireNonNull(query.getValue()).setToYear(newValue);
         }
 
-        query.getValue().setFromYear(newValue);
+        fromYear.setValue(newValue);
     }
 
     public void onToYearValueChange(int newValue) {
@@ -273,7 +349,7 @@ public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBo
             Objects.requireNonNull(query.getValue()).setFromYear(newValue);
         }
 
-        query.getValue().setToYear(newValue);
+        toYear.setValue(newValue);
     }
 
     private boolean hasNoReleaseYearsRange() {
@@ -288,19 +364,111 @@ public class SearcherViewModel extends ViewModel implements SearchBox.OnSearchBo
     public void onSearchBoxAction(String keyword) {
         Query query = new Query();
         query.setKeyword(keyword);
-        log("search:" + keyword);
 
-        Set<Query.Field> fields = EnumSet.of(Query.Field.THUMBNAIL, Query.Field.DESCRIPTION, Query
-                .Field.RELEASE_DATE, Query.Field.ID);
-        query.setFields(fields);
+        query.setFields(fields.getValue());
+        performQuery(query);
+    }
+
+    public void goToFirstPage() {
+        if (lastQuery != null) {
+            lastQuery.setPageNumber(1);
+            performQuery(lastQuery);
+        }
+    }
+
+    public void goToPreviousPage() {
+        if (lastQuery != null) {
+            int currentPage = lastQuery.getPageNumber();
+            if (currentPage <= 1) {
+                return;
+            }
+
+            lastQuery.setPageNumber(currentPage - 1);
+            performQuery(lastQuery);
+        }
+    }
+
+    public void goToNextPage() {
+        if (lastQuery != null) {
+            int currentPage = lastQuery.getPageNumber();
+            int lastPage = (int) api.getTotalPages(lastQuery.getResultsPerPage());
+            if (currentPage >= lastPage) {
+                return;
+            }
+
+            lastQuery.setPageNumber(currentPage + 1);
+            performQuery(lastQuery);
+        }
+    }
+
+    public void goToLastPage() {
+        if (lastQuery != null) {
+            int lastPage = (int) api.getTotalPages(lastQuery.getResultsPerPage());
+            lastQuery.setPageNumber(lastPage);
+            performQuery(lastQuery);
+        }
+    }
+
+    private void goToPage(int targetPage) {
+        if (lastQuery != null) {
+            lastQuery.setPageNumber(targetPage);
+            performQuery(lastQuery);
+        }
+    }
+
+    public void onPageStatusClick() {
+        if (lastQuery != null) {
+            SearcherEvent ev = SHOW_GO_TO_PAGE_DIALOG;
+            int rpp = lastQuery.getResultsPerPage();
+            ev.putExtra("total_pages", api.getTotalPages(rpp));
+            postEventToMainThread(ev);
+        }
+    }
+
+    private void performQuery(Query query) {
+        postEventToMainThread(SHOW_PROGRESS_VIEW);
+        logQuery(query);
 
         disposable = api.query(query)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(results -> {
                     SearcherViewModel.this.results.setValue(results);
+                    updatePageStatus();
+                    postEventToMainThread(HIDE_PROGRESS_VIEW);
                     disposable.dispose();
                     disposable = null;
                 });
+
+        lastQuery = query.copy();
+    }
+
+    private void updatePageStatus() {
+        int page = lastQuery.getPageNumber();
+        int total = (int) api.getTotalPages(lastQuery.getResultsPerPage());
+        pageStatus.setValue(page + " / " + total);
+    }
+
+    @Override
+    public void onGoToPageDialogAction(long pageNumber) {
+        goToPage((int) pageNumber);
+    }
+
+    private void logQuery(Query query) {
+        log("Query:\nkeyword=" + query.getKeyword() +
+                "\nplatform=" + query.getPlatformFilter() +
+                "\ntheme=" + query.getThemeFilter() +
+                "\ngenre=" + query.getGenreFilter() +
+                "\nreleaseYear=" + query.getReleaseYear() +
+                "\nfromYear=" + query.getFromYear() +
+                "\ntoYear=" + query.getToYear() +
+                "\nsort=" + query.getSort() +
+                "\norder=" + query.getOrder().toString() +
+                "\npage=" + query.getPageNumber()
+        );
+    }
+
+    public Query getLastQuery() {
+        return lastQuery;
     }
 }

@@ -37,8 +37,7 @@ import marabillas.loremar.gamehunter.components.GameSiteViewModel;
 import marabillas.loremar.gamehunter.databinding.ActivitySiteChooserBinding;
 import marabillas.loremar.gamehunter.ui.adapter.SiteChooserAdapter;
 
-import static marabillas.loremar.gamehunter.utils.MeasurementUtils.convertPixelsToDp;
-import static marabillas.loremar.gamehunter.utils.MeasurementUtils.getScreenWidthInPixels;
+import static marabillas.loremar.gamehunter.utils.UIUtils.getSpanCountGivenMaxWidth;
 
 /**
  * Activity for selecting the site which hosts the game database the user wants to search into.
@@ -86,17 +85,10 @@ public class SiteChooserActivity extends AppCompatActivity {
         }
         drawables.recycle(); // Required for TypedArray
 
-        // The following code enforces maximum width for each element
-        int screenWidthInPixels = getScreenWidthInPixels();
-        float screenWidthInDp = convertPixelsToDp(screenWidthInPixels, this);
-        int spanCount = (int) (screenWidthInDp / 180);
-        if (screenWidthInDp % 180 > 0) {
-            ++spanCount;
-        }
-
         // Set up recycler view
         SiteChooserAdapter adapter = new SiteChooserAdapter(sites);
         binding.activitySitechooserRecyclerview.setAdapter(adapter);
+        int spanCount = getSpanCountGivenMaxWidth(this, 180);
         binding.activitySitechooserRecyclerview.setLayoutManager(new GridLayoutManager(this, spanCount));
     }
 

@@ -22,10 +22,15 @@ package marabillas.loremar.gamehunter.apis.giantbomb;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -41,6 +46,10 @@ import marabillas.loremar.gamehunter.components.ResultsItem;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static marabillas.loremar.gamehunter.components.Query.Field.DESCRIPTION;
+import static marabillas.loremar.gamehunter.components.Query.Field.ID;
+import static marabillas.loremar.gamehunter.components.Query.Field.RELEASE_DATE;
+import static marabillas.loremar.gamehunter.components.Query.Field.THUMBNAIL;
 import static marabillas.loremar.gamehunter.utils.StringUtils.encodeURL;
 
 /**
@@ -70,6 +79,22 @@ public class GiantBomb extends BaseAPI {
                         .FILTER_BY_YEARS, Feature.SORT_BY_REVERSIBLE, Feature.RESULTS_PER_PAGE, Feature
                         .SEARCH_THUMBNAIL, Feature.SEARCH_DESCRIPTION, Feature.SEARCH_RELEASE_DATE,
                 Feature.SEARCH_RESULTS_PER_PAGE);
+    }
+
+    @Override
+    public Query getDefaultQuery() {
+        Query query = new Query();
+        Set<Query.Field> fields = EnumSet.of(THUMBNAIL, DESCRIPTION, RELEASE_DATE, ID);
+
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        query
+                .setFromYear(1950)
+                .setToYear(currentYear)
+                .setSort("Original release date")
+                .setOrder(Query.Order.DESCENDING)
+                .setFields(fields);
+
+        return query;
     }
 
     @Override
@@ -219,8 +244,12 @@ public class GiantBomb extends BaseAPI {
             queryMap.put("api_key", KEY);
             queryMap.put("format", "json");
             queryMap.put("limit", String.valueOf(query.getResultsPerPage()));
-            queryMap.put("page", String.valueOf(query.getResultsPerPage()));
             queryMap.put("field_list", fieldSB.toString());
+
+            long pageNumber = query.getPageNumber();
+            long limit = query.getResultsPerPage();
+            long offset = (pageNumber - 1) * limit;
+            queryMap.put("offset", String.valueOf(offset));
 
             // Prepare values for filter field
             String platformFilter = query.getPlatformFilter();
@@ -316,12 +345,12 @@ public class GiantBomb extends BaseAPI {
 
             resultsItem.title = item.getTitle();
 
-            if (fields.contains(Query.Field.THUMBNAIL)) {
+            if (fields.contains(THUMBNAIL)) {
                 GiantBombImageItem imageItem = item.getImage();
                 resultsItem.thumbnailURL = imageItem.getThumbnailUrl();
             }
 
-            if (fields.contains(Query.Field.DESCRIPTION)) {
+            if (fields.contains(DESCRIPTION)) {
                 resultsItem.description = item.getDescription();
             }
 
@@ -330,7 +359,15 @@ public class GiantBomb extends BaseAPI {
                 String expectedReleaseYear = item.getExpectedReleaseYear();
 
                 if (originalReleaseDate != null) {
-                    resultsItem.releaseDate = originalReleaseDate;
+                    SimpleDateFormat f1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                    SimpleDateFormat f2 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                    try {
+                        Date dt = f1.parse(originalReleaseDate);
+                        resultsItem.releaseDate = f2.format(dt);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                        resultsItem.releaseDate = originalReleaseDate;
+                    }
                 } else if (expectedReleaseYear != null) {
                     resultsItem.releaseDate = expectedReleaseYear;
                 }

@@ -30,35 +30,112 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/searcher_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
-                app:navigationIcon="@drawable/ic_arrow_back_white_24dp" />
+                app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
+                app:titleTextColor="?android:textColorPrimaryInverse" />
 
-            <android.support.constraint.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/searcher_results_view"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginLeft="@dimen/activity_searcher_results_view_side_margin"
+                android:layout_marginRight="@dimen/activity_searcher_results_view_side_margin"
+                app:layout_constraintBottom_toTopOf="@+id/searcher_footer"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/searcher_toolbar" />
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/searcher_results_view"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginLeft="@dimen/activity_searcher_results_view_side_margin"
-                    android:layout_marginRight="@dimen/activity_searcher_results_view_side_margin"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </android.support.constraint.ConstraintLayout>
+            <View
+                android:id="@+id/searcher_footer"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/activity_searcher_footer_height"
+                android:background="?attr/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
-        </LinearLayout>
+            <ImageButton
+                android:id="@+id/searcher_last_page_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/activity_searcher_last_page_content_description"
+                android:onClick="@{() -> viewModel.goToLastPage()}"
+                android:padding="@dimen/small_spacing"
+                app:layout_constraintBottom_toBottomOf="@+id/searcher_footer"
+                app:layout_constraintEnd_toEndOf="@+id/searcher_footer"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toEndOf="@id/searcher_next_button"
+                app:layout_constraintTop_toTopOf="@+id/searcher_footer"
+                app:srcCompat="@drawable/ic_last_page_white_24dp" />
+
+            <ImageButton
+                android:id="@+id/searcher_next_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/activity_searcher_next_content_description"
+                android:onClick="@{() -> viewModel.goToNextPage()}"
+                android:padding="@dimen/small_spacing"
+                app:layout_constraintBottom_toBottomOf="@+id/searcher_footer"
+                app:layout_constraintEnd_toStartOf="@+id/searcher_last_page_button"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toEndOf="@id/searcher_page_status"
+                app:layout_constraintTop_toTopOf="@+id/searcher_footer"
+                app:srcCompat="@drawable/ic_navigate_next_white_24dp" />
+
+            <TextView
+                android:id="@+id/searcher_page_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{() -> viewModel.onPageStatusClick()}"
+                android:padding="@dimen/small_spacing"
+                android:text="@{viewModel.pageStatus}"
+                android:textColor="?android:attr/textColorPrimaryInverse"
+                app:layout_constraintBottom_toBottomOf="@+id/searcher_footer"
+                app:layout_constraintEnd_toStartOf="@+id/searcher_next_button"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toEndOf="@id/searcher_previous_button"
+                app:layout_constraintTop_toTopOf="@+id/searcher_footer" />
+
+            <ImageButton
+                android:id="@+id/searcher_previous_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/activity_searcher_previous_content_description"
+                android:onClick="@{() -> viewModel.goToPreviousPage()}"
+                android:padding="@dimen/small_spacing"
+                app:layout_constraintBottom_toBottomOf="@+id/searcher_footer"
+                app:layout_constraintEnd_toStartOf="@+id/searcher_page_status"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toEndOf="@id/searcher_first_page_button"
+                app:layout_constraintTop_toTopOf="@+id/searcher_footer"
+                app:srcCompat="@drawable/ic_navigate_before_white_24dp" />
+
+            <ImageButton
+                android:id="@+id/searcher_first_page_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/activity_searcher_first_page_content_description"
+                android:onClick="@{() -> viewModel.goToFirstPage()}"
+                android:padding="@dimen/small_spacing"
+                app:layout_constraintBottom_toBottomOf="@+id/searcher_footer"
+                app:layout_constraintEnd_toStartOf="@+id/searcher_previous_button"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="@+id/searcher_footer"
+                app:layout_constraintTop_toTopOf="@+id/searcher_footer"
+                app:srcCompat="@drawable/ic_first_page_white_24dp" />
+        </android.support.constraint.ConstraintLayout>
 
         <include
             android:id="@+id/searcher_options"

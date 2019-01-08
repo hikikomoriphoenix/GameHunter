@@ -19,14 +19,32 @@
 
 package marabillas.loremar.gamehunter.components;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum SearcherEvent {
     HIDE_SEARCH_ICON,
     HIDE_SEARCH_OPTIONS_ICON,
+    SHOW_PROGRESS_VIEW,
     HIDE_PROGRESS_VIEW,
-    SETUP_ORDER_BY,
     SHOW_PLATFORM_FILTERS,
     SHOW_THEME_FILTERS,
     SHOW_GENRE_FILTERS,
     SHOW_SORT_CHOICES,
-    SHOW_ORDER_CHOICES
+    SHOW_ORDER_CHOICES,
+    SHOW_GO_TO_PAGE_DIALOG,
+    CLOSE_SEARCH_OPTIONS,
+    SET_DEFAULT_SORT_BY_SELECTION,
+    SET_RESULTS_VIEW_MODE,
+    NONE;
+
+    private Map<String, Object> extras = new HashMap<>();
+
+    public void putExtra(String key, Object value) {
+        extras.put(key, value);
+    }
+
+    public Object getExtra(String key) {
+        return extras.get(key);
+    }
 }

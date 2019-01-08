@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<!--
   ~     GameHunter is an Android app for searching video games
   ~     Copyright (C) 2018 Loremar Marabillas
   ~
@@ -17,13 +17,13 @@
   ~     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
   -->
 
-<resources>
-    <color name="darkRed">#910909</color>
-    <color name="darkerRed">#6c1414</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="almostWhite">#dddddd</color>
-    <color name="lighterBlack">#333333</color>
-    <color name="white">#ffffff</color>
-    <color name="green">#008000</color>
-    <color name="gray">#999999</color>
-</resources>
+<vector android:height="24dp"
+    android:tint="#FFFFFF"
+    android:viewportHeight="24.0"
+    android:viewportWidth="24.0"
+    android:width="24dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="M10,6L8.59,7.41 13.17,12l-4.58,4.59L10,18l6,-6z" />
+</vector>

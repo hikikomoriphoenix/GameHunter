@@ -21,6 +21,7 @@ package marabillas.loremar.gamehunter.components;
 
 import android.support.annotation.Nullable;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -152,11 +153,30 @@ public class Query {
         return this;
     }
 
-    public void setResultsPerPage(int resultsPerPage) {
+    public Query setResultsPerPage(int resultsPerPage) {
         this.resultsPerPage = resultsPerPage;
+        return this;
     }
 
-    public void setPageNumber(int pageNumber) {
+    public Query setPageNumber(int pageNumber) {
         this.pageNumber = pageNumber;
+        return this;
+    }
+
+    public Query copy() {
+        Set<Field> fields = new HashSet<>(this.fields);
+        return new Query()
+                .setKeyword(keyword)
+                .setFields(fields)
+                .setPlatformFilter(platformFilter)
+                .setGenreFilter(genreFilter)
+                .setThemeFilter(themeFilter)
+                .setReleaseYear(releaseYear)
+                .setFromYear(fromYear)
+                .setToYear(toYear)
+                .setSort(sort)
+                .setOrder(order)
+                .setResultsPerPage(resultsPerPage)
+                .setPageNumber(pageNumber);
     }
 }
