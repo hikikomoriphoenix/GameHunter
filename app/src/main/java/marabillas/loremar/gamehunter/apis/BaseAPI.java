@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Set;
 
 import io.reactivex.Observable;
+import marabillas.loremar.gamehunter.components.GameDetailsData;
 import marabillas.loremar.gamehunter.components.Query;
 import marabillas.loremar.gamehunter.components.ResultsItem;
 
@@ -366,4 +367,83 @@ public abstract class BaseAPI {
     public boolean hasThumbnails() {
         return configuration.contains(Feature.THUMBNAIL);
     }
+
+
+    // Boolean methods for details features
+
+    public boolean hasDetailsDescription() {
+        return configuration.contains(Feature.DETAILS_DESCRIPTION);
+    }
+
+    public boolean hasDetailsPlatforms() {
+        return configuration.contains(Feature.DETAILS_PLATFORMS);
+    }
+
+    public boolean hasDetailsGenres() {
+        return configuration.contains(Feature.DETAILS_GENRES);
+    }
+
+    public boolean hasDetailsThemes() {
+        return configuration.contains(Feature.DETAILS_THEMES);
+    }
+
+    public boolean hasDetailsReleaseDate() {
+        return configuration.contains(Feature.DETAILS_RELEASE_DATE);
+    }
+
+    public boolean hasDetailsDevelopers() {
+        return configuration.contains(Feature.DETAILS_DEVELOPERS);
+    }
+
+    public boolean hasDetailsPublishers() {
+        return configuration.contains(Feature.DETAILS_PUBLISHERS);
+    }
+
+    public boolean hasDetailsCharacters() {
+        return configuration.contains(Feature.DETAILS_CHARACTERS);
+    }
+
+    public boolean hasDetailsPlot() {
+        return configuration.contains(Feature.DETAILS_PLOT);
+    }
+
+    public boolean hasDetailsGameplay() {
+        return configuration.contains(Feature.DETAILS_GAMEPLAY);
+    }
+
+    public boolean hasDetailsSingleplayer() {
+        return configuration.contains(Feature.DETAILS_SINGLEPLAYER);
+    }
+
+    public boolean hasDetailsMultiplayer() {
+        return configuration.contains(Feature.DETAILS_MULTIPLAYER);
+    }
+
+    public boolean hasDetailsReception() {
+        return configuration.contains(Feature.DETAILS_RECEPTION);
+    }
+
+    public boolean hasDetailsLicense() {
+        return configuration.contains(Feature.DETAILS_LICENSE);
+    }
+
+    public boolean hasDetailsWebsite() {
+        return configuration.contains(Feature.DETAILS_WEBSITE);
+    }
+
+    public boolean hasDetailsRatings() {
+        return configuration.contains(Feature.DETAILS_RATINGS);
+    }
+
+    public boolean hasDetailsImages() {
+        return configuration.contains(Feature.DETAILS_IMAGES);
+    }
+
+    /**
+     * Fetch all information about a game.
+     *
+     * @param id unique id of the game
+     * @return an observable that can be subscribed on to get game details.
+     */
+    public abstract Observable<GameDetailsData> getGameDetails(String id);
 }
