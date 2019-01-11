@@ -22,15 +22,19 @@ package marabillas.loremar.gamehunter.apis;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 
 import marabillas.loremar.gamehunter.apis.giantbomb.GiantBomb;
 import marabillas.loremar.gamehunter.components.Query;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class GiantBombTest {
     private BaseAPI api;
@@ -251,10 +255,56 @@ public class GiantBombTest {
     public void testGetGameDetails() {
         api.getGameDetails("3030-13053")
                 .blockingSubscribe(gameDetailsData -> {
-                    System.out.println("title: " + gameDetailsData.getTitle() +
-                            "\ndescription: " + gameDetailsData.getDescription() +
-                            "\nrelease date: " + gameDetailsData.getReleaseDate()
-                    );
+                    assertThat(gameDetailsData.getTitle(), is("Final Fantasy VII"));
+                    assertThat(gameDetailsData.getReleaseDate(), is("1997-01-31"));
+
+                    String desc0 = "<h2>Overview</h2><p>Final Fantasy VII is a " +
+                            "role-playing game developed by <a href=\"/squaresoft/3010-6323/\" " +
+                            "data-ref-id=\"3010-6323\">Squaresoft</a> (now known as <a href=\"" +
+                            "../../square-enix/65-104/\" rel=\"nofollow\">Square Enix</a>) and " +
+                            "originally released for <a href=\"/playstation/3045-22/\" data-ref-id=";
+                    assertThat(gameDetailsData.getDescription(), containsString(desc0));
+
+                    String desc1 = "It is a 25 minute video which basically shows the ending the " +
+                            "Crisis Core in anime form. The ending for Crisis Core was different" +
+                            " from the Last Order OVA which was released first.</p>";
+                    assertThat(gameDetailsData.getDescription(), containsString(desc1));
+
+                    String[] platforms = {"PlayStation", "PlayStation Network (PS3)", "PC",
+                            "iPhone", "PlayStation Network (PSP)", "iPad", "Android"};
+                    List<String> pList = Arrays.asList(platforms);
+                    assertTrue(gameDetailsData.getPlatforms().containsAll(pList));
+
+                    String[] genres = {"Role-Playing"};
+                    List<String> gList = Arrays.asList(genres);
+                    assertTrue(gameDetailsData.getGenres().containsAll(gList));
+
+                    String[] themes = {"Fantasy", "Sci-Fi", "Anime"};
+                    List<String> tList = Arrays.asList(themes);
+                    assertTrue(gameDetailsData.getThemes().containsAll(tList));
+
+                    String[] developers = {"Squaresoft", "Square Visual Works"};
+                    List<String> dList = Arrays.asList(developers);
+                    assertTrue(gameDetailsData.getDevelopers().containsAll(dList));
+
+                    String[] publishers = {"Squaresoft"};
+                    List<String> puList = Arrays.asList(publishers);
+                    assertTrue(gameDetailsData.getPublishers().containsAll(puList));
+
+                    String[] characters = {"Cloud Strife", "Sephiroth", "Zack Fair", "Aerith " +
+                            "Gainsborough", "Vincent Valentine", "Barret Wallace", "Tifa " +
+                            "Lockhart", "Red XIII", "Cid Highwind", "Yuffie Kisaragi"};
+                    List<String> cList = Arrays.asList(characters);
+                    assertTrue(gameDetailsData.getCharacters().containsAll(cList));
+
+                    String[] imageURLs = {"https://static.giantbomb" +
+                            ".com/uploads/original/36/369565/2995549-ffvii-twitch-icon.jpg",
+                            "https://static.giantbomb" +
+                                    ".com/uploads/original/0/201/1535180-epsxe_2010_09_21_14_33_04_86.jpg",
+                            "https://static.giantbomb.com/uploads/original/0/201/1535177-epsxe_2010_09_21_14_29_43_76.jpg"
+                    };
+                    List<String> iList = Arrays.asList(imageURLs);
+                    assertTrue(gameDetailsData.getImages().containsAll(iList));
                 });
     }
 }
