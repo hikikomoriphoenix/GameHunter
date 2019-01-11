@@ -19,28 +19,41 @@
 
 package marabillas.loremar.gamehunter.apis.giantbomb;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class GiantBombImageItem {
-    @SerializedName("thumb_url")
-    private String thumbnailUrl;
+public class GiantBombGameDetailsResponse {
+    @SerializedName("status_code")
+    private int statusCode;
 
-    @SerializedName("original")
-    private String originalUrl;
+    @SerializedName("error")
+    private String error;
 
-    public String getThumbnailUrl() {
-        return thumbnailUrl;
+    @SerializedName("results")
+    @Expose
+    private GiantBombGameDetails gameDetails;
+
+    public int getStatusCode() {
+        return statusCode;
     }
 
-    public void setThumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
     }
 
-    public String getOriginalUrl() {
-        return originalUrl;
+    public String getError() {
+        return error;
     }
 
-    public void setOriginalUrl(String originalUrl) {
-        this.originalUrl = originalUrl;
+    public void setError(String error) {
+        this.error = error;
+    }
+
+    public GiantBombGameDetails getGameDetails() {
+        return gameDetails;
+    }
+
+    public void setGameDetails(GiantBombGameDetails gameDetails) {
+        this.gameDetails = gameDetails;
     }
 }

@@ -246,4 +246,15 @@ public class GiantBombTest {
             assertThat(api.getTotalPages(20), is(69L));
         });
     }
+
+    @Test
+    public void testGetGameDetails() {
+        api.getGameDetails("3030-13053")
+                .blockingSubscribe(gameDetailsData -> {
+                    System.out.println("title: " + gameDetailsData.getTitle() +
+                            "\ndescription: " + gameDetailsData.getDescription() +
+                            "\nrelease date: " + gameDetailsData.getReleaseDate()
+                    );
+                });
+    }
 }

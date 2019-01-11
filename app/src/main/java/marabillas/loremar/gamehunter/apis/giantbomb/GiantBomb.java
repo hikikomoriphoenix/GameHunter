@@ -29,6 +29,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -41,6 +42,7 @@ import marabillas.loremar.gamehunter.BuildConfig;
 import marabillas.loremar.gamehunter.apis.BaseAPI;
 import marabillas.loremar.gamehunter.apis.BaseAPIFailedQueryException;
 import marabillas.loremar.gamehunter.apis.Feature;
+import marabillas.loremar.gamehunter.components.GameDetailsData;
 import marabillas.loremar.gamehunter.components.Query;
 import marabillas.loremar.gamehunter.components.ResultsItem;
 import retrofit2.Retrofit;
@@ -387,5 +389,98 @@ public class GiantBomb extends BaseAPI {
         }
 
         return results;
+    }
+
+    @Override
+    public Observable<GameDetailsData> getGameDetails(String id) {
+        return api.getGameDetails(id, KEY)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .concatMap(giantBombGameDetailsResponse -> {
+                    GiantBombGameDetails gameDetails = giantBombGameDetailsResponse
+                            .getGameDetails();
+
+                    Set<String> platforms = new HashSet<>();
+                    if (gameDetails.getPlatforms() != null) {
+                        for (GiantBombGamePlatform platform :
+                                gameDetails.getPlatforms()) {
+                            platforms.add(platform.getName());
+                        }
+                    }
+
+                    Set<String> genres = new HashSet<>();
+                    if (gameDetails.getGenres() != null) {
+                        for (GiantBombGameGenre genre :
+                                gameDetails.getGenres()) {
+                            genres.add(genre.getName());
+                        }
+                    }
+
+                    Set<String> themes = new HashSet<>();
+                    if (gameDetails.getThemes() != null) {
+                        for (GiantBombGameTheme theme :
+                                gameDetails.getThemes()) {
+                            themes.add(theme.getName());
+                        }
+                    }
+
+                    String releaseDate = null;
+                    if (gameDetails.getOriginalReleaseDate() != null
+                            && !gameDetails.getOriginalReleaseDate().isEmpty()) {
+                        SimpleDateFormat f1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                        SimpleDateFormat f2 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                        Date dt = f1.parse(gameDetails.getOriginalReleaseDate());
+                        releaseDate = f2.format(dt);
+                    } else if (gameDetails.getExpectedReleaseYear() != null &&
+                            !gameDetails.getExpectedReleaseYear().isEmpty()) {
+                        releaseDate = gameDetails.getExpectedReleaseYear();
+                    }
+
+                    Set<String> developers = new HashSet<>();
+                    if (gameDetails.getDevelopers() != null) {
+                        for (GiantBombGameDeveloper developer :
+                                gameDetails.getDevelopers()) {
+                            developers.add(developer.getName());
+                        }
+                    }
+
+                    Set<String> publishers = new HashSet<>();
+                    if (gameDetails.getPublishers() != null) {
+                        for (GiantBombGamePublisher publisher :
+                                gameDetails.getPublishers()) {
+                            publishers.add(publisher.getName());
+                        }
+                    }
+
+                    Set<String> characters = new HashSet<>();
+                    if (gameDetails.getCharacters() != null) {
+                        for (GiantBombGameCharacter character :
+                                gameDetails.getCharacters()) {
+                            characters.add(character.getName());
+                        }
+                    }
+
+                    List<String> images = new ArrayList<>();
+                    if (gameDetails.getImages() != null) {
+                        for (GiantBombImageItem image :
+                                gameDetails.getImages()) {
+                            images.add(image.getOriginalUrl());
+                        }
+                    }
+
+                    GameDetailsData data = new GameDetailsData()
+                            .setTitle(gameDetails.getTitle())
+                            .setDescription(gameDetails.getDescription())
+                            .setPlatforms(platforms)
+                            .setGenres(genres)
+                            .setThemes(themes)
+                            .setReleaseDate(releaseDate)
+                            .setDevelopers(developers)
+                            .setPublishers(publishers)
+                            .setCharacters(characters)
+                            .setImages(images);
+
+                    return Observable.just(data);
+                });
     }
 }

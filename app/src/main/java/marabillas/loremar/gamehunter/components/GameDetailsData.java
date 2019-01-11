@@ -19,6 +19,7 @@
 
 package marabillas.loremar.gamehunter.components;
 
+import java.util.List;
 import java.util.Set;
 
 public class GameDetailsData {
@@ -39,7 +40,7 @@ public class GameDetailsData {
     private String license;
     private String website;
     private Set<String> ratings;
-    private Set<String> images;
+    private List<String> images;
 
     public String getTitle() {
         return title;
@@ -194,11 +195,11 @@ public class GameDetailsData {
         return this;
     }
 
-    public Set<String> getImages() {
+    public List<String> getImages() {
         return images;
     }
 
-    public GameDetailsData setImages(Set<String> images) {
+    public GameDetailsData setImages(List<String> images) {
         this.images = images;
         return this;
     }

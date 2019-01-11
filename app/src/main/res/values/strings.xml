@@ -40,7 +40,7 @@
 
     <!-- Labels for search page options-->
     <string name="activity_searcher_options_search">Search</string>
-    <string name="activity_searcher_options_platform">Filter by platform</string>
+    <string name="activity_searcher_options_platform">Filter by name</string>
     <string name="activity_searcher_options_theme">Filter by theme</string>
     <string name="activity_searcher_options_genre">Filter by genre</string>
     <string name="activity_searcher_options_releaseyear">Release year</string>

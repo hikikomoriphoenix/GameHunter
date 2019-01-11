@@ -23,6 +23,7 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
@@ -41,5 +42,13 @@ public interface GiantBombInterface {
     @GET("games/?format=json")
     Observable<GiantBombResponse<GiantBombQueryResultsItem>> getGames(
             @QueryMap Map<String, String> queryMap
+    );
+
+    @GET("game/{guid}/?format=json&field_list=name,description,platforms,genres,themes," +
+            "original_release_date,expected_release_year,developers,publishers,characters," +
+            "images")
+    Observable<GiantBombGameDetailsResponse> getGameDetails(
+            @Path("guid") String guid,
+            @Query("api_key") String key
     );
 }
