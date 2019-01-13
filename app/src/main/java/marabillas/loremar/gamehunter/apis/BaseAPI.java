@@ -371,6 +371,10 @@ public abstract class BaseAPI {
 
     // Boolean methods for details features
 
+    public boolean hasDetailsMainImage() {
+        return configuration.contains(Feature.DETAILS_MAIN_IMAGE);
+    }
+
     public boolean hasDetailsDescription() {
         return configuration.contains(Feature.DETAILS_DESCRIPTION);
     }

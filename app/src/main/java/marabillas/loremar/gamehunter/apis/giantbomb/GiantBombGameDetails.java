@@ -28,6 +28,9 @@ public class GiantBombGameDetails {
     @SerializedName("name")
     private String title;
 
+    @SerializedName("image")
+    private GiantBombImageItem mainImage;
+
     @SerializedName("description")
     private String description;
 
@@ -63,7 +66,7 @@ public class GiantBombGameDetails {
 
     @SerializedName("images")
     @Expose
-    private ArrayList<GiantBombImageItem> images;
+    private ArrayList<GiantBombImagesItem> images;
 
     public String getTitle() {
         return title;
@@ -71,6 +74,14 @@ public class GiantBombGameDetails {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public GiantBombImageItem getMainImage() {
+        return mainImage;
+    }
+
+    public void setMainImage(GiantBombImageItem mainImage) {
+        this.mainImage = mainImage;
     }
 
     public String getDescription() {
@@ -145,11 +156,11 @@ public class GiantBombGameDetails {
         this.characters = characters;
     }
 
-    public ArrayList<GiantBombImageItem> getImages() {
+    public ArrayList<GiantBombImagesItem> getImages() {
         return images;
     }
 
-    public void setImages(ArrayList<GiantBombImageItem> images) {
+    public void setImages(ArrayList<GiantBombImagesItem> images) {
         this.images = images;
     }
 }

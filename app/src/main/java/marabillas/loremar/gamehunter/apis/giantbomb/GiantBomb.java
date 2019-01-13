@@ -400,6 +400,8 @@ public class GiantBomb extends BaseAPI {
                     GiantBombGameDetails gameDetails = giantBombGameDetailsResponse
                             .getGameDetails();
 
+                    String mainImageURL = gameDetails.getMainImage().getOriginalUrl();
+
                     Set<String> platforms = new HashSet<>();
                     if (gameDetails.getPlatforms() != null) {
                         for (GiantBombGamePlatform platform :
@@ -462,7 +464,7 @@ public class GiantBomb extends BaseAPI {
 
                     List<String> images = new ArrayList<>();
                     if (gameDetails.getImages() != null) {
-                        for (GiantBombImageItem image :
+                        for (GiantBombImagesItem image :
                                 gameDetails.getImages()) {
                             images.add(image.getOriginalUrl());
                         }
@@ -470,6 +472,7 @@ public class GiantBomb extends BaseAPI {
 
                     GameDetailsData data = new GameDetailsData()
                             .setTitle(gameDetails.getTitle())
+                            .setMainImage(mainImageURL)
                             .setDescription(gameDetails.getDescription())
                             .setPlatforms(platforms)
                             .setGenres(genres)

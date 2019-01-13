@@ -257,6 +257,8 @@ public class GiantBombTest {
                 .blockingSubscribe(gameDetailsData -> {
                     assertThat(gameDetailsData.getTitle(), is("Final Fantasy VII"));
                     assertThat(gameDetailsData.getReleaseDate(), is("1997-01-31"));
+                    assertThat(gameDetailsData.getMainImage(), is("https://www.giantbomb" +
+                            ".com/api/image/original/1814630-box_ff7.png"));
 
                     String desc0 = "<h2>Overview</h2><p>Final Fantasy VII is a " +
                             "role-playing game developed by <a href=\"/squaresoft/3010-6323/\" " +

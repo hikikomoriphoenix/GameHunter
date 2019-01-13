@@ -21,20 +21,9 @@ package marabillas.loremar.gamehunter.apis.giantbomb;
 
 import com.google.gson.annotations.SerializedName;
 
-public class GiantBombImageItem {
-    @SerializedName("thumb_url")
-    private String thumbnailUrl;
-
-    @SerializedName("original_url")
+public class GiantBombImagesItem {
+    @SerializedName("original")
     private String originalUrl;
-
-    public String getThumbnailUrl() {
-        return thumbnailUrl;
-    }
-
-    public void setThumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
-    }
 
     public String getOriginalUrl() {
         return originalUrl;

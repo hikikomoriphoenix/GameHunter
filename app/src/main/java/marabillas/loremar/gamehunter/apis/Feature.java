@@ -174,6 +174,8 @@ public enum Feature {
      */
     SEARCH_RESULTS_PER_PAGE,
 
+    DETAILS_MAIN_IMAGE,
+
     DETAILS_DESCRIPTION,
 
     DETAILS_PLATFORMS,

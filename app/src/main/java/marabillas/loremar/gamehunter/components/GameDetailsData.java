@@ -24,6 +24,7 @@ import java.util.Set;
 
 public class GameDetailsData {
     private String title;
+    private String mainImage;
     private String description;
     private Set<String> platforms;
     private Set<String> genres;
@@ -48,6 +49,15 @@ public class GameDetailsData {
 
     public GameDetailsData setTitle(String title) {
         this.title = title;
+        return this;
+    }
+
+    public String getMainImage() {
+        return mainImage;
+    }
+
+    public GameDetailsData setMainImage(String mainImage) {
+        this.mainImage = mainImage;
         return this;
     }
 

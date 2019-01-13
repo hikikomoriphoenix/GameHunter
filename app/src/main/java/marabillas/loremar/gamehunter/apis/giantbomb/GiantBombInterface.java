@@ -44,7 +44,7 @@ public interface GiantBombInterface {
             @QueryMap Map<String, String> queryMap
     );
 
-    @GET("game/{guid}/?format=json&field_list=name,description,platforms,genres,themes," +
+    @GET("game/{guid}/?format=json&field_list=name,image,description,platforms,genres,themes," +
             "original_release_date,expected_release_year,developers,publishers,characters," +
             "images")
     Observable<GiantBombGameDetailsResponse> getGameDetails(
