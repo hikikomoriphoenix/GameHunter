@@ -76,11 +76,16 @@ public class GiantBomb extends BaseAPI {
 
     @Override
     protected Set<Feature> configure() {
-        return EnumSet.of(Feature.THUMBNAIL, Feature.DESCRIPTION, Feature
-                .RELEASE_DATE, Feature.FILTER_BY_PLATFORM, Feature.FILTER_BY_YEAR, Feature
-                        .FILTER_BY_YEARS, Feature.SORT_BY_REVERSIBLE, Feature.RESULTS_PER_PAGE, Feature
-                        .SEARCH_THUMBNAIL, Feature.SEARCH_DESCRIPTION, Feature.SEARCH_RELEASE_DATE,
-                Feature.SEARCH_RESULTS_PER_PAGE);
+        return EnumSet.of(
+                Feature.THUMBNAIL, Feature.DESCRIPTION, Feature.RELEASE_DATE,
+                Feature.FILTER_BY_PLATFORM, Feature.FILTER_BY_YEAR, Feature.FILTER_BY_YEARS,
+                Feature.SORT_BY_REVERSIBLE, Feature.RESULTS_PER_PAGE, Feature.SEARCH_THUMBNAIL,
+                Feature.SEARCH_DESCRIPTION, Feature.SEARCH_RELEASE_DATE,
+                Feature.SEARCH_RESULTS_PER_PAGE, Feature.DETAILS_MAIN_IMAGE,
+                Feature.DETAILS_DESCRIPTION, Feature.DETAILS_PLATFORMS, Feature.DETAILS_GENRES,
+                Feature.DETAILS_THEMES, Feature.DETAILS_RELEASE_DATE, Feature.DETAILS_DEVELOPERS,
+                Feature.DETAILS_PUBLISHERS, Feature.DETAILS_CHARACTERS, Feature.DETAILS_IMAGES
+        );
     }
 
     @Override
