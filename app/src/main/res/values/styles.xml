@@ -55,6 +55,14 @@
             @drawable/background_searcher_results_item_black
         </item>
         <item name="searcher_results_item_dark_themed_text_color">@color/white</item>
+        <item name="game_details_component_background">@color/white</item>
+        <item name="game_details_text_appearance">@style/GameDetailsTextAppearanceDefault</item>
+        <item name="game_details_header_text_appearance">
+            @style/GameDetailsHeaderTextAppearanceDefault
+        </item>
+        <item name="game_details_title_text_appearance_">
+            @style/GameDetailsTitleTextAppearanceDefault
+        </item>
     </style>
 
     <style name="SearcherOptionsLabelTextAppearanceDefault" parent="TextAppearance.AppCompat">
@@ -79,5 +87,18 @@
         <item name="searcher_searchbox_edittext_background">@color/white</item>
         <item name="searcher_searchbox_edittext_padding">8dp</item>
         <item name="searcher_searchbox_edittext_topmargin">8dp</item>
+    </style>
+
+    <style name="GameDetailsTextAppearanceDefault" parent="TextAppearance.AppCompat">
+
+    </style>
+
+    <style name="GameDetailsHeaderTextAppearanceDefault" parent="TextAppearance.AppCompat">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="GameDetailsTitleTextAppearanceDefault" parent="TextAppearance.AppCompat">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
     </style>
 </resources>

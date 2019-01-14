@@ -38,4 +38,6 @@
     <dimen name="activity_searcher_results_view_side_margin">12dp</dimen>
 
     <dimen name="activity_searcher_footer_height">56dp</dimen>
+
+    <dimen name="fragment_searcher_game_details_main_image_height">240dp</dimen>
 </resources>

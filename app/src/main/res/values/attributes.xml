@@ -51,4 +51,10 @@
         <attr name="searcher_results_item_dark_themed_background" format="reference" />
         <attr name="searcher_results_item_dark_themed_text_color" format="color" />
     </declare-styleable>
+
+    <!-- Game details page attributes -->
+    <attr name="game_details_component_background" format="color|reference" />
+    <attr name="game_details_text_appearance" format="reference" />
+    <attr name="game_details_header_text_appearance" format="reference" />
+    <attr name="game_details_title_text_appearance" format="reference" />
 </resources>
