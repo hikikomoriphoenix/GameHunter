@@ -60,7 +60,7 @@
         <item name="game_details_header_text_appearance">
             @style/GameDetailsHeaderTextAppearanceDefault
         </item>
-        <item name="game_details_title_text_appearance_">
+        <item name="game_details_title_text_appearance">
             @style/GameDetailsTitleTextAppearanceDefault
         </item>
     </style>

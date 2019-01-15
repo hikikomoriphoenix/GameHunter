@@ -38,6 +38,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.SearcherActivity" />
+        <activity android:name=".ui.activity.GameDetailsActivity" />
     </application>
 
 </manifest>

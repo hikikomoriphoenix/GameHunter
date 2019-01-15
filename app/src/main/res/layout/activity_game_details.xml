@@ -25,6 +25,62 @@
         <variable
             name="viewModel"
             type="marabillas.loremar.gamehunter.components.GameDetailsViewModel" />
+
+        <variable
+            name="plotHeaderText"
+            type="String" />
+
+        <variable
+            name="charactersHeaderText"
+            type="String" />
+
+        <variable
+            name="gameplayHeaderText"
+            type="String" />
+
+        <variable
+            name="receptionHeaderText"
+            type="String" />
+
+        <variable
+            name="releaseDateHeaderText"
+            type="String" />
+
+        <variable
+            name="developersHeaderText"
+            type="String" />
+
+        <variable
+            name="publishersHeaderText"
+            type="String" />
+
+        <variable
+            name="platformsHeaderText"
+            type="String" />
+
+        <variable
+            name="genresHeaderText"
+            type="String" />
+
+        <variable
+            name="themesHeaderText"
+            type="String" />
+
+        <variable
+            name="singleplayerMultiplayerHeaderText"
+            type="String" />
+
+        <variable
+            name="ratingsHeaderText"
+            type="String" />
+
+        <variable
+            name="websiteHeaderText"
+            type="String" />
+
+        <variable
+            name="licenseHeaderText"
+            type="String" />
     </data>
 
     <ScrollView
@@ -60,6 +116,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:contentDescription="@string/activity_game_details_main_image_content_description"
+                android:visibility="@{viewModel.mainImageVisibility.getValue()}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/activity_game_details_title"
@@ -77,6 +134,7 @@
                 android:singleLine="false"
                 android:text="@{viewModel.description.getValue()}"
                 android:textAppearance="?game_details_text_appearance"
+                android:visibility="@{viewModel.descriptionVisibility.getValue()}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/activity_game_details_main_image" />
@@ -90,9 +148,9 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
+                android:visibility="@{viewModel.plotVisibility.getValue()}"
                 app:contentText="@{viewModel.plot.getValue()}"
-                app:headerText="@string/activity_game_details_plot_header_text"
+                app:headerText="@{plotHeaderText}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/activity_game_details_description" />
@@ -107,8 +165,9 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
+                android:visibility="@{viewModel.charactersVisibility.getValue()}"
                 app:contentText="@{viewModel.characters.getValue()}"
-                app:headerText="@string/activity_game_details_characters_header_text"
+                app:headerText="@{charactersHeaderText}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/activity_game_details_plot_component" />
@@ -123,8 +182,9 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
+                android:visibility="@{viewModel.gameplayVisibility.getValue()}"
                 app:contentText="@{viewModel.gameplay.getValue()}"
-                app:headerText="@string/activity_game_details_gameplay_header_text"
+                app:headerText="@{gameplayHeaderText}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/activity_game_details_characters_component" />
@@ -139,8 +199,9 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
+                android:visibility="@{viewModel.receptionVisibility.getValue()}"
                 app:contentText="@{viewModel.reception.getValue()}"
-                app:headerText="@string/activity_game_details_reception_header_text"
+                app:headerText="@{receptionHeaderText}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/activity_game_details_gameplay_component" />
@@ -155,8 +216,9 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
+                android:visibility="@{viewModel.releaseDateVisibility.getValue()}"
                 app:contentText="@{viewModel.releaseDate.getValue()}"
-                app:headertext="@string/activity_game_details_release_date_header_text"
+                app:headerText="@{releaseDateHeaderText}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/activity_game_details_reception_component" />
@@ -171,8 +233,9 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
+                android:visibility="@{viewModel.developersVisibility.getValue()}"
                 app:contentText="@{viewModel.developers.getValue()}"
-                app:headerText="@string/activity_game_details_developers_header_text"
+                app:headerText="@{developersHeaderText}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/activity_game_details_release_date_component" />
@@ -187,8 +250,9 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
+                android:visibility="@{viewModel.publishersVisibility.getValue()}"
                 app:contentText="@{viewModel.publishers.getValue()}"
-                app:headerText="@string/activity_game_details_publishers_header_text"
+                app:headerText="@{publishersHeaderText}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/activity_game_details_developers_component" />
@@ -203,8 +267,9 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
+                android:visibility="@{viewModel.platformsVisibility.getValue()}"
                 app:contentText="@{viewModel.platforms.getValue()}"
-                app:headerText="@string/activity_game_details_platforms_header_text"
+                app:headerText="@{platformsHeaderText}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/activity_game_details_publishers_component" />
@@ -219,8 +284,9 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
+                android:visibility="@{viewModel.genresVisibility.getValue()}"
                 app:contentText="@{viewModel.genres.getValue()}"
-                app:headerText="@string/activity_game_details_genres_header_text"
+                app:headerText="@{genresHeaderText}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/activity_game_details_platforms_component" />
@@ -235,8 +301,9 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
+                android:visibility="@{viewModel.themesVisibility.getValue()}"
                 app:contentText="@{viewModel.themes.getValue()}"
-                app:headerText="@string/activity_game_details_themes_header_text"
+                app:headerText="@{themesHeaderText}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/activity_game_details_genres_component" />
@@ -251,8 +318,9 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
+                android:visibility="@{viewModel.singleplayerMultiplayerVisibility.getValue()}"
                 app:contentText="@{viewModel.singleplayerMultiplayer.getValue()}"
-                app:headerText="@string/activity_game_details_singleplayer_multiplayer_header_text"
+                app:headerText="@{singleplayerMultiplayerHeaderText}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/activity_game_details_themes_component" />
@@ -267,8 +335,9 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
+                android:visibility="@{viewModel.ratingsVisibility.getValue()}"
                 app:contentText="@{viewModel.ratings.getValue()}"
-                app:headerText="@string/activity_game_details_ratings_header_text"
+                app:headerText="@{ratingsHeaderText}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/activity_game_details_singleplayer_multiplayer_component" />
@@ -283,8 +352,9 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
+                android:visibility="@{viewModel.websiteVisibility.getValue()}"
                 app:contentText="@{viewModel.website.getValue()}"
-                app:headerText="@string/activity_game_details_website_header_text"
+                app:headerText="@{websiteHeaderText}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/activity_game_details_ratings_component" />
@@ -299,8 +369,9 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
+                android:visibility="@{viewModel.licenseVisibility.getValue()}"
                 app:contentText="@{viewModel.license.getValue()}"
-                app:headerText="@string/activity_game_details_license_header_text"
+                app:headerText="@{licenseHeaderText}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/activity_game_details_website_component" />

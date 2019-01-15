@@ -19,6 +19,7 @@
 
 package marabillas.loremar.gamehunter.components;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -26,13 +27,13 @@ public class GameDetailsData {
     private String title;
     private String mainImage;
     private String description;
-    private Set<String> platforms;
-    private Set<String> genres;
-    private Set<String> themes;
+    private Set<String> platforms = new HashSet<>();
+    private Set<String> genres = new HashSet<>();
+    private Set<String> themes = new HashSet<>();
     private String releaseDate;
-    private Set<String> developers;
-    private Set<String> publishers;
-    private Set<String> characters;
+    private Set<String> developers = new HashSet<>();
+    private Set<String> publishers = new HashSet<>();
+    private Set<String> characters = new HashSet<>();
     private String plot;
     private String gameplay;
     private boolean singleplayer;
@@ -40,7 +41,7 @@ public class GameDetailsData {
     private String reception;
     private String license;
     private String website;
-    private Set<String> ratings;
+    private Set<String> ratings = new HashSet<>();
     private List<String> images;
 
     public String getTitle() {

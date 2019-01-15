@@ -60,18 +60,4 @@
 
     <!-- Searcher Game Details strings -->
     <string name="activity_game_details_main_image_content_description">Main Image</string>
-    <string name="activity_game_details_plot_header_text">Plot</string>
-    <string name="activity_game_details_characters_header_text">Characters</string>
-    <string name="activity_game_details_gameplay_header_text">Gameplay</string>
-    <string name="activity_game_details_reception_header_text">Reception</string>
-    <string name="activity_game_details_release_date_header_text">Release Date</string>
-    <string name="activity_game_details_developers_header_text">Developers</string>
-    <string name="activity_game_details_publishers_header_text">Publishers</string>
-    <string name="activity_game_details_platforms_header_text">Platforms</string>
-    <string name="activity_game_details_genres_header_text">Genres</string>
-    <string name="activity_game_details_themes_header_text">Themes</string>
-    <string name="activity_game_details_singleplayer_multiplayer_header_text">Singleplayer/Multiplayer</string>
-    <string name="activity_game_details_ratings_header_text">Ratings</string>
-    <string name="activity_game_details_website_header_text">Website</string>
-    <string name="activity_game_details_license_header_text">Llcense</string>
 </resources>
